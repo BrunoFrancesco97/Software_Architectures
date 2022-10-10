@@ -4,32 +4,13 @@
 \usepackage[english]{babel}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
-\usepackage{roboto}
 \usepackage[hidelinks]{hyperref}
-\usepackage{color}
 \usepackage{caption}
 \usepackage{multirow}
 \usepackage{array}
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
-\usepackage{amssymb}% http://ctan.org/pkg/amssymb
-\usepackage{pifont}% http://ctan.org/pkg/pifont
-\newcommand{\cmark}{\ding{51}}%
-\newcommand{\xmark}{\ding{55}}%
-\pagestyle{fancy}
-\usepackage{amsfonts}
-\newcommand{\N}{\mathbb{N}}
 \lhead{}
 \chead{}
 \rhead{\fancyplain{}{\textit{\leftmark}}}
-\newcommand\tab[1][1cm]{\hspace*{#1}}
-\definecolor{mygreen}{rgb}{0,0.6,0}
-\definecolor{mygray}{rgb}{0.5,0.5,0.5}
-\definecolor{lightgray}{RGB}{222,222,222}
-\definecolor{mymauve}{rgb}{0.58,0,0.82}
-\definecolor{darkgray}{rgb}{.4,.4,.4}
-\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
-\setcounter{tocdepth}{3}
-\setcounter{secnumdepth}{3}
 
 \title{
 	\begin{figure}[!h]
@@ -90,10 +71,10 @@
 	\section*{Background}
 	Submit a pdf file with your Katas about an hackerrank-style information system.
 	\section*{Description}
-	Il sistema proposto è una piattaforma hackerrank-style da adottare in un contento universitario/lavorativo in cui è richiesta la valutazione della formazione di una o più persone iscritte al servizio.
+	Il sistema proposto Ã¨ una piattaforma hackerrank-style da adottare in un contento universitario/lavorativo in cui Ã¨ richiesta la valutazione della formazione di una o piÃ¹ persone iscritte al servizio.
 	\chapter*{Users}
 	\section*{Number of users}
-	1500 \textbf{studenti} contemporaneamente collegati previsti, più un numero minore di \textbf{professori} e \textbf{staff} la cui somma è pari a circa 50.\\
+	1500 \textbf{studenti} contemporaneamente collegati previsti, piÃ¹ un numero minore di \textbf{professori} e \textbf{staff} la cui somma Ã¨ pari a circa 50.\\
 	20'000 utenti annui totali utilizzatori previsti all'interno dell'applicazione
 	\section*{Type of users}
 	\begin{itemize}
@@ -104,25 +85,25 @@
 	\chapter*{Requirements}
 	\section*{Requirements}
 	\begin{itemize}
-		\item Suddivisione in "\textit{aree di lavoro}" per ogni università/azienda;
+		\item Suddivisione in "\textit{aree di lavoro}" per ogni universitÃ /azienda;
 		\item Ogni area di lavoro ha all'interno una suddivisione basata in corsi;
 		\item Staff incaricato nella creazione di aree di lavoro e corsi, oltre che all'assistenza ordinaria, il tutto attraverso un pannello di controllo;
-		\item Ogni corso all'interno di un'area di lavoro è amministrato da uno o più professori attraverso un pannello di controllo;
+		\item Ogni corso all'interno di un'area di lavoro Ã¨ amministrato da uno o piÃ¹ professori attraverso un pannello di controllo;
 		\item Professori e studenti devono essere in grado di poter contattare lo staff per assistenza ordinaria;
-		\item Ogni corso può contenere diverse sezioni in cui i professori possono adoperare:
+		\item Ogni corso puÃ² contenere diverse sezioni in cui i professori possono adoperare:
 		\begin{itemize}
 			\item Sezione teorica;
 			\item Sezione in cui sono presenti prove con valutazione (esami universitari o intervista);
-			\item Sezione in cui un utente può misurare le proprie competenze tramite prove non valutate dai professori;
+			\item Sezione in cui un utente puÃ² misurare le proprie competenze tramite prove non valutate dai professori;
 		\end{itemize}
-	\item Una prova può essere a scelta multipla/domande aperte/input di file;
-	\item Una prova può avere una scadenza;
-	\item Ogni prova può essere ripresa in qualsiasi momento nel caso in cui essa non sia stata completata, sempre considerando la scadenza della stessa;
+	\item Una prova puÃ² essere a scelta multipla/domande aperte/input di file;
+	\item Una prova puÃ² avere una scadenza;
+	\item Ogni prova puÃ² essere ripresa in qualsiasi momento nel caso in cui essa non sia stata completata, sempre considerando la scadenza della stessa;
 	\item Nel caso di test riguardanti l'ambito informatico, i linguaggi di programmazione supportati devono essere C, C++, Python, Java, SQL;
 	\item Ogni prova viene controllata/eseguita dalla piattaforma in un ambiente protetto e separato dalla macchina su cui viene testato;
-	\item Ogni professore all'interno del proprio corso può caricare dispense/materiale generico;
-	\item Ogni professore all'interno del proprio corso gestito può creare uno o più prove;
-	\item Ogni prova può disporre di un sistema anti-plagio;
+	\item Ogni professore all'interno del proprio corso puÃ² caricare dispense/materiale generico;
+	\item Ogni professore all'interno del proprio corso gestito puÃ² creare uno o piÃ¹ prove;
+	\item Ogni prova puÃ² disporre di un sistema anti-plagio;
 	\item Ogni prova mette a disposizione un report finale visionabile dallo studente e dal professore, oltre che un report mostrante l'andamento totale del corso visionabile solo dal professore;
 	\item Persistenza dei dati di utenti e prove tramite utilizzo di database;
 	\item Ogni area di lavoro/corso/quiz ha un proprio link univoco condivisibile;
@@ -130,7 +111,7 @@
 	\item Applicazione scalabile per un futuro ed ipotetico aumento di utenti presenti contemporaneamente e/o registrati;
 	\item Applicazione deve resistere a picchi di utenti iscritti contemporaneamente;
 	\item Applicazione quando necessario deve poter scalare le proprie risorse automaticamente a seconda della situazione;
-	\item Applicazione costruita in moduli così da avere una più facile implementazione, integrazione e manutenzione degli stessi;
+	\item Applicazione costruita in moduli cosÃ¬ da avere una piÃ¹ facile implementazione, integrazione e manutenzione degli stessi;
 	\item Applicazione deve poter garantire il proprio funzionamento in qualsiasi istante della propria esecuzione;
 	\item Applicazione deve garantire la presenza continua dei dati salvati, anche in caso di perdita di questi, tramite l'utilizzo di backup;
 	\end{itemize}
@@ -138,7 +119,7 @@
 	\begin{itemize}
 		\item Availability is a first-class concern, also scalability;
 		\item Il progetto deve avere un basso costo;
-		\item Si prevede che nell'immediato futuro la piattaforma venga adottata da più società;
+		\item Si prevede che nell'immediato futuro la piattaforma venga adottata da piÃ¹ societÃ ;
 		\item user-experience is a must;
 	\end{itemize}
 \end{document}
