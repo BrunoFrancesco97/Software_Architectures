@@ -39,7 +39,7 @@
 	\centerline{-}
 }
 \author{
-	\LARGE \textbf{Task 1} \newline
+	\LARGE \textbf{Task 2} \newline
 } 
 \date{
 	\begin{flushleft}
@@ -67,58 +67,58 @@
 	\makeatletter
 	%\tableofcontents
 	\chapter*{Introduction}
-	\section*{Background}
+	\section*{Requirements}
 	Submit a pdf file with your Katas about an hackerrank-style information system.
 	\section*{Description}
-	Il sistema proposto è una piattaforma hackerrank-style da adottare in un contento universitario/lavorativo in cui è richiesta la valutazione della formazione di una o più persone iscritte al servizio.
+	The system proposed is an hackerrank-like application that should be adopted by universities or companies in order to evaluate subscribed candidates/students and also it allows them to study theory material previosly loaded inside the platform.
 	\chapter*{Users}
-	\section*{Number of users}
-	1500 \textbf{studenti} contemporaneamente collegati previsti, più un numero minore di \textbf{professori} e \textbf{staff} la cui somma è pari a circa 50.\\
-	20'000 utenti annui totali utilizzatori previsti all'interno dell'applicazione
 	\section*{Type of users}
 	\begin{itemize}
-		\item \textbf{Professori}
-		\item \textbf{Studenti}
-		\item \textbf{Staff}
+		\item \textbf{normal user}
+		\item \textbf{admin}
+		\item \textbf{staff}
 	\end{itemize}
+	\section*{Number of users}
+	We predict about 1500  normal users connected at the same time inside the platform, a small amount of them (about 50) are part of admins and staff.\\
+	We also predict 20'000 total users per year subscribed to the platform, divided by normal users, admin and staff.
+	
 	\chapter*{Requirements}
 	\section*{Requirements}
-	\begin{itemize}
-		\item Suddivisione in aree di lavoro per ogni università/azienda;
-		\item Ogni area di lavoro ha all'interno una suddivisione basata in corsi;
-		\item Staff incaricato nella creazione di aree di lavoro e corsi, oltre che all'assistenza ordinaria, il tutto attraverso un pannello di controllo;
-		\item Ogni corso all'interno di un'area di lavoro è amministrato da uno o più professori attraverso un pannello di controllo;
-		\item Professori e studenti devono essere in grado di poter contattare lo staff per assistenza ordinaria;
-		\item Ogni corso può contenere diverse sezioni in cui i professori possono adoperare:
+	\begin{enumerate}
+		\item Each company or university is assigned to a channel and each one contains a variable number of courses;
+		\item Staff members must handle the creation of new channels and also work as helping center so to give users the support needed;
+		\item Each course is administrated by one or more admins by a control panel;
+		\item Admins and users should be able to contact staff if support is needed;
+		\item Courses could contain:
 		\begin{itemize}
-			\item Sezione teorica;
-			\item Sezione in cui sono presenti prove con valutazione (esami universitari o intervista);
-			\item Sezione in cui un utente può misurare le proprie competenze tramite prove non valutate dai professori;
+			\item Theory material section;
+			\item Evaluated/Non-evaluated assignments section;
 		\end{itemize}
-	\item Una prova può essere a scelta multipla/domande aperte/input di file;
-	\item Una prova può avere una scadenza;
-	\item Ogni prova può essere ripresa in qualsiasi momento nel caso in cui essa non sia stata completata, sempre considerando la scadenza della stessa;
-	\item Nel caso di test riguardanti l'ambito informatico, i linguaggi di programmazione supportati devono essere C, C++, Python, Java, SQL;
-	\item Ogni prova viene controllata/eseguita dalla piattaforma in un ambiente protetto e separato dalla macchina su cui viene testato;
-	\item Ogni professore all'interno del proprio corso può caricare dispense/materiale generico;
-	\item Ogni professore all'interno del proprio corso gestito può creare uno o più prove;
-	\item Ogni prova può disporre di un sistema anti-plagio;
-	\item Ogni prova mette a disposizione un report finale visionabile dallo studente e dal professore, oltre che un report mostrante l'andamento totale del corso visionabile solo dal professore;
-	\item Persistenza dei dati di utenti e prove tramite utilizzo di database;
-	\item Ogni area di lavoro/corso/quiz ha un proprio link univoco condivisibile;
-	\item Autenticazione tramite mail universitaria SSO???? Sappiamo farlo?
-	\item Applicazione scalabile per un futuro ed ipotetico aumento di utenti presenti contemporaneamente e/o registrati;
-	\item Applicazione deve resistere a picchi di utenti iscritti contemporaneamente;
-	\item Applicazione quando necessario deve poter scalare le proprie risorse automaticamente a seconda della situazione;
-	\item Applicazione costruita in moduli così da avere una più facile implementazione, integrazione e manutenzione degli stessi;
-	\item Applicazione deve poter garantire il proprio funzionamento in qualsiasi istante della propria esecuzione;
-	\item Applicazione deve garantire la presenza continua dei dati salvati, anche in caso di perdita di questi, tramite l'utilizzo di backup;
-	\end{itemize}
+		\item Admins can add stuff (assignments, theory materials) to each section of their own courses;
+		\item An assignment could contain multiple type of exercises such as one with multiple choiches, open questions, upload of a file;
+		\item An assignemnt could have an expiration date;
+		\item Each assignment can be saved if not finished yet and can be continued every time a user want (obviously by considering the expiration date);
+		\item Coding languages supported for IT assignment are C, C++, Python and Java;
+		\item Each assignment file execution must be verified on an isolated environment so to garantee security of the host platform;
+		\item An assignement might have an anti-plagiarism system;
+		\item Each assignment has a final report visionable from both admins and the normal user who took the exercises;
+		\item An admin can view the progress of the assignments done by the normal users;
+		\item Users and assignments data must be persistent;
+		\item Each channel/course/assignment must have a shareable link;
+		\item Application must be scalable and elastic so to prevent low performance due to an increment of users subscribed or simultaneously connected;
+		\item Application must be modulable in order to have an easier maintenance;
+		\item Application must be available every time is needed and also should not crash if an error happens;
+		\item New updates of the platform should be easy to do and their correctness could be verified if needed;
+		\item New functionality of the platform could be added in the future;
+	\end{enumerate}
 	\chapter*{Additional Context}
 	\begin{itemize}
-		\item Availability is a first-class concern, also scalability;
-		\item Il progetto deve avere un basso costo;
-		\item Si prevede che nell'immediato futuro la piattaforma venga adottata da più società;
-		\item user-experience is a must;
+		\item Availability and fault-tolerance are first-class concerns, also elasticity;
+		\item Scalability allows the project to have a balanced cost in comparison to the performance obtained; 
+		\item We think the application will be used in the future by many companies/universities so total users might go up;
+		\item User-experience is a must;
+		\item The project must be developed using open source/free technologies;
+		\item Automated deployment system could be used;
+		\item Platform should be secure;
 	\end{itemize}
 \end{document}
