@@ -10,7 +10,7 @@ Repository used by Group 5 in order to have a better communication :)
 ## App
 
 Todo:
-- [ ] #2
+- [ ] https://github.com/BrunoFrancesco97/Software_Architectures/issues/1
 
 Done:
 
