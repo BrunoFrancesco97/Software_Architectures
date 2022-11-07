@@ -1,0 +1,97 @@
+\documentclass[a4paper,11pt]{report}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{multirow}
+\usepackage{array}
+\lhead{}
+\renewcommand{\arraystretch}{1.5}
+\chead{}
+\rhead{\fancyplain{}{\textit{\leftmark}}}
+
+\title{
+	\begin{figure}[!h]
+		\vspace{-65mm}  
+		\hspace{-30mm}
+		\includegraphics[width=0.2\linewidth]{img/logo.jpg} \newline
+		\hspace{-30mm}
+		\label{fig:logo}
+	\end{figure}
+	\begin{flushleft}
+		\vspace{-11mm}  
+		\hspace{-30mm}
+		\fontfamily{roboto}\selectfont Universit\'{a} \\
+		\hspace{-30mm}
+		Ca'Foscari\\
+		\hspace{-30mm}
+		Venezia\\
+	\end{flushleft}
+	\vspace{25mm}  
+	\centerline{Master course}
+	\vspace{5mm}
+	\centerline{in Computer Science and Information Technology}
+	\vspace{30mm}
+	\centerline{Software Architectures}
+	\vspace{5mm}
+	\centerline{-}
+}
+\author{
+	\LARGE \textbf{Task 2} \newline
+} 
+\date{
+	\begin{flushleft}
+		\vspace{30mm}
+		\hspace*{-25mm}
+		\textbf{Group 5} \newline
+		\hspace*{-25mm}
+		Bastianello Lorenzo, 874268\newline
+		\hspace*{-25mm} 
+		Bonomi Silvia, 867138\newline
+		\hspace*{-25mm} 
+		Bruno Francesco, 875812\newline
+		\hspace*{-25mm} 
+		Quaglia Beatrice Maria, 875332\newline
+		\vspace{2mm} \newline
+		\hspace*{-25mm}
+		\textbf{Academic Year} \newline
+		\hspace*{-25mm}
+		2022 / 2023
+	\end{flushleft}
+}
+
+\begin{document}
+	\maketitle
+	%\makeatletter
+	\chapter*{Introduction}
+	\section*{Requirements}
+	Please submit a pdf file where you define what architecture characteristics amongs the ones we identified are of interest to your IT system, relating each architecture characteristics to the points of the kata that led you to identify that caracteristic. For each architecture characteristic you picked up, please "quantify" exactly at what level you need it for your IT system.
+	\chapter*{Architecture}
+	\section*{Architecture Characteristics}
+	Given a level desired with value between 1 (minimum level desired) and 5 (maximum level desired) for each characteristic identified at lesson, below are shown our point of view for each architecture characteristic that our future platform will have to respect: 
+	\begin{table}[hbt!]
+		\centering
+		\label{tab:my-table}
+		
+		\begin{tabular}{|c |c|c|}
+			\hline
+			\multicolumn{1}{|c|}{\textbf{Characteristic}} & \multicolumn{1}{c|}{\textbf{Level desired}}  & \multicolumn{1}{c|}{\textbf{Requirements referred}}\\ \hline
+		Deployability	&    4.0                                        &  20                                                                                        \\ \hline
+		Elasticity &  5.0                                          &  17                                                                                         \\ \hline
+		Evolutionary & 1.0                                           &  21                                                                                         \\ \hline
+		Fault Tolerance &  4.5                                           &   15, 19                                                                                      \\ \hline
+		Modularity &  4.25                                           &  18                                                                                         \\ \hline
+		Overall cost &  2.0   &  18, 20                                                                          \\ \hline
+		Performance &  3.75                                           &  17                                                                                         \\ \hline
+		Reliability &  3.75                                           &     11, 15, 19                                                                                     \\ \hline
+		Scalability &  4.5                                           & 17                                                                                          \\ \hline
+		Simplicity &   4.5                                          & 18                                                                                          \\ \hline
+		Testability &  2.25                                           & 20                                                                                 \\ \hline
+		\end{tabular}
+	\end{table}
+	\\Levels desired have been choosen through a vote between group members, for this reason values aren't always perfectly rounded.
+\end{document}
+
