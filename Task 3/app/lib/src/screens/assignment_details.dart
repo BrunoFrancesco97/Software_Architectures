@@ -52,35 +52,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                               //child: BookDetailsScreen(
                                 //book: selectedBook,
                               child: Text(
-                                "-----------------------------------"
-                                    "----------------------------------"
-                                    "....................................................."
-                                    "...................................................."
-                                    "......................................................."
-                                    ".............prova............................"
-                                    "..................................."
-                                    "....................................................."
-                                    ".......................................................................""....................................................."
-                                    "...................................................."
-                                    "......................................................."
-                                    "..............................................."
-                                    "..................................."
-                                    "....................................................."
-                                    "......................................................................."
-                                    "....................................................."
-                                    "...................................................."
-                                    "......................................................."
-                                    "..............................................."
-                                    "..................................."
-                                    "....................................................."
-                                    "......................................................................."
-                                    "....................................................."
-                                    "...................................................."
-                                    "......................................................."
-                                    "..............................................."
-                                    "..................................."
-                                    "....................................................."
-                                    "..............1213........................................................."
+                                "testo"
                               )
                             //),
                           ),
@@ -95,20 +67,67 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                         ),
                       ),
                       SizedBox(height: 10),
-                    Center(
-                    child: SizedBox(
+                      Center(
+                        child: SizedBox(
+                            width: 800.0,
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                                filled: true,
+                                //fillColor: Colors.grey,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: const Radius.circular(13.0),
+                                    topRight: const Radius.circular(13.0),
+                                  ),
+                                ),
+                            ),
+                          )
                       //constraints: const BoxConstraints(maxWidth: 1000),
-                      width: 800.0,
+                      //width: 800.0,
                       //height: 800.0,
-                       child: const Card(
+                       /*child: const Card(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
                           child: Text(
                           "-----------------------------------"),
                         ),
-                          ),
+                          ),*/
                   ),
                     ),
+                    SizedBox(
+                          child: TextButton(
+                              child: Text('LogIn', style: TextStyle(fontSize: 20.0),),
+                         onPressed: null,
+                    ),
+                    ),
+                    /*SizedBox(
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          //child: Text( ""),
+                            child: ElevatedButton(
+                              style:
+                                    
+
+                              child: const Text('Filled'),
+                            ),
+                            /*TextButton(
+                              child: Text('Compile', style: TextStyle(fontSize: 14.0),),
+                              onPressed:  null,
+                          ),*/
+                        ),
+                      ),
+                    ),*/
+                      SizedBox(height: 10),
+                      Center(
+                        child: SizedBox(
+                          width: 800.0,
+                          child: Text('Output:'),
+                        ),
+                      ),
                       Center(
                         child: SizedBox(
                           //constraints: const BoxConstraints(maxWidth: 1000),
@@ -117,7 +136,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                           child: const Card(
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-                              child: Text( ""),
+                              //child: Text( ""),
                             ),
                           ),
                         ),
