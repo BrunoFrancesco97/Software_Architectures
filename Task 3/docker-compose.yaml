@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+  db:
+    #TODO: import a test at first startup
+    image: postgres:alpine
+    container_name: hackerrank_db
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=our_fancy_pwd
+      - POSTGRES_DB=hackerrank
+      - POSTGRES_USER=our_fancy_usr
+
+  #redis:
+    #image: redis:alpine
+    #container_name: hackerrank_redis
+    #restart: always
+  
+  api:
+    image: hackerrank.qg/api:latest
+    container_name: hackerrank_api
+    restart: always
+    environment:
+      - SOME_VARS=vars
+    depends_on:
+      - db
+
+  app:
+    image: hackerrank.qg/app-web:latest
+    container_name: hackerrank_app
+    restart: always
+    ports:
+      - 127.0.0.1:8080:80
+      #TODO add a proxy container for deployment, or use an existent one
+    #volumes:
+    #  - data:/var/www/html
+    environment:
+      - POSTGRES_HOST=db
+      #- REDIS_HOST=redis
+      - POSTGRES_PASSWORD=our_fancy_pwd
+      - POSTGRES_DB=hackerrenk
+      - POSTGRES_USER=our_fancy_usr
+      #- HACKERRANK_TRUSTED_DOMAINS=nextcloud.raspy.cf
+      #- SMTP_HOST=smtp.gmail.com
+      #- SMTP_SECURE=ssl
+      #- SMTP_PORT=465
+      #- SMTP_AUTHTYPE=LOGIN
+      #- SMTP_NAME=
+      #- SMTP_PASSWORD=
+      #- MAIL_FROM_ADDRESS=
+      #- MAIL_DOMAIN=gmail.com
+      #- TRUSTED_PROXIES=
+
+    depends_on:
+      - db
+      - api
+      #- redis
+
+volumes:
+  db:
+  #data:
