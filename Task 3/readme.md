@@ -1,3 +1,8 @@
+- added app
+
 TODO:
 - build guide (super easy)
-- implement clone of components repos
+- add backend
+- final build scripts
+- final dockerfiles
+- final docker-compose
