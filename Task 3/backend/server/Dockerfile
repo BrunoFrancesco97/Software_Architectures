@@ -3,8 +3,6 @@ WORKDIR "/home/"
 RUN apt-get update 
 RUN apt-get install python3.9 -y
 RUN apt-get install python3-pip -y
-RUN apt-get install mysql-server -y
-RUN apt-get install nano -y
 RUN apt-get install default-jre -y
 RUN pip3 install flask
 RUN pip3 install flask_jwt_extended
