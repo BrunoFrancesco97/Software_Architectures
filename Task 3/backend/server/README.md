@@ -307,5 +307,5 @@ After one of these 2 options, you will have a container with an HackerRank RestA
 
 Notice that the API server must be connected to a database in order to properly work, thus an already existing container with an already configure DB must running before starting this API container, in particular the address of the database container is specified inside _database.py_ file:
 ```
-engine = sqlalchemy.create_engine("mysql+pymysql://root:root@localhost:3306/sa")
+engine = sqlalchemy.create_engine("mysql+pymysql://<userdb>:<userpasswordb>@<address>:<port>/<database_name>")
 ```
