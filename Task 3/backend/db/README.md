@@ -1,6 +1,6 @@
 
 # HackerRank Database
-Hackerrank database implemented using MariaDB RDBMS, all deployed inside a Docker image.
+Hackerrank database implemented using **MariaDB** RDBMS, all deployed inside a Docker image.
 
 ## Goals
 In order to have a scalable and efficient application, a Docker image with only database service is built up.
