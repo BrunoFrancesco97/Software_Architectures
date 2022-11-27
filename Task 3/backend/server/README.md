@@ -9,7 +9,7 @@ In order to have a scalable and efficient application, a Docker image with only 
 This allows the server to easiliy duplicate containers through Kubernetees like softwares if an heavy load of requests is received.
 
 
-## Small description of the API
+## Description of the API
 APi uses a long list of endpoints to allow the communication from front-end to backend:
 
 ```
@@ -97,6 +97,26 @@ TYPE: DELETE
 BODY: json(channel) WHERE channel = CHANNEL NAME
 ENDPOINT USED BY A USER TO DELETE A NEW CHANNEL SUBSCRIPTION
 ```
+URL: /course_subscription
+TYPE: GET
+BODY: NONE
+ENDPOINT USED BY A USER TO GET ALL ITS COURSE SUBSCRIPTIONS
+
+URL: /course_subscription
+TYPE: POST
+BODY: json(course) WHERE course = COURSE NAME
+ENDPOINT USED BY A USER TO ADD A NEW COURSE SUBSCRIPTION
+
+URL: /course_subscription
+TYPE: DELETE
+BODY: json(course) WHERE course = COURSE NAME
+ENDPOINT USED BY A USER TO REMOVE A NEW COURSE SUBSCRIPTION
+
+URL: /file
+TYPE: PUT
+BODY: json(course,channel) WHERE course = COURSE NAME and channel = CHANNEL NAME
+ENDPOINT USED BY AN ADMIN TO UPLOAD A FILE RELATED TO A COURSE AND CHANNEL
+
 ## How to use it
 
 
