@@ -303,4 +303,6 @@ After the image is built, you also run:
 ```
 docker run --name <container-name> -p 5000:5000 <image-name>
 ```
-After one of these 2 options, you will have a container with an HackerRank database running on it.
+After one of these 2 options, you will have a container with an HackerRank RestAPI running on it.
+
+Notice that the API server must be connected to a database in order to properly work, thus an already existing container with an already configure DB must running before starting this API container, in particular the address of the database container is specified inside _database.py_ file.
