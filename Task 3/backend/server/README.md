@@ -207,13 +207,13 @@ Authorization: Basic dGVzdDp0ZXN0
 
 This technique doesn't secure the information but at least allows the client not to send it clearly to the server that, as it comes the request, decode the information and elaborate it.
 
-**JWT** (_JSON Web Tokens_) technology instead allows the platform to implement a client-side session system, so the server-side of the platform that is tipically involved to handle this problem is now free.
+**JWT** (_JSON Web Tokens_) technology instead allows the platform to implement a client-side session system, so the server-side of the platform that is tipically involved to store sessions is now free from this task, from now it must only handle the creation of the token and check its integrity when received.
 
 As the name suggests, JWT is a token formed by three parts:
 - Header
 - Payload
 - Signature
-Each part is separated by a dot inside the token 
+Each part is separated by a dot inside the token. 
 
 _Header_ specifies the algorithm used to encrypt the signature and the type of the token, so for example:
 ```
