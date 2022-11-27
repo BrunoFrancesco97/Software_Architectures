@@ -30,7 +30,7 @@ IT SETS A COOKIE IS LOGIN IS SUCCESSFUL
 ```
 URL: /login
 TYPE: POST
-BODY: json(email,password, name, surname, role)
+BODY: json(email,password, name, surname, role) WHERE role=enum(user,admin,staff)
 ENDPOINT USED IN ORDER TO REGISTRATE A USER INTO THE PLATFORM
 ```
 ```
