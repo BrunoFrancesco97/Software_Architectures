@@ -17,7 +17,7 @@ In order not to be too long-winded, an image representation of the schema implem
 
 ## How to use it
 
-If you want use this image inside a container, there are two options:
+If you want use this image inside an independent container, there are two options:
 - Pulling it from Docker Hub
 - Build the image from the given Dockerfile
 
