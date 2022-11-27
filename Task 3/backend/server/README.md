@@ -213,6 +213,7 @@ As the name suggests, JWT is a token formed by three parts:
 - Header
 - Payload
 - Signature
+
 Each part is separated by a dot inside the token. 
 
 _Header_ specifies the algorithm used to encrypt the signature and the type of the token, so for example:
