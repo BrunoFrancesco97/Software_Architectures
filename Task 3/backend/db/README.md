@@ -32,7 +32,7 @@ docker run --name <container-name> -p 5000:5000 francescobruno97/db:latest
 
 Second option can be done by executing this other commands.
 
-First of all, you need to be in the same folder of the database Dockerfile, then you run:
+First of all, you need to be inside the same folder of the database Dockerfile, then you run:
 ```
 docker build --no-cache -t <image-name> .
 ```
