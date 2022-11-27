@@ -276,7 +276,8 @@ def add_user_complete(username, password, salt, name, surname, role):
         else:
             session.commit()
 ```
-As you can see, there is no SQL script but at the same time this function works, 
+As you can see, there is no SQL script but at the same time this program works, this happens because the library abstracts the type of the DBMS used, this allows the program to independently work from the DBMS used.
+
 ## How to individually run it
 
 
