@@ -9,5 +9,5 @@ In order to have a scalable and efficient application, a Docker image with only 
 ## Small description of the database
 Database is formed by many tables where each one has its own characteristics.
 
-![Alt Image text](/img/db.png?raw=true "Optional Title")
+![Alt Image text](/Task%203/backend/db/img/db.png?raw=true "Optional Title")
 
