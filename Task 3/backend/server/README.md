@@ -241,6 +241,8 @@ So, for example the JWT obtained from the previous header and payload parts usin
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o
 }
 ```
+The generated token can be stored inside a cookie or localStorage browser, in our case we store it inside a HTTPOnly cookie.
+
 ## SQLAlchemy
 ## How to individually run it
 
