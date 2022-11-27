@@ -38,7 +38,7 @@ docker build --no-cache -t <image-name> .
 ```
 After the image is built, you also run:
 ```
-docker run --name <container-name> -p 5000:5000 <image-name>
+docker run --name <container-name> -p 3306:3306 <image-name>
 ```
 After one of these 2 options, you will have a container with an HackerRank database running on it.
 
