@@ -194,7 +194,17 @@ ENDPOINT USED IN ORDER TO UPLOAD AS USER AN EXERCISE GIVEN
 ```
 ## Authetication 
 
-## SQLAlchemy 
+In order to have a secure login system, **Basic Authentication** and **JWT** technology are used.
+
+First one is a technique that allows the user to pass an information through the header using a precise format, so in this case for each login request, there is an Authorization HTTP header where its value is a base64 hashing of username:password: 
+```
+Authorization: Basic base64encode(<username>:<password>)
+```
+for example, with username = test and password = test we have:
+```
+Authorization: Basic dGVzdDp0ZXN0
+```
+## SQLAlchemy
 ## How to individually run it
 
 
