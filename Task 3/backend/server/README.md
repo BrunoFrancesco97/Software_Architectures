@@ -1,7 +1,7 @@
 
 
 # HackerRank API server
-Hackerrank RestAPI implemented using Flask.
+Hackerrank RestAPI implemented using Flask Python framework.
 
 ## Goals
 In order to have a scalable and efficient application, a Docker image with only RestAPI service is built up.
