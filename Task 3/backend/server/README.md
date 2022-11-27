@@ -10,7 +10,7 @@ This allows the server to easiliy duplicate containers through Kubernetees like 
 
 
 ## Description of the API
-APi uses a long list of endpoints to allow the communication from front-end to backend:
+APi uses a long list of endpoints to allow the communication from front-end to backend, they are all shown below:
 
 ```
 URL: /
