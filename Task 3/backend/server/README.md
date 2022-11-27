@@ -280,4 +280,27 @@ As you can see, there is no SQL script but at the same time this program works, 
 
 ## How to individually run it
 
+If you want use this image inside an independent container, there are two options:
+- Pulling it from Docker Hub
+- Build the image from the given Dockerfile
 
+First option can be easily done by executing this command on your machine:
+```
+docker pull francescobruno97/api:latest
+```
+This allows Docker (previously installed on your device) to download the image from the hub, you can then execute it with this other command:
+```
+docker run --name <container-name> -p 5000:5000 francescobruno97/api:latest
+```
+
+Second option can be done by executing this other commands.
+
+First of all, you need to be inside the same folder of the database Dockerfile, then you run:
+```
+docker build --no-cache -t <image-name> .
+```
+After the image is built, you also run:
+```
+docker run --name <container-name> -p 5000:5000 <image-name>
+```
+After one of these 2 options, you will have a container with an HackerRank database running on it.
