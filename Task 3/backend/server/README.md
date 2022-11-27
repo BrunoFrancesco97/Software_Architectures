@@ -224,6 +224,7 @@ _Header_ specifies the algorithm used to encrypt the signature and the type of t
 }
 ```
 is a valid header. This is then encrypted using base64 algorithm.
+
 _Payload_ contains all information that identify an entity, so for example:
 ```
 {
@@ -234,7 +235,7 @@ _Payload_ contains all information that identify an entity, so for example:
 ```
 Also the payload is base64 encoded.
 
-Then, last part is the signature, this is built by both encoded header and payload, a secret is added and the algorithm specified inside the header is used.
+Then, last part is the signature, this is built by using both encoded header and payload, a secret is added and the algorithm specified inside the header is used.
 This is needed in order to test the integrity of the jwt a client send to the server because it ensures that the original token wasn't modified. 
 So, for example the JWT obtained from the previous header and payload parts using as secret the worl 'secret' is:
 ```
@@ -242,7 +243,8 @@ So, for example the JWT obtained from the previous header and payload parts usin
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o
 }
 ```
-The generated token can be stored inside a cookie or localStorage browser, in our case we store it inside a HTTPOnly cookie.
+The generated token can be stored inside a cookie or localStorage browser, in our case it it stored inside a HTTPOnly cookie since localStorage is vulnerable to XSS attacks.
+
 
 ## SQLAlchemy
 ## How to individually run it
