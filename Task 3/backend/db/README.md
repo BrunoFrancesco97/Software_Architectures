@@ -25,3 +25,7 @@ First option can be easily done by executing this command on your machine:
 ```
 docker pull francescobruno97/db:latest
 ```
+This allows Docker (previously installed on your device) to download the image from the hub, you can then execute it with this other command:
+```
+docker run --name <container-name> -p 5000:5000 francescobruno97/db:latest
+```
