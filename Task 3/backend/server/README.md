@@ -246,7 +246,7 @@ So, for example the JWT obtained from the previous header and payload parts usin
 The generated token can be stored inside a cookie or localStorage browser, in our case it it stored inside a HTTPOnly cookie since localStorage is vulnerable to XSS attacks.
 
 
-## SQLAlchemy
+## SQLAlchemy - Persistence Level
 
 Since the application uses a database to store information, an easy and efficient way to handle the communication between the RestAPI and the database is to have a persistence layer that allows us to maintain not only a representation of a table row of the database inside the RestAPI, but also an interface that performs all operation needed. In order to do this _SQLAlchemy_ is used.
 
@@ -263,7 +263,20 @@ class User(database.Base):
     creation = sqlalchemy.Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 ```
 
-
+When a User object is created, it can be easily added to the database using _SQLAlchemy_ interface:
+```
+def add_user_complete(username, password, salt, name, surname, role):
+    session = database.Session()
+    if role == 'user' or role == 'admin' or role == 'staff':
+        try:
+            newUser = User(email=username, password=password, salt=salt, name=name, surname=surname, role=role)
+            session.add(newUser)
+        except:
+            session.rollback()
+        else:
+            session.commit()
+```
+As you can see, there is no SQL script but at the same time this function works, 
 ## How to individually run it
 
 
