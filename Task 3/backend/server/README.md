@@ -196,13 +196,50 @@ ENDPOINT USED IN ORDER TO UPLOAD AS USER AN EXERCISE GIVEN
 
 In order to have a secure login system, **Basic Authentication** and **JWT** technology are used.
 
-First one is a technique that allows the user to pass an information through the header using a precise format, so in this case for each login request, there is an Authorization HTTP header where its value is a base64 hashing of username:password: 
+First one is a technique that allows the user to pass an information through the header using a precise format, so in this case for each login request, there is an _Authorization_ HTTP header where its value is a base64 hashing of username:password: 
 ```
 Authorization: Basic base64encode(<username>:<password>)
 ```
 for example, with username = test and password = test we have:
 ```
 Authorization: Basic dGVzdDp0ZXN0
+```
+
+This technique doesn't secure our information but at least allows us not to send it clearly.
+
+**JWT** (_JSON Web Tokens_) technology instead allows the platform to implement a client-side session system, so the server-side of the platform that is tipically involved to handle this problem is now free.
+
+As the name suggests, JWT is a token formed by three parts:
+- Header
+- Payload
+- Signature
+Each part is separated by a dot inside the token 
+
+_Header_ specifies the algorithm used to encrypt the signature and the type of the token, so for example:
+```
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+is a valid header. This is then encrypted using base64 algorithm.
+_Payload_ contains all information that identify an entity, so for example:
+```
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true
+}
+```
+Also the payload is base64 encoded.
+
+Then, last part is the signature, this is built by both encoded header and payload, a secret is added and the algorithm specified inside the header is used.
+This is needed in order to test the integrity of the jwt a client send to the server because it ensures that the original token wasn't modified. 
+So, for example the JWT obtained from the previous header and payload parts using as secret the worl 'secret' is:
+```
+{
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o
+}
 ```
 ## SQLAlchemy
 ## How to individually run it
