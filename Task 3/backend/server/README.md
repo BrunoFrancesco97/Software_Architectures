@@ -192,6 +192,7 @@ ENDPOINT USED IN ORDER TO UPLOAD AS USER AN EXERCISE GIVEN
 ```
 ## Authetication 
 
-## How to use it
+## SQLAlchemy 
+## How to run it
 
 
