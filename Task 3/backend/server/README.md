@@ -97,26 +97,78 @@ TYPE: DELETE
 BODY: json(channel) WHERE channel = CHANNEL NAME
 ENDPOINT USED BY A USER TO DELETE A NEW CHANNEL SUBSCRIPTION
 ```
+```
 URL: /course_subscription
 TYPE: GET
 BODY: NONE
 ENDPOINT USED BY A USER TO GET ALL ITS COURSE SUBSCRIPTIONS
-
+```
+```
 URL: /course_subscription
 TYPE: POST
 BODY: json(course) WHERE course = COURSE NAME
 ENDPOINT USED BY A USER TO ADD A NEW COURSE SUBSCRIPTION
-
+```
+```
 URL: /course_subscription
 TYPE: DELETE
 BODY: json(course) WHERE course = COURSE NAME
 ENDPOINT USED BY A USER TO REMOVE A NEW COURSE SUBSCRIPTION
-
+```
+```
 URL: /file
 TYPE: PUT
 BODY: json(course,channel) WHERE course = COURSE NAME and channel = CHANNEL NAME
 ENDPOINT USED BY AN ADMIN TO UPLOAD A FILE RELATED TO A COURSE AND CHANNEL
-
+```
+```
+URL: /file
+TYPE: DELETE
+BODY: json(course,channel,file) WHERE course = COURSE NAME, channel = CHANNEL NAME and file = FILENAME
+ENDPOINT USED BY A USER TO DELETE AN ALREADY UPLOADED FILE RELATED TO A COURSE AND CHANNEL
+```
+```
+URL: /message
+TYPE: GET
+BODY: NONE
+ENDPOINT USED IN ORDER TO GET ALL RECEIVED MESSAGES OF AN AUTHENTICATED USER
+```
+```
+URL: /message
+TYPE: POST
+BODY: json(receiver,object,message) WHERE receiver = RECEIVER EMAIL, object = OBJECT MESSAGE and message = MESSAGE CONTENT
+ENDPOINT USED IN ORDER TO SEND A MESSAGE TO AN EXISTING USER
+```
+```
+URL: /assignment
+TYPE: POST
+BODY: json(name, year,month,day,hour,seconds, course) WHERE name = ASSIGNMENT_NAME, year,month,day,hour and seconds are related to the deadline date of the assignment and course = COURSE ASSOCIATED TO THE ASSIGNMENT
+ENDPOINT USED IN ORDER TO CREATE A NEW ASSIGNMENT
+```
+```
+URL: /assignment
+TYPE: DELETE
+BODY: json(assignment,course) WHERE assignment = ASSIGNMENT_ID and course = COURSE_NAME
+ENDPOINT USED IN ORDER TO DELETE AN ASSIGNMENT
+```
+```
+URL: /exercise
+TYPE: GET
+BODY: json(assignment) WHERE assignment = ASSIGNMENT ID
+ENDPOINT USED IN ORDER TO GET ALL EXERCISES RELATED TO AN ASSIGNMENT
+```
+```
+URL: /exercise
+TYPE: POST
+BODY: json(quest,correct,assignment,type) OR json(quest,correct,assignment,type,wrong1,wrong2,wrong3) WHERE quest = QUEST_TEXT, correct = CORRECT_ANSWER, assignment = ASSIGNMENT_ID, type = enum(multiple,open,develop,quiz), wrong1 = WRONG1_POSSIBLE_ANSWER, wrong2 = WRONG2_POSSIBLE_ANSWER and wrong3 = WRONG3_POSSIBLE_ANSWER
+ENDPOINT USED IN ORDER TO ADD A NEW EXERCISE
+```
+```
+URL: /exercise
+TYPE: PUT
+BODY: formData(file/text, language, exercise) WHERE file = FILE_UPLOADED, text = TEXT_TO_RUN, language = PROGRAM LANGUAGE OF THE FILE/TEXT, exercise = EXERCISE_ID
+ENDPOINT USED IN ORDER TO UPLOAD AS USER AN EXERCISE GIVEN
+```
 ## How to use it
 
 
