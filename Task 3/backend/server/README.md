@@ -190,6 +190,8 @@ TYPE: PUT
 BODY: formData(file/text, language, exercise) WHERE file = FILE_UPLOADED, text = TEXT_TO_RUN, language = PROGRAM LANGUAGE OF THE FILE/TEXT, exercise = EXERCISE_ID
 ENDPOINT USED IN ORDER TO UPLOAD AS USER AN EXERCISE GIVEN
 ```
+## Authetication 
+
 ## How to use it
 
 
