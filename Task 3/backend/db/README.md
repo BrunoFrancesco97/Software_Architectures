@@ -8,6 +8,7 @@ In order to have a scalable and efficient application, a Docker image with only 
 
 ## Small description of the database
 Database is formed by many tables where each one has its own characteristics.
+
 In order not to be too long-winded, an image representation of the schema implemented is shown below.
 
 ![Alt Image text](/Task%203/backend/db/img/db.png?raw=true "Optional Title")
