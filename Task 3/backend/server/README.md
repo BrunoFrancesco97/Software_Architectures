@@ -8,7 +8,7 @@ In order to have a scalable and efficient application, a Docker image with only 
 
 This allows the server to easiliy duplicate containers through Kubernetees like softwares if an heavy load of requests is received.
 
-Also, Flask is used since it provides it has an efficient API system and also it has all advantages Python language offers, such as the infinite amount of libraries a developer can use.
+Also, Flask is used since it provides an efficient API building system and also it has all advantages Python language offers, such as the infinite amount of libraries a developer can use.
 
 
 ## Description of the API
