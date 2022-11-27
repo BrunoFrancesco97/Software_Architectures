@@ -20,3 +20,8 @@ In order not to be too long-winded, an image representation of the schema implem
 If you want use this image, there are two options:
 - Pulling it from Docker Hub
 - Build the image from the given Dockerfile
+
+First option can be easily done by executing this command on your machine:
+```
+docker pull francescobruno97/db:latest
+```
