@@ -17,7 +17,7 @@ In order not to be too long-winded, an image representation of the schema implem
 
 ## How to use it
 
-If you want use this image, there are two options:
+If you want use this image inside a container, there are two options:
 - Pulling it from Docker Hub
 - Build the image from the given Dockerfile
 
@@ -29,3 +29,16 @@ This allows Docker (previously installed on your device) to download the image f
 ```
 docker run --name <container-name> -p 5000:5000 francescobruno97/db:latest
 ```
+
+Second option can be done by executing this other commands.
+
+First of all, you need to be in the same folder of the database Dockerfile, then you run:
+```
+docker build --no-cache -t <image-name> .
+```
+After the image is built, you also run:
+```
+docker run --name <container-name> -p 5000:5000 <image-name>
+```
+After one of these 2 options, you will have a container with an HackerRank database running on it.
+
