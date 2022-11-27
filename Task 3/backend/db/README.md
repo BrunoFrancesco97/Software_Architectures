@@ -15,3 +15,8 @@ In order not to be too long-winded, an image representation of the schema implem
 
 ![Alt Image text](/Task%203/backend/db/img/db.png?raw=true "Optional Title")
 
+## How to use it
+
+If you want use this image, there are two options:
+- Pulling it from Docker Hub
+- Build the image from the given Dockerfile
