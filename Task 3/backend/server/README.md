@@ -196,7 +196,7 @@ ENDPOINT USED IN ORDER TO UPLOAD AS USER AN EXERCISE GIVEN
 
 In order to have a secure login system, **Basic Authentication** and **JWT** technology are used.
 
-First one is a technique that allows the user to pass an information through the header using a precise format, so in this case for each login request, there is an _Authorization_ HTTP header where its value is a base64 hashing of username:password: 
+First one is a technique that allows the user (client) to pass an information through an HTTP header using a precise format, so in this case for each login request, there is an _Authorization_ HTTP header where its value is a base64 hashing of username:password: 
 ```
 Authorization: Basic base64encode(<username>:<password>)
 ```
@@ -205,7 +205,7 @@ for example, with username = test and password = test we have:
 Authorization: Basic dGVzdDp0ZXN0
 ```
 
-This technique doesn't secure our information but at least allows us not to send it clearly.
+This technique doesn't secure the information but at least allows the client not to send it clearly to the server that, as it comes the request, decode the information and elaborate it.
 
 **JWT** (_JSON Web Tokens_) technology instead allows the platform to implement a client-side session system, so the server-side of the platform that is tipically involved to handle this problem is now free.
 
