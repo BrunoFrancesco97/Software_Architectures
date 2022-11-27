@@ -12,12 +12,12 @@ This allows the server to easiliy duplicate containers through Kubernetees like 
 ## Small description of the API
 APi uses a long list of endpoints to allow the communication from front-end to backend:
 
-'''
+```
 TYPE: GET
 BODY: NONE
 ENDPOINT USED IN ORDER TO SHOW ALL POSSIBLE ENDPOINTS A CLIENT CAN INTERROGATE.
 IT RETURNS A LIST OF AVAILABLE ENDPOINT NAMES
-'''
+```
 
 ## How to use it
 
