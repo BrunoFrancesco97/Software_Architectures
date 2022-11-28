@@ -24,8 +24,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               alignment: Alignment.topCenter,
               child: SizedBox/*ConstrainedBox*/(
                 //constraints: const BoxConstraints(maxWidth: 1000),
-                width: 500.0,
-                height: 200.0,
+                width: 600.0,
+                height: 230.0,
                 child: const Card(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
@@ -86,7 +86,7 @@ class SettingsContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: <Widget> [
                 SizedBox(height: 10),
                 Text(
                   'Name', //testo db
@@ -121,23 +121,15 @@ class SettingsContent extends StatelessWidget {
         ),
       ],
     ),
+    SizedBox(height: 10),
+    ElevatedButton(
+      onPressed: () {
+        HackerrankAuthScope.of(context).signOut();
+      },
+      child: const Text('Sign out'),
+    ),
     ],
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
