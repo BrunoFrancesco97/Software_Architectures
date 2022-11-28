@@ -102,6 +102,7 @@ def check_open_question():
             n_exe = exercise.get_exercises_by_assignment(current_ass[0].assignment)
             count_sol = 0
             count_correct = 0
+            result_json = []
             for item in n_exe:
                 db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
                 if len(db_sol) == 1:
@@ -111,10 +112,14 @@ def check_open_question():
             if len(n_exe) == count_sol:
                 if count_correct == 0:
                     result.add_result_with_comment(current_ass[0].assignment, username["user"], 0, msg)
+                    result_list = utils.get_result_assignment(username['user'],current_ass[0].assignment)
+                    result_json = [result.obj_to_dict(item) for item in result_list]
                 else:
                     result.add_result_with_comment(current_ass[0].assignment, username["user"],
                                                    int((count_correct / len(n_exe)) * 100), msg)
-            return jsonify({"added": "True"}), 200
+                    result_list = utils.get_result_assignment(username['user'],current_ass[0].assignment)
+                    result_json = [result.obj_to_dict(item) for item in result_list]
+            return jsonify({"results": result_json}), 200
     return jsonify({"added": "False"}), 401
 
 
@@ -720,6 +725,7 @@ def send_exercise_develop():
     SIMILARITY_CONSTRAINT = 0.82
     if username['role'] == 'user':
         type = request.form['type']
+        result_json = []
         if type == "develop":
             language = request.form['language']
             file = request.files
@@ -761,17 +767,20 @@ def send_exercise_develop():
                             for item in n_exe:
                                 db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
                                 if len(db_sol) == 1:
-                                    print(solution.obj_to_dict(db_sol[0]))
                                     count_sol += 1
                                     if db_sol[0].correct is True:
                                         count_correct += 1
                             if len(n_exe) == count_sol:
                                 if count_correct == 0:
                                     result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
                                                                       int((count_correct / len(n_exe)) * 100))
-                            response = jsonify({"added": "True"}), 200
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
                     elif language == 'C':
                         path: str = 'dockerdata/dockerfiles/c/' + username['user']
                         try:
@@ -802,17 +811,20 @@ def send_exercise_develop():
                             for item in n_exe:
                                 db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
                                 if len(db_sol) == 1:
-                                    print(solution.obj_to_dict(db_sol[0]))
                                     count_sol += 1
                                     if db_sol[0].correct is True:
                                         count_correct += 1
                             if len(n_exe) == count_sol:
                                 if count_correct == 0:
                                     result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
                                                                       int((count_correct / len(n_exe)) * 100))
-                            response = jsonify({"added": "True"}), 200
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
                     elif language == 'Java':
                         path: str = 'dockerdata/dockerfiles/java/' + username['user']
                         try:
@@ -841,17 +853,20 @@ def send_exercise_develop():
                             for item in n_exe:
                                 db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
                                 if len(db_sol) == 1:
-                                    print(solution.obj_to_dict(db_sol[0]))
                                     count_sol += 1
                                     if db_sol[0].correct is True:
                                         count_correct += 1
                             if len(n_exe) == count_sol:
                                 if count_correct == 0:
                                     result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
                                                                       int((count_correct / len(n_exe)) * 100))
-                            response = jsonify({"added": "True"}), 200
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
                     elif language == 'C++':
                         path: str = 'dockerdata/dockerfiles/cpp/' + username['user']
                         try:
@@ -882,19 +897,22 @@ def send_exercise_develop():
                             for item in n_exe:
                                 db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
                                 if len(db_sol) == 1:
-                                    print(solution.obj_to_dict(db_sol[0]))
                                     count_sol += 1
                                     if db_sol[0].correct is True:
                                         count_correct += 1
                             if len(n_exe) == count_sol:
                                 if count_correct == 0:
                                     result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
                                                                       int((count_correct / len(n_exe)) * 100))
-                            response = jsonify({"added": "True"}), 200
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
         elif type == "quiz":
-            answer = request.form['answer']
+            answer = request.form['text']
             exe = request.form['exercise']
             exe_db = exercise.get_exercise_by_id(exe)
             if exe_db is not None and len(exe_db) == 1:
@@ -914,14 +932,18 @@ def send_exercise_develop():
                 if len(n_exe) == count_sol:
                     if count_correct == 0:
                         result.add_result_without_comment(exe_db[0].assignment, username["user"], 0)
+                        result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                        result_json = [result.obj_to_dict(item) for item in result_list]
                     else:
                         result.add_result_without_comment(exe_db[0].assignment, username["user"],
                                                           int((count_correct / len(n_exe)) * 100))
-                response = jsonify({"added": "True"}), 200
+                        result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                        result_json = [result.obj_to_dict(item) for item in result_list]
+                response = jsonify({"results": result_json}), 200
             else:
                 response = jsonify({}), 401
         elif type == "open":
-            answer = request.form['answer']
+            answer = request.form['text']
             exe = request.form['exercise']
             exe_db = exercise.get_exercise_by_id(exe)
             if exe_db is not None and len(exe_db) == 1:

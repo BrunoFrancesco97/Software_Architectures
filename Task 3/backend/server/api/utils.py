@@ -2,6 +2,7 @@ import flask
 import re
 import app
 import solution
+import result
 from difflib import SequenceMatcher
 from flask import  jsonify
 
@@ -49,3 +50,7 @@ def check_integrity_solution(exercise_id,user, res, expected, correct):
             response = jsonify({'return': res, 'correct': correct, 'expected':expected, 'similar_questions':'false'}), 200
         return response
     return None  
+
+def get_result_assignment(user : str,assigment : int):
+    results = result.get_results_by_assignment_user(assigment,user)
+    return results

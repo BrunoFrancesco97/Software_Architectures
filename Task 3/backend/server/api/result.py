@@ -13,6 +13,16 @@ class Result(database.Base):
     comment = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
 
+def obj_to_dict(obj: Result):  # for build json format
+    return {
+        "assignment": obj.assignment,
+        "user": obj.user,
+        "subscription":obj.subscription,
+        "result":obj.result,
+        "comment":obj.comment,
+        "id":obj.id
+    }
+
 
 def add_result_without_comment(assignment_el: int, user_el: str, result_el: int):
     session = database.Session()
@@ -79,5 +89,11 @@ def get_results_by_user(user : str):
 def get_results_by_assignment(assignment: int):
     session = database.Session()
     results = session.query(Result).filter_by(assignment=assignment).all()
+    session.flush()
+    return results
+
+def get_results_by_assignment_user(assignment: int, user : str):
+    session = database.Session()
+    results = session.query(Result).filter_by(assignment=assignment,user=user).all()
     session.flush()
     return results
