@@ -1,5 +1,5 @@
 class ApiConstants {
-  static String baseUrl = 'http://hackerrank_api';
+  static String baseUrl = 'http://localhost:5000';
   static String login = '/login';
   static String channel = '/channel';
   static String course = '/course';

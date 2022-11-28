@@ -5,6 +5,8 @@
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
+import 'package:hackerrank/src/data/api_service.dart';
+import 'data.dart';
 
 /// A simple authentication service
 class HackerrankAuth extends ChangeNotifier {
@@ -21,10 +23,17 @@ class HackerrankAuth extends ChangeNotifier {
 
   Future<bool> signIn(String username, String password) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
-
+    var api = ApiService();
     // Sign in. Allow any password.
     //TODO add API JWT login
     bool state = false;
+    try {
+      var r = await api.login(username, password);
+      state = false;
+      log(r.toString());
+    } catch (e) {
+      log("login error");
+    }
     if(username=="pino" && password=="pino") {
       state = true;
     }

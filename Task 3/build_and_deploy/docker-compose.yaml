@@ -3,45 +3,53 @@ version: '3'
 services:
   db:
     #TODO: import a test at first startup
-    image: postgres:alpine
+    image: hackerrank/db:latest
+    build: ../backend/db
     container_name: hackerrank_db
     restart: always
-    volumes:
-      - db:/var/lib/postgresql/data
+    #volumes:
+    #  - db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=our_fancy_pwd
-      - POSTGRES_DB=hackerrank
-      - POSTGRES_USER=our_fancy_usr
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
 
   #redis:
     #image: redis:alpine
     #container_name: hackerrank_redis
     #restart: always
-  
+
   api:
-    image: hackerrank.qg/api:latest
+    image: hackerrank/api:latest
+    build: ../backend/server
     container_name: hackerrank_api
     restart: always
+    ports:
+      - 127.0.0.1:5000:5000
     environment:
-      - SOME_VARS=vars
+      - DB_URL=db
+      - DB_PORT=3306
+      - DB_NAME=sa
     depends_on:
       - db
 
   app:
-    image: hackerrank.qg/app-web:latest
+    image: hackerrank/app-web:latest
     container_name: hackerrank_app
+    build: ../app
     restart: always
     ports:
       - 127.0.0.1:8080:80
       #TODO add a proxy container for deployment, or use an existent one
     #volumes:
     #  - data:/var/www/html
-    environment:
-      - POSTGRES_HOST=db
+    #environment:
+      #- POSTGRES_HOST=db
       #- REDIS_HOST=redis
-      - POSTGRES_PASSWORD=our_fancy_pwd
-      - POSTGRES_DB=hackerrenk
-      - POSTGRES_USER=our_fancy_usr
+      #- POSTGRES_PASSWORD=our_fancy_pwd
+      #- POSTGRES_DB=hackerrenk
+      #- POSTGRES_USER=our_fancy_usr
       #- HACKERRANK_TRUSTED_DOMAINS=nextcloud.raspy.cf
       #- SMTP_HOST=smtp.gmail.com
       #- SMTP_SECURE=ssl

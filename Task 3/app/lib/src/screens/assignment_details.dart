@@ -2,7 +2,11 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// api call from button:
+// https://stackoverflow.com/questions/50014848/network-request-after-button-click-with-flutter
+
 import 'package:flutter/material.dart';
+import 'package:hackerrank/src/data/api_service.dart';
 import 'package:url_launcher/link.dart';
 
 import '../data.dart';
@@ -22,6 +26,25 @@ class AssignmentScreen extends StatefulWidget {
 
 class _AssignmentScreenState extends State<AssignmentScreen> {
   @override
+
+  String _currentWeather = "";
+  bool apiCall = false; // New variable
+
+  void _testAPI() {
+    var api = new ApiService();
+    api.test().then((weather) {
+      setState(() {
+        apiCall= false; //Disable Progressbar
+        _currentWeather = weather.toString();
+      });
+    }, onError: (error) {
+      setState(() {
+        apiCall=false; //Disable Progressbar
+        _currentWeather = error.toString();
+      });
+    });
+  }
+
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
            title: Text("titolo assignment"), //<- titolo assignment
@@ -105,7 +128,12 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                         backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                       )/*.copyWith(elevation: ButtonStyleButton.allOrNull(0.0))*/,
-                      onPressed: null,
+                      onPressed: () {
+                        setState((){
+                          apiCall=true; // Set state like this
+                        });
+                        _testAPI();
+                      },
                       child: const Text('Compile'),
                       ),
                     ),
@@ -135,6 +163,16 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         ),
         ),
   );
+
+  Widget getProperWidget(){
+    if(apiCall)
+      return new CircularProgressIndicator();
+    else
+      return new Text(
+        '$_currentWeather',
+        style: Theme.of(context).textTheme.bodyText1,
+      );
+  }
 }
 
 
