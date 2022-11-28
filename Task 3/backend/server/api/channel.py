@@ -11,6 +11,13 @@ class Channel(database.Base):
     name = sqlalchemy.Column(sqlalchemy.String(length=40), nullable=False)
 
 
+
+def obj_to_dict(obj: Channel):  # for build json format
+    return {
+        "id": obj.id,
+        "name": obj.name,
+    }
+
 def add_channel(name: str):
     session = database.Session()
     try:

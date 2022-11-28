@@ -58,9 +58,9 @@ def remove_exercise(id_el):
 
 def selectAll():
     session = database.Session()
-    channels = session.query(Exercise).all()
+    exercise = session.query(Exercise).all()
     session.flush()
-    return channels
+    return exercise
 
 
 def get_exercise_by_id(id_el):
@@ -72,6 +72,13 @@ def get_exercise_by_id(id_el):
 
 def get_exercises_by_assignment(assignment):
     session = database.Session()
-    channels = session.query(Exercise).filter_by(assignment=assignment).all()
+    exercise = session.query(Exercise).filter_by(assignment=assignment).all()
     session.flush()
-    return channels
+    return exercise
+
+
+def get_exercise_by_type_and_assignment(type, assignment):
+    session = database.Session()
+    exercise = session.query(Exercise).filter_by(type=type, assignment=assignment).all()
+    session.flush()
+    return exercise

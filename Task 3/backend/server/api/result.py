@@ -14,7 +14,7 @@ class Result(database.Base):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
 
 
-def add_result_without_comment(assignment_el: str, user_el: str, result_el: str):
+def add_result_without_comment(assignment_el: int, user_el: str, result_el: int):
     session = database.Session()
     try:
         new_result = Result(assignment=assignment_el, user=user_el, result=result_el)
@@ -25,7 +25,7 @@ def add_result_without_comment(assignment_el: str, user_el: str, result_el: str)
         session.commit()
 
 
-def add_result_with_comment(assignment_el: str, user_el: str, result_el: str, comment_el: str):
+def add_result_with_comment(assignment_el: int, user_el: str, result_el: int, comment_el: str):
     session = database.Session()
     try:
         new_result = Result(assignment=assignment_el, user=user_el, result=result_el, comment=comment_el)
@@ -37,7 +37,7 @@ def add_result_with_comment(assignment_el: str, user_el: str, result_el: str, co
         session.commit()
 
 
-def add_result_without_vote(assignment_el: str, user_el: str, comment_el: str):
+def add_result_without_vote(assignment_el: int, user_el: str, comment_el: str):
     session = database.Session()
     try:
         new_result = Result(assignment=assignment_el, user=user_el, comment=comment_el)

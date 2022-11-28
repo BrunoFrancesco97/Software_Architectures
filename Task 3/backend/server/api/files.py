@@ -13,25 +13,41 @@ class File(database.Base):
 def add_file(name: str, course: str, channel_name: str, file):
     session = database.Session()
     try:
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'] + channel_name + '/' + course + '/', name))
-        new_file = File(name=name, course=course)
-        session.add(new_file)
+        if not os.path.exists(app.UPLOAD_FOLDER + channel_name + '/' + course + '/'+name):
+            file.save(os.path.join(app.UPLOAD_FOLDER + channel_name + '/' + course + '/', name))
+            new_file = File(name=name, course=course)
+            session.add(new_file)
+        else:
+            session.rollback()
+            return False
     except:
         session.rollback()
     else:
         session.commit()
+        return True 
 
+
+def obj_to_dict(obj: File):  # for build json format
+    return {
+        "name": obj.name,
+        "course" : obj.course,
+    }
 
 def remove_file(name: str, course: str, channel_name: str):
     session = database.Session()
     try:
-        os.remove(app.config['UPLOAD_FOLDER'] + channel_name + '/' + course + '/' + name)
-        course = select_file(name, course)
-        session.delete(course)
+        if os.path.exists(app.UPLOAD_FOLDER + channel_name + '/' + course + '/'+name):
+            os.remove(app.UPLOAD_FOLDER + channel_name + '/' + course + '/' + name)
+            session = database.Session()
+            session.query(File).filter_by(name=name, course=course).delete(synchronize_session="evaluate")
+        else:
+            session.rollback()
+            return False 
     except:
         session.rollback()
     else:
         session.commit()
+        return True
 
 
 def select_all():

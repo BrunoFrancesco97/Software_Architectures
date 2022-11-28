@@ -28,6 +28,15 @@ def add_assignment(name: str, year : int, month : int, day : int, hour : int, se
         session.commit()
 
 
+def obj_to_dict(obj: Assignment):  # for build json format
+    return {
+        "id" : obj.id,
+        "name": obj.name,
+        "creation": obj.creation,
+        "deadline" : obj.deadline,
+        "course" : obj.course,
+    }
+
 def remove_assignment(id_el):
     session = database.Session()
     session.query(Assignment).filter_by(id=id_el).delete(synchronize_session="evaluate")
