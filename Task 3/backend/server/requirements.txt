@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+flask_jwt_extended
+pymysql
+sqlalchemy
