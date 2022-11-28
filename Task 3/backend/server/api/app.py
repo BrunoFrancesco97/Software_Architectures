@@ -26,14 +26,6 @@ import re
 
 # https://flask-jwt-extended.readthedocs.io/en/3.0.0_release/tokens_in_cookies/
 
-
-# TODO: IMPLEMENTARE SISTEMA BASATO SU UNA CODA FIFO DI ASSIGNMENTS, PRENDO QUINDI L'ASSIGNMENT, CONTROLLO CHE TIPO SIA
-# TODO: A SECONDA DEL TIPO MI CREO UN THREAD CHE SI CREA UN DOCKERFILE, MI SALVA IL FILE NEL SERVER
-# TODO: E LO COPIA NEL CONTAINER, ESEGUE IL CONTAINER, SI PESCA L'OUTPUT E LO RESTITUISCE
-
-# TODO: BISOGNA CAPIRE COME RICEVERE L'OUTPUT DA CONTAINER DOCKER
-
-
 app = Flask(__name__)
 UPLOAD_FOLDER = 'userdata/'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -52,21 +44,93 @@ jwt = JWTManager(app)
 """
 TYPE: GET
 BODY: NONE
-ENDPOINT USED IN ORDER TO SHOW ALL POSSIBLE ENDPOINTS A CLIENT CAN INTERROGATE
+ENDPOINT USED IN ORDER TO SHOW ALL POSSIBLE ENDPOINTS A CLIENT CAN INTERROGATE.
+IT RETURNS A LIST OF AVAILABLE ENDPOINT NAMES
 """
 
 
 @app.get('/')
 def show_endpoints():
-    data = ['login', 'logout', 'channel','course','channel_subscription','course_subscription','file','message','assignment','exercise']
+    data = ['login', 'logout', 'channel', 'course', 'channel_subscription', 'course_subscription', 'file', 'message',
+            'assignment', 'exercise', 'solution']
     return jsonify({'endpoints': data}), 200
+
+
+"""
+TYPE: GET
+BODY: 
+HEADER: 
+"""
+
+
+@app.get('/solution')
+@jwt_required()
+def get_open_question():
+    username = get_jwt_identity()
+    if username['role'] == 'admin':
+        data = json.loads(request.data.decode(encoding='UTF-8'))
+        id_assignment = data.get("assignment")
+        exe_list = exercise.get_exercise_by_type_and_assignment('open', id_assignment)
+        open_q = []
+        for item in exe_list:
+            unreviewed = solution.get_unreviewed_solution(item.id)
+            for elem in unreviewed:
+                open_q.append(solution.obj_to_dict_quest(elem, item.quest))
+        return jsonify({"solution": open_q}), 200
+    return jsonify({}), 401
+
+
+"""
+TYPE: POST
+BODY: 
+HEADER: 
+"""
+
+
+@app.post('/solution')
+@jwt_required()
+def check_open_question():
+    username = get_jwt_identity()
+    if username['role'] == 'admin':
+        data = json.loads(request.data.decode(encoding='UTF-8'))
+        exercise_id = data.get('exercise')
+        res = data.get('correct')
+        current_ass = exercise.get_exercise_by_id(exercise_id)
+        msg = data.get('comment')
+        if current_ass is not None and len(current_ass) == 1:
+            solution.check_solution(exercise_id, username['user'], (res=='true'))
+            n_exe = exercise.get_exercises_by_assignment(current_ass[0].assignment)
+            count_sol = 0
+            count_correct = 0
+            result_json = []
+            for item in n_exe:
+                db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
+                if len(db_sol) == 1:
+                    count_sol += 1
+                    if db_sol[0].correct is True:
+                        count_correct += 1
+            if len(n_exe) == count_sol:
+                if count_correct == 0:
+                    result.add_result_with_comment(current_ass[0].assignment, username["user"], 0, msg)
+                    result_list = utils.get_result_assignment(username['user'],current_ass[0].assignment)
+                    result_json = [result.obj_to_dict(item) for item in result_list]
+                else:
+                    result.add_result_with_comment(current_ass[0].assignment, username["user"],
+                                                   int((count_correct / len(n_exe)) * 100), msg)
+                    result_list = utils.get_result_assignment(username['user'],current_ass[0].assignment)
+                    result_json = [result.obj_to_dict(item) for item in result_list]
+            return jsonify({"results": result_json}), 200
+    return jsonify({"added": "False"}), 401
+
+
 
 
 """
 TYPE: GET
 BODY: NONE
 HEADER: AUTHORIZATION: Basic base64(email:password)
-ENDPOINT USED IN ORDER TO DO A LOGIN GIVEN A MAIL AND A PASSWORD
+ENDPOINT USED IN ORDER TO DO A LOGIN GIVEN A MAIL AND A PASSWORD.
+IT SETS A COOKIE IS LOGIN IS SUCCESSFUL
 """
 
 
@@ -100,7 +164,7 @@ def login():
 
 """
 TYPE: POST
-BODY: EMAIL,PASSWORD, NAME, SURNAME, ROLE
+BODY: json(email,password, name, surname, role)
 ENDPOINT USED IN ORDER TO REGISTRATE A USER INTO THE PLATFORM
 """
 
@@ -143,6 +207,38 @@ def logout():
     resp = jsonify({'logout': True})
     unset_jwt_cookies(resp)
     return resp, 200
+
+
+"""
+TYPE: GET
+BODY: NONE
+ENDPOINT USED IN ORDER TO GET ALL COURSES
+"""
+
+
+@app.get('/course')
+@jwt_required()
+def get_courses():
+    course_got = course.select_all()
+    course_ap = []
+    for item in course_got:
+        course_ap.append(course.obj_to_dict(item))
+    return jsonify({"courses": course_ap}), 200
+
+
+"""
+TYPE: GET
+BODY: NONE
+ENDPOINT USED IN ORDER TO GET ALL CHANNELS
+"""
+
+
+@app.get('/channel')
+@jwt_required()
+def get_channels():
+    channels_got = channel.selectAll()
+    channels_new = [channel.obj_to_dict(item) for item in channels_got]
+    return jsonify({"channels": channels_new}), 200
 
 
 """
@@ -217,7 +313,19 @@ ENDPOINT USED IN ORDER TO GET ALL FILES AND ASSIGNMENTS OF A SPECIFIC COURSE WHI
 @app.get('/course/<name>')
 @jwt_required()
 def get_course_stuff(name):
-    pass
+    username = get_jwt_identity()
+    name_user = username["user"]
+    if len(course_sub.select_course_subs(name_user, name)) == 1:
+        ass_list = assignment.get_assignments_by_course(name)
+        file_list = files.select_files_by_course(name)
+        ass_ret = []
+        file_ret = []
+        for item in ass_list:
+            ass_ret.append(assignment.obj_to_dict(item))
+        for item in file_list:
+            file_ret.append(files.obj_to_dict(item))
+        return jsonify({"assignments": ass_ret, "files": file_ret}), 200
+    return jsonify({[]}), 401
 
 
 """
@@ -400,28 +508,26 @@ ENDPOINT USED BY A USER TO UPLOAD A FILES RELATED TO A COURSE AND CHANNEL
 def upload_file():
     username = get_jwt_identity()
     if username['role'] == 'admin':
-        data = json.loads(request.data.decode(encoding='UTF-8'))
-        course_name = data['course']
-        channel_name = data['channel']
+        course_name = request.form['course']
+        channel_name = request.form['channel']
         if course_name is not None and channel_name is not None:
-            course_subscription = course_sub.select_course_subs_by_user(
-                username['user'])  # Check if I'm subscripted to the course I want to update the file
+            # Check if I'm subscripted to the course I want to update the file
+            course_subscription = course_sub.select_course_subs_by_user(username['user'])  
             channel_got = channel.get_channels_by_name(channel_name)
-            course_got = course.select_course_by_name(
-                course_name)  # Check if the course is linked to the channel (consistency of information)
+            # Check if the course is linked to the channel (consistency of information)
+            course_got = course.select_course_by_name(course_name)
             if channel_got is not None and len(channel_got) == 1:
-                channel_subscription = channel_sub.select_channel_subs(username['user'], channel_got[
-                    0].id)  # Check if I'm subscribed to the channel the course is linked
-                if course_subscription is not None and channel_subscription is not None and len(
-                        course_subscription) == 1 and \
-                        len(channel_subscription) == 1 and course_got is not None and len(
-                    course_got) == 1:  # If true then I've got the right permissions to upload it
+                # Check if I'm subscribed to the channel the course is linked
+                channel_subscription = channel_sub.select_channel_subs(username['user'], channel_got[0].id) 
+                if course_subscription is not None and channel_subscription is not None and len(course_subscription) == 1 and len(channel_subscription) == 1 and course_got is not None and len(course_got) == 1:  # If true then I've got the right permissions to upload it
                     files_got = request.files.getlist("file")
                     for file in files_got:
                         if file and utils.allowed_file(file.filename):
                             filename = secure_filename(file.filename)
-                            files.add_file(filename, course_name, channel_name, file)
-                            return jsonify({'uploaded': 'ok'}), 200
+                            if files.add_file(filename, course_name, channel_name, file):
+                                return jsonify({'uploaded': 'ok'}), 200
+                            else:
+                                return jsonify({'uploaded': 'false'}), 403
     else:
         return jsonify({'uploaded': 'no'}), 401
     return jsonify({'uploaded': 'no'}), 403
@@ -445,12 +551,12 @@ def delete_file():
         file_name = data['file']
         if course_name is not None and channel_name is not None:
             course_subscription = course_sub.select_course_subs_by_user(
-                username.user)  # Check if I'm subscripted to the course I want to update the file
+                username['user'])  # Check if I'm subscripted to the course I want to update the file
             channel_got = channel.get_channels_by_name(channel_name)
             course_got = course.select_course_by_name(
                 course_name)  # Check if the course is linked to the channel (consistency of information)
             if channel_got is not None and len(channel_got) == 1:
-                channel_subscription = channel_sub.select_channel_subs(username.user, channel_got[
+                channel_subscription = channel_sub.select_channel_subs(username['user'], channel_got[
                     0].id)  # Check if I'm subscripted to the channel the course is linked
                 if course_subscription is not None and channel_subscription is not None and len(
                         course_subscription) == 1 and \
@@ -458,8 +564,10 @@ def delete_file():
                     course_got) == 1:  # If true then I've got the right permissions to upload it
                     file_got = files.select_file(file_name, course_name)
                     if file_got is not None and len(file_got) == 1:
-                        files.remove_file(file_got[0], course_name, channel_name)
-                        return jsonify({'deleted': 'ok'}), 200
+                        if files.remove_file(file_name, course_name, channel_name):
+                            return jsonify({'deleted': 'ok'}), 200
+                        else:
+                            return jsonify({'deleted': 'false'}), 404
     else:
         return jsonify({'deleted': 'no'}), 401
     return jsonify({'deleted': 'no'}), 403
@@ -468,7 +576,7 @@ def delete_file():
 """
 TYPE: GET
 BODY: NONE
-ENDPOINT USED IN ORDER TO GET ALL COURSES OF A SPECIFIC CHANNEL WHICH NAME IS GIVEN AS LAST PART OF ENDPOINT URL
+ENDPOINT USED IN ORDER TO GET ALL RECEIVED MESSAGES OF AN AUTHENTICATED USER
 """
 
 
@@ -537,13 +645,14 @@ ENDPOINT USED IN ORDER TO DELETE A NEW ASSIGNMENT
 """
 
 
-@app.delete('/assignment')
+@app.delete('/assignment/<id>')
 @jwt_required()
-def remove_assignment():
+def remove_assignment(id):
     username = get_jwt_identity()
     if username['role'] == 'admin':
-        pass
-
+        assignment.remove_assignment(id)
+        return jsonify({'removed':True}),200
+    return jsonify({'removed':False}),401
 
 
 """
@@ -561,21 +670,21 @@ def get_exercises():
     assignment_id = data['assignment']
     assignment_got = assignment.get_assignments_by_id(assignment_id)
     if len(assignment_got) == 1:
-        sub = course_sub.select_course_subs(username['user'],assignment_got[0].course)
-        if len(sub) == 1: #I'm subscribed to that course thus I must be able to see the exercises of an assignment
+        sub = course_sub.select_course_subs(username['user'], assignment_got[0].course)
+        if len(sub) == 1:  # I'm subscribed to that course thus I must be able to see the exercises of an assignment
             exercises = exercise.get_exercises_by_assignment(assignment_id)
             exercises_new = [exercise.obj_to_dict(item) for item in exercises]
-            return jsonify({'exercises': exercises_new}),200
+            return jsonify({'exercises': exercises_new}), 200
         else:
-            return jsonify({'exercises': []}),401
-    return jsonify({'exercises': []}),400
-
+            return jsonify({'exercises': []}), 401
+    return jsonify({'exercises': []}), 400
 
 
 """
+URL: /exercise
 TYPE: POST
-BODY: 
-ENDPOINT USED IN ORDER TO DELETE A NEW ASSIGNMENT
+BODY: json(quest,correct,assignment,type) OR json(quest,correct,assignment,type,wrong1,wrong2,wrong3)
+ENDPOINT USED IN ORDER TO ADD A NEW EXERCISE
 """
 
 
@@ -586,12 +695,13 @@ def create_exercise():
     if username['role'] == 'admin':
         data = json.loads(request.data.decode(encoding='UTF-8'))
         quest = data['quest']
-        correct = data['correct']
+        correct = data.get('correct')
         assignment_el = data['assignment']
         type_el = data['type']
         if type_el == 'multiple' or type_el == 'open' or type_el == 'develop' or type_el == 'quiz':
             if 'wrong1' in data.keys() and 'wrong2' in data.keys() and 'wrong3' in data.keys():
-                exercise.add_exercise_complete(quest, correct, data['wrong1'], data['wrong2'], data['wrong3'], assignment_el, type_el)
+                exercise.add_exercise_complete(quest, correct, data['wrong1'], data['wrong2'], data['wrong3'],
+                                               assignment_el, type_el)
             else:
                 exercise.add_exercise_uncomplete(quest, correct, assignment_el, type_el)
             return jsonify({'added': 'true'}), 200
@@ -613,153 +723,257 @@ def send_exercise_develop():
     username = get_jwt_identity()
     response = jsonify({'ok': 'no'}), 400
     SIMILARITY_CONSTRAINT = 0.82
-    if username['role'] == 'user':  
-        language = request.form['language']
-        file = request.files
-        if len(file) > 0:
-            program = request.files['file'].read().decode('UTF-8')
+    if username['role'] == 'user':
+        type = request.form['type']
+        result_json = []
+        if type == "develop":
+            language = request.form['language']
+            file = request.files
+            if len(file) > 0:
+                program = request.files['file'].read().decode('UTF-8')
+            else:
+                program: str = request.form['text']
+            if language is not None:
+                exercise_id = request.form['exercise']
+                correct = exercise.get_exercise_by_id(exercise_id)
+                if len(correct) == 1:
+                    if language == 'Python':
+                        path: str = 'dockerdata/dockerfiles/python/' + username['user']
+                        res = ""
+                        try:
+                            if not os.path.exists(path):
+                                os.mkdir(path)
+                                f = open(path + "/app.py", "w")
+                                f.write(program)
+                                f.close()
+                                res = subprocess.check_output("python3 " + path + "/app.py", stderr=subprocess.STDOUT,
+                                                              shell=True).decode('UTF-8')
+                        except subprocess.CalledProcessError as e:
+                            res = e.output.decode('UTF-8')[e.output.decode('UTF-8').find('app.py'):]
+                            ' '.join(res.split())
+                        finally:
+                            shutil.rmtree(path)
+                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                solution.add_solution(exercise_id, program, username['user'], True, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, True)
+                            else:
+                                solution.add_solution(exercise_id, program, username['user'], False, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, False)
+                            n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
+                            count_sol = 0
+                            count_correct = 0
+                            for item in n_exe:
+                                db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
+                                if len(db_sol) == 1:
+                                    count_sol += 1
+                                    if db_sol[0].correct is True:
+                                        count_correct += 1
+                            if len(n_exe) == count_sol:
+                                if count_correct == 0:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                                else:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"],
+                                                                      int((count_correct / len(n_exe)) * 100))
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
+                    elif language == 'C':
+                        path: str = 'dockerdata/dockerfiles/c/' + username['user']
+                        try:
+                            if not os.path.exists(path):
+                                os.mkdir(path)
+                                f = open(path + "/app.c", "w")
+                                f.write(program.replace('>', '>\n'))
+                                f.close()
+                                subprocess.check_output("gcc -lstdc++ " + path + "/app.c -o " + path + "/app",
+                                                        stderr=subprocess.STDOUT, shell=True)
+                                res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
+                                                              shell=True).decode('UTF-8')
+                        except subprocess.CalledProcessError as e:
+                            response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                        finally:
+                            shutil.rmtree(path)
+                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                solution.add_solution(exercise_id, program, username['user'], True, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, True)
+                            else:
+                                solution.add_solution(exercise_id, program, username['user'], False, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, False)
+                            n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
+                            count_sol = 0
+                            count_correct = 0
+                            for item in n_exe:
+                                db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
+                                if len(db_sol) == 1:
+                                    count_sol += 1
+                                    if db_sol[0].correct is True:
+                                        count_correct += 1
+                            if len(n_exe) == count_sol:
+                                if count_correct == 0:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                                else:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"],
+                                                                      int((count_correct / len(n_exe)) * 100))
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
+                    elif language == 'Java':
+                        path: str = 'dockerdata/dockerfiles/java/' + username['user']
+                        try:
+                            if not os.path.exists(path):
+                                os.mkdir(path)
+                                f = open(path + "/app.java", "w")
+                                f.write(program.replace('\"', '"'))
+                                f.close()
+                                res = subprocess.check_output("java " + path + "/app.java", stderr=subprocess.STDOUT,
+                                                              shell=True).decode('UTF-8')
+                        except subprocess.CalledProcessError as e:
+                            response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                        finally:
+                            shutil.rmtree(path)
+                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                solution.add_solution(exercise_id, program, username['user'], True, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, True)
+                            else:
+                                solution.add_solution(exercise_id, program, username['user'], False, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, False)
+                            n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
+                            count_sol = 0
+                            count_correct = 0
+                            for item in n_exe:
+                                db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
+                                if len(db_sol) == 1:
+                                    count_sol += 1
+                                    if db_sol[0].correct is True:
+                                        count_correct += 1
+                            if len(n_exe) == count_sol:
+                                if count_correct == 0:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                                else:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"],
+                                                                      int((count_correct / len(n_exe)) * 100))
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
+                    elif language == 'C++':
+                        path: str = 'dockerdata/dockerfiles/cpp/' + username['user']
+                        try:
+                            if not os.path.exists(path):
+                                os.mkdir(path)
+                                f = open(path + "/app.cpp", "w")
+                                f.write(program.replace('>', '>\n'))
+                                f.close()
+                                subprocess.check_output("g++ " + path + "/app.cpp -o " + path + "/app",
+                                                        stderr=subprocess.STDOUT, shell=True)
+                                res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
+                                                              shell=True).decode('UTF-8')
+                        except subprocess.CalledProcessError as e:
+                            response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                        finally:
+                            shutil.rmtree(path)
+                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                solution.add_solution(exercise_id, program, username['user'], True, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, True)
+                            else:
+                                solution.add_solution(exercise_id, program, username['user'], False, True)
+                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
+                                                                          correct[0].correct, False)
+                            n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
+                            count_sol = 0
+                            count_correct = 0
+                            for item in n_exe:
+                                db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
+                                if len(db_sol) == 1:
+                                    count_sol += 1
+                                    if db_sol[0].correct is True:
+                                        count_correct += 1
+                            if len(n_exe) == count_sol:
+                                if count_correct == 0:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"], 0)
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                                else:
+                                    result.add_result_without_comment(correct[0].assignment, username["user"],
+                                                                      int((count_correct / len(n_exe)) * 100))
+                                    result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                                    result_json = [result.obj_to_dict(item) for item in result_list]
+                            response = jsonify({"results": result_json}), 200
+        elif type == "quiz":
+            answer = request.form['text']
+            exe = request.form['exercise']
+            exe_db = exercise.get_exercise_by_id(exe)
+            if exe_db is not None and len(exe_db) == 1:
+                if answer == exe_db[0].correct:
+                    solution.add_solution(exe, answer, username["user"], True, True)
+                else:
+                    solution.add_solution(exe, answer, username["user"], False, True)
+                n_exe = exercise.get_exercises_by_assignment(exe_db[0].assignment)
+                count_sol = 0
+                count_correct = 0
+                for item in n_exe:
+                    db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
+                    if len(db_sol) == 1:
+                        count_sol += 1
+                        if db_sol[0].correct is True:
+                            count_correct += 1
+                if len(n_exe) == count_sol:
+                    if count_correct == 0:
+                        result.add_result_without_comment(exe_db[0].assignment, username["user"], 0)
+                        result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                        result_json = [result.obj_to_dict(item) for item in result_list]
+                    else:
+                        result.add_result_without_comment(exe_db[0].assignment, username["user"],
+                                                          int((count_correct / len(n_exe)) * 100))
+                        result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
+                        result_json = [result.obj_to_dict(item) for item in result_list]
+                response = jsonify({"results": result_json}), 200
+            else:
+                response = jsonify({}), 401
+        elif type == "open":
+            answer = request.form['text']
+            exe = request.form['exercise']
+            exe_db = exercise.get_exercise_by_id(exe)
+            if exe_db is not None and len(exe_db) == 1:
+                solution.add_solution_open(exe, answer, username["user"], False)
+                n_exe = exercise.get_exercises_by_assignment(exe_db[0].assignment)
+                count_sol = 0
+                for item in n_exe:
+                    db_sol = solution.get_solutions_by_name_and_exercise(username["user"], item.id, True)
+                    if len(db_sol) == 1:
+                        count_sol += 1
+                response = jsonify({"added": "True"}), 200
+            else:
+                response = jsonify({}), 401
         else:
-            program: str = request.form['text']
-        if language is not None:
-            exercise_id = request.form['exercise']
-            correct = exercise.get_exercise_by_id(exercise_id)
-            if len(correct) == 1:
-                if language == 'Python':
-                    path: str = 'dockerdata/dockerfiles/python/' + username['user']
-                    res = ""
-                    try:
-                        if not os.path.exists(path):
-                            os.mkdir(path)
-                            f = open(path + "/app.py", "w")
-                            f.write(program)
-                            f.close()
-                            res = subprocess.check_output("python3 " + path + "/app.py", stderr=subprocess.STDOUT, 
-                                                        shell=True).decode('UTF-8') 
-                    except subprocess.CalledProcessError as e:
-                        res = e.output.decode('UTF-8')[e.output.decode('UTF-8').find('app.py'):]
-                        ' '.join(res.split())
-                    finally:
-                        shutil.rmtree(path)
-                        if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                            solution.add_solution(exercise_id, program, username['user'],True)    
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, True)
-                        else:
-                            solution.add_solution(exercise_id, program, username['user'],False)
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, False)
-                        my_solutions = solution.get_solutions_by_name_and_exercise(username['user'], exercise_id)
-                        total_number_exercises = exercise.get_exercises_by_assignment(correct[0].assignment)
-                        if len(my_solutions) == len(total_number_exercises):
-                            right = 0
-                            for el in my_solutions:
-                                if el.correct == True:
-                                    right = right + 1
-                            if right == 0:
-                                result.add_result_without_comment(correct[0].assignment, username['user'],0)
-                            else: 
-                                result.add_result_without_comment(correct[0].assignment, username['user'],(right/len(total_number_exercises))*100)
-                elif language == 'C':
-                    path: str = 'dockerdata/dockerfiles/c/' + username['user']
-                    try:
-                        if not os.path.exists(path):
-                            os.mkdir(path)
-                            f = open(path + "/app.c", "w")
-                            f.write(program.replace('>', '>\n'))
-                            f.close()
-                            subprocess.check_output("gcc -lstdc++ " + path + "/app.c -o " + path + "/app",
-                                                    stderr=subprocess.STDOUT, shell=True)
-                            res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
-                                                        shell=True).decode('UTF-8')
-                    except subprocess.CalledProcessError as e:
-                        response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
-                    finally:
-                        shutil.rmtree(path)
-                        if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                            solution.add_solution(exercise_id, program, username['user'],True)    
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, True)
-                        else:
-                            solution.add_solution(exercise_id, program, username['user'],False)
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, False)
-                        my_solutions = solution.get_solutions_by_name_and_exercise(username['user'], exercise_id)
-                        total_number_exercises = exercise.get_exercises_by_assignment(correct[0].assignment)
-                        if len(my_solutions) == len(total_number_exercises):
-                            right = 0
-                            for el in my_solutions:
-                                if el.correct == True:
-                                    right = right + 1
-                            if right == 0:
-                                result.add_result_without_comment(correct[0].assignment, username['user'],0)
-                            else: 
-                                result.add_result_without_comment(correct[0].assignment, username['user'],(right/len(total_number_exercises))*100) 
-                elif language == 'Java':
-                    path: str = 'dockerdata/dockerfiles/java/' + username['user']
-                    try:
-                        if not os.path.exists(path):
-                            os.mkdir(path)
-                            f = open(path + "/app.java", "w")
-                            f.write(program.replace('\"', '"'))
-                            f.close()
-                            res = subprocess.check_output("java " + path + "/app.java", stderr=subprocess.STDOUT,
-                                                        shell=True).decode('UTF-8')
-                    except subprocess.CalledProcessError as e:
-                        response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
-                    finally:
-                        shutil.rmtree(path)
-                        if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                            solution.add_solution(exercise_id, program, username['user'],True)    
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, True)
-                        else:
-                            solution.add_solution(exercise_id, program, username['user'],False)
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, False)
-                        my_solutions = solution.get_solutions_by_name_and_exercise(username['user'], exercise_id)
-                        total_number_exercises = exercise.get_exercises_by_assignment(correct[0].assignment)
-                        if len(my_solutions) == len(total_number_exercises):
-                            right = 0
-                            for el in my_solutions:
-                                if el.correct == True:
-                                    right = right + 1
-                            if right == 0:
-                                result.add_result_without_comment(correct[0].assignment, username['user'],0)
-                            else: 
-                                result.add_result_without_comment(correct[0].assignment, username['user'],(right/len(total_number_exercises))*100)
-                elif language == 'C++':
-                    path: str = 'dockerdata/dockerfiles/cpp/' + username['user']
-                    try:
-                        if not os.path.exists(path):
-                            os.mkdir(path)
-                            f = open(path + "/app.cpp", "w")
-                            f.write(program.replace('>', '>\n'))
-                            f.close()
-                            subprocess.check_output("g++ " + path + "/app.cpp -o " + path + "/app",
-                                                    stderr=subprocess.STDOUT, shell=True)
-                            res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
-                                                        shell=True).decode('UTF-8')
-                    except subprocess.CalledProcessError as e:
-                        response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
-                    finally:
-                        shutil.rmtree(path)
-                        if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                            solution.add_solution(exercise_id, program, username['user'],True)    
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, True)
-                        else:
-                            solution.add_solution(exercise_id, program, username['user'],False)
-                            response = utils.check_integrity_solution(exercise_id, username['user'], res, correct[0].correct, False)
-                        my_solutions = solution.get_solutions_by_name_and_exercise(username['user'], exercise_id)
-                        total_number_exercises = exercise.get_exercises_by_assignment(correct[0].assignment)
-                        if len(my_solutions) == len(total_number_exercises):
-                            right = 0
-                            for el in my_solutions:
-                                if el.correct == True:
-                                    right = right + 1
-                            if right == 0:
-                                result.add_result_without_comment(correct[0].assignment, username['user'],0)
-                            else: 
-                                result.add_result_without_comment(correct[0].assignment, username['user'],(right/len(total_number_exercises))*100)
+            response = jsonify({}), 400
+    else:
+        response = jsonify({}), 401
     return response
 
 
-
-
 if __name__ == '__main__':
+    if not os.path.exists('dockerdata'):
+        os.mkdir('dockerdata')
+        os.mkdir('dockerdata/dockerfiles')
+        os.mkdir('dockerdata/dockerfiles/c')
+        os.mkdir('dockerdata/dockerfiles/cpp')
+        os.mkdir('dockerdata/dockerfiles/java')
+        os.mkdir('dockerdata/dockerfiles/python')
+    if not os.path.exists('userdata'):
+        os.mkdir('userdata')
     app.run(host='0.0.0.0', debug=True, port=5000)
 
 # backend % docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d docker.io/library/mariadb:10.5

@@ -55,9 +55,9 @@ def select_all():
 
 def select_course_by_channel(channel_ID):
     session = database.Session()
-    user = session.query(Course).filter_by(channel=channel_ID).all()
+    course = session.query(Course).filter_by(channel=channel_ID).all()
     session.flush()
-    return user
+    return course
 
 
 def select_course_by_name(name: str):
