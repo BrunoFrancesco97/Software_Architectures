@@ -34,7 +34,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: <Widget> [
                       Center(
                         child: Text(
                           "titolo assignment",
@@ -97,30 +97,18 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                           ),*/
                   ),
                     ),
-                    SizedBox(
-                          child: TextButton(
-                              child: Text('LogIn', style: TextStyle(fontSize: 20.0),),
-                         onPressed: null,
-                    ),
-                    ),
-                    /*SizedBox(
-                      child: const Card(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                          //child: Text( ""),
-                            child: ElevatedButton(
-                              style:
-                                    
-
-                              child: const Text('Filled'),
-                            ),
-                            /*TextButton(
-                              child: Text('Compile', style: TextStyle(fontSize: 14.0),),
-                              onPressed:  null,
-                          ),*/
-                        ),
+                      SizedBox(height: 10),
+                    Center(
+                     child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                        //foregroundColor: Colors.blueGrey,
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                      )/*.copyWith(elevation: ButtonStyleButton.allOrNull(0.0))*/,
+                      onPressed: null,
+                      child: const Text('Compile'),
                       ),
-                    ),*/
+                    ),
                       SizedBox(height: 10),
                       Center(
                         child: SizedBox(
@@ -141,10 +129,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                           ),
                         ),
                       ),
-                ],
+                 ],
               )
             ),
-
         ),
         ),
   );
@@ -168,6 +155,27 @@ class BookDetailsScreen extends StatelessWidget {
         ),
       );
     }
+    final ButtonStyle style =
+    ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ElevatedButton(
+            style: style,
+            onPressed: null,
+            child: const Text('Disabled'),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('Enabled'),
+          ),
+        ],
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text("titolo assignment"), //<- titolo assignment
@@ -190,6 +198,7 @@ class BookDetailsScreen extends StatelessWidget {
                       children: const [
                         SizedBox(
                           //constraints: const BoxConstraints(maxWidth: 1000),
+
                           width: 500.0,
                           height: 200.0,
                           child: const Card(

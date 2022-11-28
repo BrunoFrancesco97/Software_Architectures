@@ -67,6 +67,8 @@ class SettingsContent extends StatelessWidget {
               children: const [
 
                 SizedBox(height: 10),
+                Text('Name:'),
+                SizedBox(height: 10),
                 Text('Surname:'),
                 SizedBox(height: 10),
                 Text('Email:'),
@@ -85,29 +87,30 @@ class SettingsContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: const [
+                SizedBox(height: 10),
                 Text(
-                  '+100', //testo db
+                  'Name', //testo db
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.fade,
                 ),
                 SizedBox(height: 10),
                 Text(
-                  '18 Sept 2021', //testo db
+                  'Surname', //testo db
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.fade,
                 ),
                 SizedBox(height: 10),
                 Text(
-                  '18 Sept 2021', //testo db
+                  'Email:', //testo db
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.fade,
                 ),
                 SizedBox(height: 10),
                 Text(
-                  '18 Sept 2021', //testo db
+                  'Role:', //testo db
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.fade,
