@@ -780,7 +780,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json}), 200
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200  
                     elif language == 'C':
                         path: str = 'dockerdata/dockerfiles/c/' + username['user']
                         try:
@@ -824,7 +824,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json}), 200
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200
                     elif language == 'Java':
                         path: str = 'dockerdata/dockerfiles/java/' + username['user']
                         try:
@@ -866,7 +866,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json}), 200
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200
                     elif language == 'C++':
                         path: str = 'dockerdata/dockerfiles/cpp/' + username['user']
                         try:
@@ -910,7 +910,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json}), 200
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200
         elif type == "quiz":
             answer = request.form['text']
             exe = request.form['exercise']
@@ -939,7 +939,7 @@ def send_exercise_develop():
                                                           int((count_correct / len(n_exe)) * 100))
                         result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                         result_json = [result.obj_to_dict(item) for item in result_list]
-                response = jsonify({"results": result_json}), 200
+                response = jsonify({"results": result_json,"given": answer,"expected":exe_db[0].correct}), 200
             else:
                 response = jsonify({}), 401
         elif type == "open":

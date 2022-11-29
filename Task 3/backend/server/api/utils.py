@@ -40,7 +40,7 @@ def similar(a, b):
 
 
 def check_integrity_solution(exercise_id,user, res, expected, correct):
-    solutions_got = solution.get_solutions_by_name_and_exercise(user, exercise_id)
+    solutions_got = solution.get_solutions_by_name_and_exercise(user, exercise_id,True)
     if len(solutions_got) == 1:
         hash_generated = solutions_got[0].hash
         similar_solutions = solution.get_solutions_by_hash(hash_generated, exercise_id)
