@@ -42,30 +42,10 @@ services:
     ports:
       - 127.0.0.1:8080:80
       #TODO add a proxy container for deployment, or use an existent one
-    #volumes:
-    #  - data:/var/www/html
-    #environment:
-      #- POSTGRES_HOST=db
-      #- REDIS_HOST=redis
-      #- POSTGRES_PASSWORD=our_fancy_pwd
-      #- POSTGRES_DB=hackerrenk
-      #- POSTGRES_USER=our_fancy_usr
-      #- HACKERRANK_TRUSTED_DOMAINS=nextcloud.raspy.cf
-      #- SMTP_HOST=smtp.gmail.com
-      #- SMTP_SECURE=ssl
-      #- SMTP_PORT=465
-      #- SMTP_AUTHTYPE=LOGIN
-      #- SMTP_NAME=
-      #- SMTP_PASSWORD=
-      #- MAIL_FROM_ADDRESS=
-      #- MAIL_DOMAIN=gmail.com
-      #- TRUSTED_PROXIES=
 
     depends_on:
       - db
       - api
-      #- redis
 
-volumes:
-  db:
-  #data:
+#volumes:
+  #db:
