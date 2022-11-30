@@ -8,6 +8,11 @@ TODO:
 - final docker-compose
 
 
+## Backend Documentation
+Backend documentation can be found inside each respective folder, so:
+- Software_Architectures/Task 3/backend/server/ contains a README that explains how to build and run the single image used to run the APIRest server but also it analyzes each endpoint implemented, how login was secured and a small description about SQLAlchemy, a library that allows the persistence of data between the API and the DB;
+- Software_Architectures/Task 3/backend/db/ contains a README that explains how to build and run the single image used to run the DBMS used but also it contains a small description of the structure of our database.
+
 '''
 REPOSITORY                 TAG             IMAGE ID       CREATED          SIZE
 <none>                     <none>          872e79c4df55   2 minutes ago    7.05MB
