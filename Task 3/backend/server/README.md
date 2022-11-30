@@ -175,10 +175,11 @@ BODY: json(name, year,month,day,hour,seconds, course) WHERE name = ASSIGNMENT_NA
 ENDPOINT USED IN ORDER TO CREATE A NEW ASSIGNMENT
 ```
 ```
-URL: /assignment
+URL: /assignment/<id>
 PERMISSIONS: LOGIN REQUIRED
 TYPE: DELETE
-BODY: json(assignment,course) WHERE assignment = ASSIGNMENT_ID and course = COURSE_NAME
+BODY: NONE
+URL: <id> = ASSIGNMNET ID YOU WANT TO DELETE
 ENDPOINT USED IN ORDER TO DELETE AN ASSIGNMENT
 ```
 ```
