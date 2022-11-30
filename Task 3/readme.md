@@ -14,7 +14,7 @@ Backend is composed from 3 different layers, they are:
 - _Persistence_ layer
 - _Database_ layer
 
-These layers must interact with each other in order to have a working application and at the same time they can be seen as independent layers but since APIRest and persistence layers are both coded using Python inside the same project, they are both grouped in _Software_Architectures/Task 3/backend/server/_ folder but also in the same Docker image, meanwhile database has an own folder, all its information is stored inside _Software_Architectures/Task 3/backend/db/_ and have also an own Docker image.
+These layers must interact with each other in order to have a working application and at the same time they can be seen as independent layers but since APIRest and persistence layers are both coded using Python inside the same project, they are both grouped in _Software_Architectures/Task 3/backend/server/_ folder but also in the same Docker image, meanwhile database has an own folder, all its information is stored inside _Software_Architectures/Task 3/backend/db/_ and has also an own Docker image.
 
 ![Alt Image text](/Task%203/img/backend.png?raw=true "Backend structure")
 ### Backend Documentation
