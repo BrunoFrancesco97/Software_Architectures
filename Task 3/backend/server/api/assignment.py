@@ -22,10 +22,13 @@ def add_assignment(name: str, year : int, month : int, day : int, hour : int, se
         new_assignments = Assignment(name=name, deadline=x, course=course_el)
         session.add(new_assignments)
     except Exception as e:
-        print(e)
         session.rollback()
+        return (False,None)
     else:
         session.commit()
+        channels = session.query(Assignment).filter_by(name=name, course=course_el).all()
+        session.flush()
+        return (True,channels[0])
 
 
 def obj_to_dict(obj: Assignment):  # for build json format
@@ -67,5 +70,11 @@ def get_assignments_by_name(name):
 def get_assignments_by_course(course: str):
     session = database.Session()
     channels = session.query(Assignment).filter_by(course=course).all()
+    session.flush()
+    return channels
+
+def get_assignments_by_name_course(name : str, course: str):
+    session = database.Session()
+    channels = session.query(Assignment).filter_by(name=name, course=course).all()
     session.flush()
     return channels

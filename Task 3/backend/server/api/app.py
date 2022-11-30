@@ -325,7 +325,7 @@ def get_course_stuff(name):
         for item in file_list:
             file_ret.append(files.obj_to_dict(item))
         return jsonify({"assignments": ass_ret, "files": file_ret}), 200
-    return jsonify({[]}), 401
+    return jsonify({}), 401
 
 
 """
@@ -631,8 +631,11 @@ def add_assignment():
         seconds = data['seconds']
         course_got = data['course']
         if len(course.select_course_by_name(course_got)) == 1:
-            assignment.add_assignment(name, year, month, day, hour, seconds, course_got)
-            return jsonify({'added': 'true'}), 200
+            resp = assignment.add_assignment(name, year, month, day, hour, seconds, course_got)
+            if resp[0] == True:
+                return jsonify({'added': assignment.obj_to_dict(resp[1])}), 200
+            else:
+                return jsonify({'added': 'false'}), 400
         else:
             return jsonify({'added': 'false'}), 400
     return jsonify({'added': 'false'}), 401
@@ -703,8 +706,11 @@ def create_exercise():
                 exercise.add_exercise_complete(quest, correct, data['wrong1'], data['wrong2'], data['wrong3'],
                                                assignment_el, type_el)
             else:
-                exercise.add_exercise_uncomplete(quest, correct, assignment_el, type_el)
-            return jsonify({'added': 'true'}), 200
+                resp = exercise.add_exercise_uncomplete(quest, correct, assignment_el, type_el)
+                if resp[0] == True:
+                    return jsonify({'added': exercise.obj_to_dict(resp[1])}), 200
+                else:
+                    return jsonify({'added': 'false'}), 400
         else:
             return jsonify({'added': 'false'}), 400
     return jsonify({'added': 'false'}), 401
@@ -746,13 +752,15 @@ def send_exercise_develop():
                                 f = open(path + "/app.py", "w")
                                 f.write(program)
                                 f.close()
-                                res = subprocess.check_output("python3 " + path + "/app.py", stderr=subprocess.STDOUT,
+                                res = subprocess.check_output("python " + path + "/app.py", stderr=subprocess.STDOUT, #CAMBIARE IN PYTHON3
                                                               shell=True).decode('UTF-8')
                         except subprocess.CalledProcessError as e:
                             res = e.output.decode('UTF-8')[e.output.decode('UTF-8').find('app.py'):]
                             ' '.join(res.split())
                         finally:
                             shutil.rmtree(path)
+                            res = res.replace('\r','').strip()
+                            print(utils.similar(res, correct[0].correct))
                             if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
                                 solution.add_solution(exercise_id, program, username['user'], True, True)
                                 response = utils.check_integrity_solution(exercise_id, username['user'], res,
@@ -780,7 +788,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200  
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
                     elif language == 'C':
                         path: str = 'dockerdata/dockerfiles/c/' + username['user']
                         try:
@@ -797,6 +805,7 @@ def send_exercise_develop():
                             response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
                         finally:
                             shutil.rmtree(path)
+                            res = res.replace('\r','').strip()
                             if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
                                 solution.add_solution(exercise_id, program, username['user'], True, True)
                                 response = utils.check_integrity_solution(exercise_id, username['user'], res,
@@ -824,7 +833,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
                     elif language == 'Java':
                         path: str = 'dockerdata/dockerfiles/java/' + username['user']
                         try:
@@ -839,6 +848,7 @@ def send_exercise_develop():
                             response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
                         finally:
                             shutil.rmtree(path)
+                            res = res.replace('\r','').strip()
                             if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
                                 solution.add_solution(exercise_id, program, username['user'], True, True)
                                 response = utils.check_integrity_solution(exercise_id, username['user'], res,
@@ -866,7 +876,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
                     elif language == 'C++':
                         path: str = 'dockerdata/dockerfiles/cpp/' + username['user']
                         try:
@@ -883,6 +893,7 @@ def send_exercise_develop():
                             response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
                         finally:
                             shutil.rmtree(path)
+                            res = res.replace('\r','').strip()
                             if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
                                 solution.add_solution(exercise_id, program, username['user'], True, True)
                                 response = utils.check_integrity_solution(exercise_id, username['user'], res,
@@ -910,7 +921,7 @@ def send_exercise_develop():
                                                                       int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct}), 200
+                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
         elif type == "quiz":
             answer = request.form['text']
             exe = request.form['exercise']

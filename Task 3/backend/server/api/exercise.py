@@ -34,8 +34,12 @@ def add_exercise_uncomplete(quest: str, correct: str, assignment, type: str):
         session.add(new_exercise)
     except:
         session.rollback()
+        return (False,None)
     else:
         session.commit()
+        exercise = session.query(Exercise).filter_by(quest=quest, assignment=assignment).all()
+        session.flush()
+        return (True,exercise[0])
 
 
 def add_exercise_complete(quest: str, correct: str, wrong1: str, wrong2: str, wrong3: str, assignment, type: str):
@@ -82,3 +86,4 @@ def get_exercise_by_type_and_assignment(type, assignment):
     exercise = session.query(Exercise).filter_by(type=type, assignment=assignment).all()
     session.flush()
     return exercise
+
