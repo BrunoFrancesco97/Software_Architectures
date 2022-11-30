@@ -10,7 +10,7 @@ TODO:
 
 ## Backend
 Backend is composed from 3 different layers, they are:
-- _APIRest layer
+- _APIRest_ layer
 - _Persistence_ layer
 - _Database_ layer
 
