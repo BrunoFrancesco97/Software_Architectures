@@ -219,7 +219,7 @@ ENDPOINT USED FROM ADMINS IN ORDER TO REVIEW A SOLUTION OF TYPE OPEN GIVEN BY A 
 ```
 ## Authetication 
 
-In order to have a secure login system, **Basic Authentication** and **JWT** technology are used.
+In order to have a secure login system, **Basic Authentication** and **JWT** technologies are used.
 
 First one is a technique that allows the user (client) to pass an information through an HTTP header using a precise format, so in this case for each login request, there is an _Authorization_ HTTP header where its value is a base64 hashing of username:password: 
 ```
