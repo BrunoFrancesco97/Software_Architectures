@@ -20,6 +20,8 @@ These layers must interact with each other in order to have a working applicatio
 
 Above is shown an image where is summarized how backend is structured.
 
+This division of layers allows the program to scale services if needed in an efficient way. For exaxmple if there is an high load of requestes to the RestAPI server, the original container can be duplicated so to help at lowering the load of work independently from the database.
+
 ### Backend Documentation
 Backend documentation can be found inside each respective folder on _main_ branch, so:
 - _Software_Architectures/Task 3/backend/server/_ contains a README that explains how to build and run the single image used to run the APIRest server but also it analyzes each endpoint implemented, how login was secured and a small description about SQLAlchemy, a library that allows the persistence of data between the API and the DB;
