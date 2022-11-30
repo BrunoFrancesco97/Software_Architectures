@@ -16,6 +16,7 @@ Backend is composed from 3 different layers, they are:
 
 These layers must interact with each other in order to have a working application and at the same time they can be seen as independent layers but since APIRest and persistence layers are both coded using Python inside the same project, they are both grouped in _Software_Architectures/Task 3/backend/server/_ folder but also in the same Docker image, meanwhile database has an own folder, all its information is stored inside _Software_Architectures/Task 3/backend/db/_ and have also an own Docker image.
 
+![Alt Image text](/Task%203/backend/img/backend.png?raw=true "Backend structure")
 ### Backend Documentation
 Backend documentation can be found inside each respective folder on _main_ branch, so:
 - _Software_Architectures/Task 3/backend/server/_ contains a README that explains how to build and run the single image used to run the APIRest server but also it analyzes each endpoint implemented, how login was secured and a small description about SQLAlchemy, a library that allows the persistence of data between the API and the DB;
