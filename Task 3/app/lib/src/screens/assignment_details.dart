@@ -12,6 +12,8 @@ import 'package:url_launcher/link.dart';
 import '../data.dart';
 import 'course_details.dart';
 
+const List<String> list = <String>['Java', 'C', 'C++', 'Python'];
+
 class AssignmentScreen extends StatefulWidget {
   final Assignment? book;
   const AssignmentScreen({
@@ -26,9 +28,10 @@ class AssignmentScreen extends StatefulWidget {
 
 class _AssignmentScreenState extends State<AssignmentScreen> {
   @override
-
+  int count = 0;
   String _currentWeather = "";
   bool apiCall = false; // New variable
+  String dropdownValue = list.first;
 
   void _testAPI() {
     var api = new ApiService();
@@ -86,6 +89,39 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       Center(
                         child: SizedBox(
                           width: 800.0,
+                          child: Text('Language Code:'),
+                        ),
+                      ),
+                      Center(
+                        child : SizedBox(
+                            child: DropdownButton<String>(
+                              value: dropdownValue,
+                              icon: const Icon(Icons.add),
+                              elevation: 16,
+                              style: const TextStyle(color: Colors.blue),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.blue,
+                              ),
+                              onChanged: (String? value) {
+                                // This is called when the user selects an item.
+                                setState(() {
+                                  dropdownValue = value!;
+                                });
+                              },
+                              items: list.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Center(
+                        child: SizedBox(
+                          width: 800.0,
                            child: Text('Code:'),
                         ),
                       ),
@@ -96,6 +132,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                           child: TextField(
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
+                            //controller: _textExercise,
                             decoration: InputDecoration(
                                 filled: true,
                                 //fillColor: Colors.grey,
@@ -132,7 +169,10 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                         setState((){
                           apiCall=true; // Set state like this
                         });
-                        _testAPI();
+                        if(count == 0){
+                          _testAPI();
+                          count=count+1;
+                        }
                       },
                       child: const Text('Compile'),
                       ),
@@ -269,7 +309,7 @@ class BookDetailsScreen extends StatelessWidget {
             )*/
 
             /*Text(
-              book!.author.name,
+              book!.author.name, <---------------
               style: Theme.of(context).textTheme.titleMedium,
             ),
             TextButton(

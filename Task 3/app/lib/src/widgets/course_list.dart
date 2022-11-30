@@ -21,7 +21,7 @@ class CourseList extends StatelessWidget {
         itemCount: courses.length,
         itemBuilder: (context, index) => ListTile(
           title: Text(
-            courses[index].name,
+            courses[index].name, //<-- nome lista corsi
           ),
           subtitle: Text(
             '${courses[index].assignments.length} books',
