@@ -9,7 +9,12 @@ TODO:
 - final docker-compose
 
 ## Backend
-Test
+Backend is composed from 3 different layers, they are:
+- APIRest server
+- SQLAlchemy (persistence layer)
+- Database layer
+These layers must interact with each other in order to have a working application and can be seen as independent layers but since APIRest server and persistence layer are both coded using Python inside the same project, they are both grouped in _Software_Architectures/Task 3/backend/server/_ folder, meanwhile database had an own folder and all its information is stored inside _Software_Architectures/Task 3/backend/db/_
+
 ### Backend Documentation
 Backend documentation can be found inside each respective folder on _main_ branch, so:
 - _Software_Architectures/Task 3/backend/server/_ contains a README that explains how to build and run the single image used to run the APIRest server but also it analyzes each endpoint implemented, how login was secured and a small description about SQLAlchemy, a library that allows the persistence of data between the API and the DB;
