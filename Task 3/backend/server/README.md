@@ -217,6 +217,17 @@ TYPE: POST
 BODY: json(exercise,correct,comment) WHERE exercise=EXERCISE_ID, corret = enum(true,false), comment = RANDOM COMMENT 
 ENDPOINT USED FROM ADMINS IN ORDER TO REVIEW A SOLUTION OF TYPE OPEN GIVEN BY A USER (IT TELLS IF THE ANSWER IS CORRECT AND A COMMENT CAN BE ADDED)
 ```
+```
+URL: /test
+TYPE: GET
+BODY: json(exercise)  WHERE exercise=EXERCISE_ID
+ENDPOINT USED IN ORDER TO GET TESTS OF AN EXERCISE
+```
+```
+TYPE: POST
+BODY: json(name,exercise,parameter) or json(name,comment,exercise,parameter) WHERE name=NAME_OF_THE_TEST, exercise=EXERCISE_ID, parameter = PARAMETER OF THE FUNCTION TO TEST, comment=DESCRIPTION_OF_THE_TEST 
+ENDPOINT USED IN ORDER TO ADD A TEST FOR A EXERCISE
+```
 ## Authetication 
 
 In order to have a secure login system, **Basic Authentication** and **JWT** technologies are used.
