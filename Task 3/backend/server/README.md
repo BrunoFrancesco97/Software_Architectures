@@ -305,7 +305,7 @@ As you can see, there is no SQL script but at the same time this program works, 
 
 ## How to individually run it
 
-If you want use this image inside an independent container, there are two options:
+For testing purposes you can run a container with APIRest service, if you want to do this then there are two options:
 - Pulling it from Docker Hub
 - Build the image from the given Dockerfile
 
