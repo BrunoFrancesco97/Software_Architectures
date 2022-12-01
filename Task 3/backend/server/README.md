@@ -226,7 +226,7 @@ ENDPOINT USED IN ORDER TO GET TESTS OF AN EXERCISE
 ```
 URL: /test
 TYPE: POST
-BODY: json(name,exercise,parameter) or json(name,comment,exercise,parameter) WHERE name=NAME_OF_THE_TEST, exercise=EXERCISE_ID, parameter = PARAMETER OF THE FUNCTION TO TEST, comment=DESCRIPTION_OF_THE_TEST 
+BODY: json(name,exercise,parameter,expected) or json(name,comment,exercise,parameter,expected) WHERE name=NAME_OF_THE_TEST, exercise=EXERCISE_ID, parameter = PARAMETER OF THE FUNCTION TO TEST, comment=DESCRIPTION_OF_THE_TEST, expected = EXPECTED VALUE 
 ENDPOINT USED IN ORDER TO ADD A TEST FOR A EXERCISE
 ```
 ## Authetication 
