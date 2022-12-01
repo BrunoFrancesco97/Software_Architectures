@@ -273,7 +273,7 @@ The generated token can be stored inside a cookie or localStorage browser, in ou
 
 ## SQLAlchemy - Persistence Level
 
-Since the application uses a database to store information, an easy and efficient way to handle the communication between the RestAPI and the database is to have a persistence layer that allows us to maintain not only a representation of a table row of the database inside the RestAPI, but also an interface that performs all operation needed. In order to do this _SQLAlchemy_ is used.
+Since the application uses a database to store information, an easy and efficient way to handle the communication between the RestAPI and the database is to have a persistence layer that allows us to maintain not only a representation of a database table inside the RestAPI, but also an interface that performs all operation needed. In order to do this _SQLAlchemy_ is used.
 
 Programming using objects is convenient, also because each row of a table can be seen as an independent object, so as written above, a representation of a row of the table as a Python object that can be easily managed without manipulating individually attributes is powerful. SQLAlchemy allows this, an example is shown below:
 ```
