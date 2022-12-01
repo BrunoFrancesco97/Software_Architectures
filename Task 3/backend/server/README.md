@@ -171,7 +171,7 @@ ENDPOINT USED IN ORDER TO SEND A MESSAGE TO AN EXISTING USER
 URL: /assignment
 PERMISSIONS: LOGIN REQUIRED
 TYPE: POST
-BODY: json(name, year,month,day,hour,seconds, course) WHERE name = ASSIGNMENT_NAME, year,month,day,hour and seconds are related to the deadline date of the assignment and course = COURSE ASSOCIATED TO THE ASSIGNMENT
+BODY: json(name, year,month,day,hour,minutes, course) WHERE name = ASSIGNMENT_NAME, year,month,day,hour and minutes are related to the deadline date of the assignment and course = COURSE ASSOCIATED TO THE ASSIGNMENT
 ENDPOINT USED IN ORDER TO CREATE A NEW ASSIGNMENT
 ```
 ```
