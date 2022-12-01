@@ -17,8 +17,8 @@ In order not to be too long-winded, an image representation of the schema implem
 
 ## How to individually run it
 For testing purposes you can launch an indipendent container containing the database service, in order to do this there are two options:
-- Pulling it from Docker Hub
-- Build the image from the given Dockerfile
+- Pulling the image from Docker Hub and run it
+- Build the image from the given Dockerfile and run it
 
 First option can be easily done by executing this command on your machine:
 ```
