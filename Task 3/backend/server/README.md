@@ -306,8 +306,8 @@ As you can see, there is no SQL script but at the same time this program works, 
 ## How to individually run it
 
 For testing purposes you can run a container with APIRest service, if you want to do this then there are two options:
-- Pulling the image from Docker Hub and running it
-- Build the image from the given Dockerfile and running it
+- Pulling the image from Docker Hub and run it
+- Build the image from the given Dockerfile and run it
 
 First option can be easily done by executing this command on your machine:
 ```
