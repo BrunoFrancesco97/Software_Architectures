@@ -31,7 +31,7 @@ CREATE TABLE `assignments` (
   PRIMARY KEY (`id`),
   KEY `course` (`course`),
   CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`course`) REFERENCES `courses` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `assignments` (
 
 LOCK TABLES `assignments` WRITE;
 /*!40000 ALTER TABLE `assignments` DISABLE KEYS */;
-INSERT INTO `assignments` VALUES (5,'Task 1','2022-11-25 12:12:26','Software Architectures','2022-11-27 12:00:00');
+INSERT INTO `assignments` VALUES (6,'task_1','2022-11-28 10:53:11','Software_Architectures','2023-04-12 14:45:00'),(7,'task_2','2022-11-28 10:54:08','Software_Architectures','2023-04-12 14:45:00'),(14,'test_3','2022-12-01 14:40:17','Software_Architectures','2022-07-14 10:30:00');
 /*!40000 ALTER TABLE `assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `channel_subscriptions` (
 
 LOCK TABLES `channel_subscriptions` WRITE;
 /*!40000 ALTER TABLE `channel_subscriptions` DISABLE KEYS */;
-INSERT INTO `channel_subscriptions` VALUES (13,'test','2022-11-24 21:52:18');
+INSERT INTO `channel_subscriptions` VALUES (13,'test','2022-11-24 21:52:18'),(16,'francym4@gmail.com','2022-11-30 12:40:37'),(16,'prova@gmail.com','2022-11-28 10:55:40'),(16,'test@gmail.com','2022-11-30 12:44:38');
 /*!40000 ALTER TABLE `channel_subscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +83,7 @@ CREATE TABLE `channels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ CREATE TABLE `channels` (
 
 LOCK TABLES `channels` WRITE;
 /*!40000 ALTER TABLE `channels` DISABLE KEYS */;
-INSERT INTO `channels` VALUES (13,'test1');
+INSERT INTO `channels` VALUES (13,'test1'),(16,'cafoscari');
 /*!40000 ALTER TABLE `channels` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,7 +120,7 @@ CREATE TABLE `course_subscriptions` (
 
 LOCK TABLES `course_subscriptions` WRITE;
 /*!40000 ALTER TABLE `course_subscriptions` DISABLE KEYS */;
-INSERT INTO `course_subscriptions` VALUES ('Software Developmente Methodologies','test','2022-11-24 22:46:30');
+INSERT INTO `course_subscriptions` VALUES ('Software Developmente Methodologies','test','2022-11-24 22:46:30'),('Software_Architectures','francym4@gmail.com','2022-11-30 12:42:11'),('Software_Architectures','prova@gmail.com','2022-11-28 10:57:10'),('Software_Architectures','test@gmail.com','2022-11-30 12:44:54');
 /*!40000 ALTER TABLE `course_subscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +146,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
-INSERT INTO `courses` VALUES ('Software Architectures',13),('Software Developmente Methodologies',13);
+INSERT INTO `courses` VALUES ('Software Architectures',13),('Software Developmente Methodologies',13),('Software_Architectures',16);
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +160,7 @@ DROP TABLE IF EXISTS `exercises`;
 CREATE TABLE `exercises` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `quest` varchar(255) NOT NULL,
-  `correct` varchar(255) NOT NULL,
+  `correct` varchar(255) DEFAULT NULL,
   `wrong1` varchar(255) DEFAULT NULL,
   `wrong2` varchar(255) DEFAULT NULL,
   `wrong3` varchar(255) DEFAULT NULL,
@@ -169,7 +169,7 @@ CREATE TABLE `exercises` (
   PRIMARY KEY (`id`),
   KEY `assignment` (`assignment`),
   CONSTRAINT `exercises_ibfk_2` FOREIGN KEY (`assignment`) REFERENCES `assignments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `exercises` (
 
 LOCK TABLES `exercises` WRITE;
 /*!40000 ALTER TABLE `exercises` DISABLE KEYS */;
-INSERT INTO `exercises` VALUES (1,'Write a program that print \'hello world\'','hello world',NULL,NULL,NULL,5,'develop');
+INSERT INTO `exercises` VALUES (7,'Sviluppa un programma che mi ritorni hello world','hello world',NULL,NULL,NULL,6,'develop'),(13,'Scrivi una funzione che dato in input un numero mi stampa 1 se è pari, 0 se è dispari',NULL,NULL,NULL,NULL,14,'develop');
 /*!40000 ALTER TABLE `exercises` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,6 +204,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
+INSERT INTO `files` VALUES ('List_4_1.pdf','Software_Architectures'),('List_8_1.pdf','Software_Architectures');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +227,7 @@ CREATE TABLE `results` (
   KEY `user` (`user`),
   CONSTRAINT `results_ibfk_1` FOREIGN KEY (`assignment`) REFERENCES `assignments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `results_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +236,7 @@ CREATE TABLE `results` (
 
 LOCK TABLES `results` WRITE;
 /*!40000 ALTER TABLE `results` DISABLE KEYS */;
-INSERT INTO `results` VALUES (5,'test','2022-11-26 21:06:45',100,NULL,3);
+INSERT INTO `results` VALUES (14,'francym4@gmail.com','2022-12-01 15:46:49',100,NULL,43);
 /*!40000 ALTER TABLE `results` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -252,6 +253,7 @@ CREATE TABLE `solution` (
   `user` varchar(40) NOT NULL,
   `correct` tinyint(1) DEFAULT 0,
   `hash` varchar(255) NOT NULL,
+  `review` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`exercise`,`user`),
   KEY `user` (`user`),
   CONSTRAINT `solution_ibfk_1` FOREIGN KEY (`exercise`) REFERENCES `exercises` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -265,7 +267,7 @@ CREATE TABLE `solution` (
 
 LOCK TABLES `solution` WRITE;
 /*!40000 ALTER TABLE `solution` DISABLE KEYS */;
-INSERT INTO `solution` VALUES (1,'class Test{public static void main(String[] args){System.out.println(\"hello world\");}}','test',1,'77b05dbee758a31106e8d27ffa8ea6188e9858ad1b5253e62ad25d7610aaa707');
+INSERT INTO `solution` VALUES (7,'print(\"ciao\")','prova@gmail.com',0,'120fde05c487848e306da1d5f258c1f5c2a915868c42b8dcedbec9e75a385d1c',1),(13,'\r\nimport sys \r\n\r\ndef parity():\r\n    if len(sys.argv) == 2:\r\n        if int(sys.argv[1]) % 2 == 0:\r\n            print(\"1\")\r\n        else:\r\n            print(\"0\")\r\n\r\nif __name__ == \'__main__\':\r\n    parity()','francym4@gmail.com',1,'704569818c4e4e804a46842594aa5a44e5419edfd440270ea6876ff1ecfaf915',1);
 /*!40000 ALTER TABLE `solution` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,6 +302,36 @@ LOCK TABLES `supports` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tests`
+--
+
+DROP TABLE IF EXISTS `tests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) DEFAULT NULL,
+  `comment` varchar(60) DEFAULT NULL,
+  `exercise` int(11) DEFAULT NULL,
+  `given_value` varchar(255) NOT NULL,
+  `expected` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exercise` (`exercise`),
+  CONSTRAINT `tests_ibfk_1` FOREIGN KEY (`exercise`) REFERENCES `exercises` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tests`
+--
+
+LOCK TABLES `tests` WRITE;
+/*!40000 ALTER TABLE `tests` DISABLE KEYS */;
+INSERT INTO `tests` VALUES (1,'test_1','Test if number',7,'10',''),(2,'Check 10',NULL,13,'10','1'),(3,'Check 11',NULL,13,'11','0');
+/*!40000 ALTER TABLE `tests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -324,7 +356,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('test','1920f14b515e4a580bdd7e187406684928f2c7950a0b10cc7b29248c30cff842','GRJUUKFRCAKHTH2Y7WV69XL3N726Q8','Francesco','Bruno','user','2022-11-07 19:32:37');
+INSERT INTO `user` VALUES ('francym4@gmail.com','5d61da0b40b87c0f4b218248c109c0bf204923118b9b90e951b170a8b8908b49','5AESAPXBKAM735X5S5CRU9F8JE5PG3','Francesco','Bruno','admin','2022-11-30 12:27:42'),('prova@gmail.com','de915337ef8f0a42a1b7175ab0616340bb9f85893396ba42280c568958fed6f2','Z399EOG0DXAH3AKNPHNIK42U7HX6JF','provaN','provaS','user','2022-11-28 10:05:26'),('test','1920f14b515e4a580bdd7e187406684928f2c7950a0b10cc7b29248c30cff842','GRJUUKFRCAKHTH2Y7WV69XL3N726Q8','Francesco','Bruno','user','2022-11-07 19:32:37'),('test@gmail.com','6a05035a9946de88700ce75a662d74e62b0457bc79fa0f203605e492ab5e71f6','ZI7TQTOYRZ3H8GUUYF9FTIP23QCSI4','Andrea','Bruno','user','2022-11-30 12:31:15');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -337,4 +369,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-26 22:15:45
+-- Dump completed on 2022-12-02  9:41:48
