@@ -332,14 +332,20 @@ def get_course_stuff(name):
     name_user = username["user"]
     if len(course_sub.select_course_subs(name_user, name)) == 1:
         ass_list = assignment.get_assignments_by_course(name)
+        ass_done = assignment.get_assignments_by_course_done(name)
         file_list = files.select_files_by_course(name)
         ass_ret = []
         file_ret = []
+        ass_done_new = [assignment.obj_to_dict(item) for item in ass_done]
+        for el in ass_list:
+            for el2 in ass_done:
+                if el.name == el2.name:
+                    ass_list.remove(el)
         for item in ass_list:
             ass_ret.append(assignment.obj_to_dict(item))
         for item in file_list:
             file_ret.append(files.obj_to_dict(item))
-        return jsonify({"assignments": ass_ret, "files": file_ret}), 200
+        return jsonify({"assignments_remaining": ass_ret, "files": file_ret, "assignment_done":ass_done_new}), 200
     return jsonify({}), 401
 
 
@@ -744,7 +750,7 @@ def send_exercise_develop():
     username = get_jwt_identity()
     response = jsonify({'ok': 'no'}), 400
     SIMILARITY_CONSTRAINT = 0.82
-    if username['role'] == 'admin': #TODO: CAMBIARE IN user
+    if username['role'] == 'admin': #TODO: 
         type = request.form['type']
         result_json = []
         if type == "develop":
@@ -758,11 +764,12 @@ def send_exercise_develop():
                 exercise_id = request.form['exercise']
                 correct = exercise.get_exercise_by_id(exercise_id)
                 if len(correct) == 1:
-                    if language == 'Python':
+                    if language.upper() == 'PYTHON':
                         path: str = 'dockerdata/dockerfiles/python/' + username['user']
                         res = ""
                         res_list = []
                         tests_to_perform = []
+                        error = ""
                         try:
                             if not os.path.exists(path):
                                 os.mkdir(path)
@@ -771,31 +778,35 @@ def send_exercise_develop():
                                 f.close()
                                 tests_to_perform = tests.get_tests_by_exercise(exercise_id)
                                 if len(tests_to_perform) == 0:
-                                    res = subprocess.check_output("python " + path + "/app.py", stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
+                                    res = subprocess.check_output("python3 " + path + "/app.py", stderr=subprocess.STDOUT, 
                                                               shell=True).decode('UTF-8')
                                 else:
                                     for test in tests_to_perform:
-                                        resu = subprocess.check_output("python " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
+                                        resu = subprocess.check_output("python3 " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT, 
                                                               shell=True).decode('UTF-8') 
                                         if utils.similar(resu, test.expected):
-                                            res_list.append((True,resu,test.expected, test.name))
+                                            res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
-                                            res_list.append((False,resu,test.expected, test.name))
+                                            res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
                         except subprocess.CalledProcessError as e:
-                            res = e.output.decode('UTF-8')[e.output.decode('UTF-8').find('app.py'):]
-                            ' '.join(res.split())
+                            error = e.output.decode('UTF-8')[e.output.decode('UTF-8').find('app.py'):]
+                            ' '.join(error.split())
                         finally:
                             shutil.rmtree(path)
+                            res = res.replace('\r','').strip()
                             if len(tests_to_perform) == 0:
                                 if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
                                     solution.add_solution(exercise_id, program, username['user'], True, True)
                                 else:
                                     solution.add_solution(exercise_id, program, username['user'], False, True)                                    
                             else:
-                                flag_passed = True 
-                                for element in res_list:
-                                    if element[0] == False:
-                                        flag_passed = False 
+                                if error == "":
+                                    flag_passed = True 
+                                    for element in res_list:
+                                        if element[0] == False:
+                                            flag_passed = False
+                                else:
+                                    flag_passed = False
                                 solution.add_solution(exercise_id, program, username['user'], flag_passed, True)
                             similar = utils.check_integrity_solution(exercise_id, username['user'])
                             n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
@@ -818,12 +829,15 @@ def send_exercise_develop():
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
                             if len(tests_to_perform) == 0:
-                                response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct, "similar_responses":similar}), 200
+                                response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct, "similar_responses":similar, "error":error}), 200
                             else:
-                                print(res_list)
-                                response = jsonify({"results": result_json,"tests":res_list, "similar_responses":similar}), 200  
-                    elif language == 'C':
+                                response = jsonify({"results": result_json,"tests":res_list, "similar_responses":similar,"error":error}), 200  
+                    elif language.upper() == 'C':
                         path: str = 'dockerdata/dockerfiles/c/' + username['user']
+                        res = ""
+                        res_list = []
+                        tests_to_perform = []
+                        error = ""
                         try:
                             if not os.path.exists(path):
                                 os.mkdir(path)
@@ -832,21 +846,39 @@ def send_exercise_develop():
                                 f.close()
                                 subprocess.check_output("gcc -lstdc++ " + path + "/app.c -o " + path + "/app",
                                                         stderr=subprocess.STDOUT, shell=True)
-                                res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
+                                tests_to_perform = tests.get_tests_by_exercise(exercise_id)
+                                if len(tests_to_perform) == 0:
+                                    res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
                                                               shell=True).decode('UTF-8')
+                                else:
+                                    for test in tests_to_perform:
+                                        resu = subprocess.check_output("./ " + path + "/app "+test.given_value, stderr=subprocess.STDOUT,
+                                                              shell=True).decode('UTF-8') 
+                                        if utils.similar(resu, test.expected):
+                                            res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
+                                        else:
+                                            res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
                         except subprocess.CalledProcessError as e:
-                            response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                            #response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                            error = str(e.output)
                         finally:
                             shutil.rmtree(path)
                             res = res.replace('\r','').strip()
-                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                                solution.add_solution(exercise_id, program, username['user'], True, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, True)
+                            if len(tests_to_perform) == 0:
+                                if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                    solution.add_solution(exercise_id, program, username['user'], True, True)
+                                else:
+                                    solution.add_solution(exercise_id, program, username['user'], False, True)                                    
                             else:
-                                solution.add_solution(exercise_id, program, username['user'], False, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, False)
+                                if error == "":
+                                    flag_passed = True 
+                                    for element in res_list:
+                                        if element[0] == False:
+                                            flag_passed = False
+                                else:
+                                    flag_passed = False
+                                solution.add_solution(exercise_id, program, username['user'], flag_passed, True)
+                            similar = utils.check_integrity_solution(exercise_id, username['user'])
                             n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
                             count_sol = 0
                             count_correct = 0
@@ -863,12 +895,19 @@ def send_exercise_develop():
                                     result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
-                                                                      int((count_correct / len(n_exe)) * 100))
+                                                                    int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
-                    elif language == 'Java':
+                            if len(tests_to_perform) == 0:
+                                response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct, "similar_responses":similar, "error":error}), 200
+                            else:
+                                response = jsonify({"results": result_json,"tests":res_list, "similar_responses":similar,"error":error}), 200  
+                    elif language.upper() == 'JAVA':
                         path: str = 'dockerdata/dockerfiles/java/' + username['user']
+                        res = ""
+                        res_list = []
+                        tests_to_perform = []
+                        error = ""
                         try:
                             if not os.path.exists(path):
                                 os.mkdir(path)
@@ -881,25 +920,33 @@ def send_exercise_develop():
                                                               shell=True).decode('UTF-8')
                                 else:
                                     for test in tests_to_perform:
-                                        resu = subprocess.check_output("python " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
+                                        resu = subprocess.check_output("java " + path + "/app.java "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
                                                               shell=True).decode('UTF-8') 
                                         if utils.similar(resu, test.expected):
-                                            res_list.append((True,resu,test.expected, test.name))
+                                            res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
-                                            res_list.append((False,resu,test.expected, test.name))
+                                            res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
                         except subprocess.CalledProcessError as e:
-                            response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                            print(e.output)
+                            error = str(e.output.decode('UTF-8') )
                         finally:
                             shutil.rmtree(path)
                             res = res.replace('\r','').strip()
-                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                                solution.add_solution(exercise_id, program, username['user'], True, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, True)
+                            if len(tests_to_perform) == 0:
+                                if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                    solution.add_solution(exercise_id, program, username['user'], True, True)
+                                else:
+                                    solution.add_solution(exercise_id, program, username['user'], False, True)                                    
                             else:
-                                solution.add_solution(exercise_id, program, username['user'], False, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, False)
+                                if error == "":
+                                    flag_passed = True 
+                                    for element in res_list:
+                                        if element[0] == False:
+                                            flag_passed = False
+                                else:
+                                    flag_passed = False  
+                                solution.add_solution(exercise_id, program, username['user'], flag_passed, True)
+                            similar = utils.check_integrity_solution(exercise_id, username['user'])
                             n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
                             count_sol = 0
                             count_correct = 0
@@ -916,12 +963,20 @@ def send_exercise_develop():
                                     result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
-                                                                      int((count_correct / len(n_exe)) * 100))
+                                                                    int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
-                    elif language == 'C++':
+                            if len(tests_to_perform) == 0:
+                                response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct, "similar_responses":similar, "error":error}), 200
+                                ' '.join(response.split())
+                            else:
+                                response = jsonify({"results": result_json,"tests":res_list, "similar_responses":similar, "error":error}), 200  
+                    elif language.upper() == 'C++':
                         path: str = 'dockerdata/dockerfiles/cpp/' + username['user']
+                        res = ""
+                        res_list = []
+                        tests_to_perform = []
+                        error = ""
                         try:
                             if not os.path.exists(path):
                                 os.mkdir(path)
@@ -930,21 +985,39 @@ def send_exercise_develop():
                                 f.close()
                                 subprocess.check_output("g++ " + path + "/app.cpp -o " + path + "/app",
                                                         stderr=subprocess.STDOUT, shell=True)
-                                res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
+                                tests_to_perform = tests.get_tests_by_exercise(exercise_id)
+                                if len(tests_to_perform) == 0:
+                                    res = subprocess.check_output("./" + path + "/app", stderr=subprocess.STDOUT,
                                                               shell=True).decode('UTF-8')
+                                else:
+                                    for test in tests_to_perform:
+                                        resu = subprocess.check_output("./" + path + "/app "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
+                                                              shell=True).decode('UTF-8') 
+                                        if utils.similar(resu, test.expected):
+                                            res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
+                                        else:
+                                            res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
                         except subprocess.CalledProcessError as e:
-                            response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                            #response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
+                            error = str(e.output)
                         finally:
                             shutil.rmtree(path)
                             res = res.replace('\r','').strip()
-                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                                solution.add_solution(exercise_id, program, username['user'], True, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, True)
+                            if len(tests_to_perform) == 0:
+                                if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                    solution.add_solution(exercise_id, program, username['user'], True, True)
+                                else:
+                                    solution.add_solution(exercise_id, program, username['user'], False, True)                                    
                             else:
-                                solution.add_solution(exercise_id, program, username['user'], False, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, False)
+                                if error == "":
+                                    flag_passed = True 
+                                    for element in res_list:
+                                        if element[0] == False:
+                                            flag_passed = False
+                                else:
+                                    flag_passed = False  
+                                solution.add_solution(exercise_id, program, username['user'], flag_passed, True)
+                            similar = utils.check_integrity_solution(exercise_id, username['user'])
                             n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
                             count_sol = 0
                             count_correct = 0
@@ -961,10 +1034,14 @@ def send_exercise_develop():
                                     result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
-                                                                      int((count_correct / len(n_exe)) * 100))
+                                                                    int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
+                            if len(tests_to_perform) == 0:
+                                response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct, "similar_responses":similar, "error":error}), 200
+                                ' '.join(response.split())
+                            else:
+                                response = jsonify({"results": result_json,"tests":res_list, "similar_responses":similar, "error":error}), 200  
         elif type == "quiz":
             answer = request.form['text']
             exe = request.form['exercise']

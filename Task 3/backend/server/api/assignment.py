@@ -4,7 +4,7 @@ import sqlalchemy
 import database
 from sqlalchemy.sql import func
 from sqlalchemy import DateTime
-
+import result
 
 class Assignment(database.Base):
     __tablename__ = 'assignments'
@@ -48,33 +48,39 @@ def remove_assignment(id_el):
 
 def selectAll():
     session = database.Session()
-    channels = session.query(Assignment).all()
+    assignments = session.query(Assignment).all()
     session.flush()
-    return channels
+    return assignments
 
 
 def get_assignments_by_id(id_el):
     session = database.Session()
-    channels = session.query(Assignment).filter_by(id=id_el).all()
+    assignments = session.query(Assignment).filter_by(id=id_el).all()
     session.flush()
-    return channels
+    return assignments
 
 
 def get_assignments_by_name(name):
     session = database.Session()
-    channels = session.query(Assignment).filter_by(name=name).all()
+    assignments = session.query(Assignment).filter_by(name=name).all()
     session.flush()
-    return channels
+    return assignments
 
 
 def get_assignments_by_course(course: str):
     session = database.Session()
-    channels = session.query(Assignment).filter_by(course=course).all()
+    assignments = session.query(Assignment).filter_by(course=course).all()
     session.flush()
-    return channels
+    return assignments
+
+def get_assignments_by_course_done(course: str):
+    session = database.Session()
+    assignments = session.query(Assignment).join(result.Result).filter(Assignment.course == course).all()
+    session.flush()
+    return assignments
 
 def get_assignments_by_name_course(name : str, course: str):
     session = database.Session()
-    channels = session.query(Assignment).filter_by(name=name, course=course).all()
+    assignments = session.query(Assignment).filter_by(name=name, course=course).all()
     session.flush()
-    return channels
+    return assignments
