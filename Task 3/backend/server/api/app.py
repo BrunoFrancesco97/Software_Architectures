@@ -29,7 +29,7 @@ import tests
 # https://flask-jwt-extended.readthedocs.io/en/3.0.0_release/tokens_in_cookies/
 
 app = Flask(__name__)
-cors = CORS(app,expose_headers="Authorization",allow_headers="localhost:8080",supports_credentials=True)
+cors = CORS(app,expose_headers="Authorization",allow_headers="127.0.0.1:8080",supports_credentials=True)
 
 UPLOAD_FOLDER = 'userdata/'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -54,7 +54,7 @@ IT RETURNS A LIST OF AVAILABLE ENDPOINT NAMES
 
 
 @app.get('/')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def show_endpoints():
     data = ['login', 'logout', 'channel', 'course', 'channel_subscription', 'course_subscription', 'file', 'message',
             'assignment', 'exercise', 'solution','test','user']
@@ -64,7 +64,7 @@ def show_endpoints():
 
 @app.get('/user')
 @cross_origin()
-@jwt_required()
+@jwt_required(supports_credentials=True)
 def get_user():
     username = get_jwt_identity()
     if username['role'] == 'admin':
@@ -85,7 +85,7 @@ HEADER:
 
 @app.get('/solution')
 @cross_origin()
-@jwt_required()
+@jwt_required(supports_credentials=True)
 def get_open_question():
     username = get_jwt_identity()
     if username['role'] == 'admin':
@@ -109,7 +109,7 @@ HEADER:
 
 
 @app.post('/solution')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def check_open_question():
     username = get_jwt_identity()
