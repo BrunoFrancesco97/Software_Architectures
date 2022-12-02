@@ -23,6 +23,7 @@ import shutil
 import assignment
 import solution
 import re
+import tests
 
 # https://flask-jwt-extended.readthedocs.io/en/3.0.0_release/tokens_in_cookies/
 
@@ -52,8 +53,22 @@ IT RETURNS A LIST OF AVAILABLE ENDPOINT NAMES
 @app.get('/')
 def show_endpoints():
     data = ['login', 'logout', 'channel', 'course', 'channel_subscription', 'course_subscription', 'file', 'message',
-            'assignment', 'exercise', 'solution']
+            'assignment', 'exercise', 'solution','test','user']
     return jsonify({'endpoints': data}), 200
+
+
+
+@app.get('/user')
+@jwt_required()
+def get_user():
+    username = get_jwt_identity()
+    if username['role'] == 'admin':
+        user_got = user.select_user_by_email(username['user'])
+        if len(user_got) == 1:
+            userr = user_got[0]
+            return jsonify({"user":user.obj_to_dict(userr)}), 401
+    return jsonify({}), 401
+
 
 
 """
@@ -628,10 +643,10 @@ def add_assignment():
         month = data['month']
         day = data['day']
         hour = data['hour']
-        seconds = data['seconds']
+        minutes = data['minutes']
         course_got = data['course']
         if len(course.select_course_by_name(course_got)) == 1:
-            resp = assignment.add_assignment(name, year, month, day, hour, seconds, course_got)
+            resp = assignment.add_assignment(name, year, month, day, hour, minutes, course_got)
             if resp[0] == True:
                 return jsonify({'added': assignment.obj_to_dict(resp[1])}), 200
             else:
@@ -729,7 +744,7 @@ def send_exercise_develop():
     username = get_jwt_identity()
     response = jsonify({'ok': 'no'}), 400
     SIMILARITY_CONSTRAINT = 0.82
-    if username['role'] == 'user':
+    if username['role'] == 'admin': #TODO: CAMBIARE IN user
         type = request.form['type']
         result_json = []
         if type == "develop":
@@ -746,29 +761,43 @@ def send_exercise_develop():
                     if language == 'Python':
                         path: str = 'dockerdata/dockerfiles/python/' + username['user']
                         res = ""
+                        res_list = []
+                        tests_to_perform = []
                         try:
                             if not os.path.exists(path):
                                 os.mkdir(path)
                                 f = open(path + "/app.py", "w")
                                 f.write(program)
                                 f.close()
-                                res = subprocess.check_output("python " + path + "/app.py", stderr=subprocess.STDOUT, #CAMBIARE IN PYTHON3
+                                tests_to_perform = tests.get_tests_by_exercise(exercise_id)
+                                if len(tests_to_perform) == 0:
+                                    res = subprocess.check_output("python " + path + "/app.py", stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
                                                               shell=True).decode('UTF-8')
+                                else:
+                                    for test in tests_to_perform:
+                                        resu = subprocess.check_output("python " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
+                                                              shell=True).decode('UTF-8') 
+                                        if utils.similar(resu, test.expected):
+                                            res_list.append((True,resu,test.expected, test.name))
+                                        else:
+                                            res_list.append((False,resu,test.expected, test.name))
                         except subprocess.CalledProcessError as e:
                             res = e.output.decode('UTF-8')[e.output.decode('UTF-8').find('app.py'):]
                             ' '.join(res.split())
                         finally:
                             shutil.rmtree(path)
-                            res = res.replace('\r','').strip()
-                            print(utils.similar(res, correct[0].correct))
-                            if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
-                                solution.add_solution(exercise_id, program, username['user'], True, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, True)
+                            if len(tests_to_perform) == 0:
+                                if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+                                    solution.add_solution(exercise_id, program, username['user'], True, True)
+                                else:
+                                    solution.add_solution(exercise_id, program, username['user'], False, True)                                    
                             else:
-                                solution.add_solution(exercise_id, program, username['user'], False, True)
-                                response = utils.check_integrity_solution(exercise_id, username['user'], res,
-                                                                          correct[0].correct, False)
+                                flag_passed = True 
+                                for element in res_list:
+                                    if element[0] == False:
+                                        flag_passed = False 
+                                solution.add_solution(exercise_id, program, username['user'], flag_passed, True)
+                            similar = utils.check_integrity_solution(exercise_id, username['user'])
                             n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
                             count_sol = 0
                             count_correct = 0
@@ -785,10 +814,14 @@ def send_exercise_develop():
                                     result_json = [result.obj_to_dict(item) for item in result_list]
                                 else:
                                     result.add_result_without_comment(correct[0].assignment, username["user"],
-                                                                      int((count_correct / len(n_exe)) * 100))
+                                                                    int((count_correct / len(n_exe)) * 100))
                                     result_list = utils.get_result_assignment(username['user'],correct[0].assignment)
                                     result_json = [result.obj_to_dict(item) for item in result_list]
-                            response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct}), 200  
+                            if len(tests_to_perform) == 0:
+                                response = jsonify({"results": result_json,"given": res,"expected":correct[0].correct, "correct":db_sol[0].correct, "similar_responses":similar}), 200
+                            else:
+                                print(res_list)
+                                response = jsonify({"results": result_json,"tests":res_list, "similar_responses":similar}), 200  
                     elif language == 'C':
                         path: str = 'dockerdata/dockerfiles/c/' + username['user']
                         try:
@@ -842,8 +875,18 @@ def send_exercise_develop():
                                 f = open(path + "/app.java", "w")
                                 f.write(program.replace('\"', '"'))
                                 f.close()
-                                res = subprocess.check_output("java " + path + "/app.java", stderr=subprocess.STDOUT,
+                                tests_to_perform = tests.get_tests_by_exercise(exercise_id)
+                                if len(tests_to_perform) == 0:
+                                    res = subprocess.check_output("java " + path + "/app.java", stderr=subprocess.STDOUT,
                                                               shell=True).decode('UTF-8')
+                                else:
+                                    for test in tests_to_perform:
+                                        resu = subprocess.check_output("python " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
+                                                              shell=True).decode('UTF-8') 
+                                        if utils.similar(resu, test.expected):
+                                            res_list.append((True,resu,test.expected, test.name))
+                                        else:
+                                            res_list.append((False,resu,test.expected, test.name))
                         except subprocess.CalledProcessError as e:
                             response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
                         finally:
@@ -973,6 +1016,58 @@ def send_exercise_develop():
     else:
         response = jsonify({}), 401
     return response
+
+
+
+
+"""
+TYPE: GET
+BODY: json(exercise)  WHERE exercise=EXERCISE_ID
+ENDPOINT USED IN ORDER TO GET TESTS OF AN EXERCISE
+"""
+
+
+@app.get('/test')
+@jwt_required()
+def get_test():
+    data = json.loads(request.data.decode(encoding='UTF-8'))
+    exercise = data.get('exercise')
+    if exercise is not None:
+        tests_got = tests.get_tests_by_exercise(exercise)
+        tests_json = [tests.obj_to_dict(item) for item in tests_got] 
+        return jsonify({'tests': tests_json}), 200 
+    else:
+         return jsonify({'added': False}), 403
+
+"""
+TYPE: POST
+BODY: json(name,exercise,parameter,expected) or json(name,comment,exercise,parameter,expected) WHERE name=NAME_OF_THE_TEST, exercise=EXERCISE_ID, parameter = PARAMETER OF THE FUNCTION TO TEST, comment=DESCRIPTION_OF_THE_TEST, expected = EXPECTED VALUE 
+ENDPOINT USED IN ORDER TO ADD A TEST FOR A EXERCISE
+"""
+
+
+@app.post('/test')
+@jwt_required()
+def add_test():
+    data = json.loads(request.data.decode(encoding='UTF-8'))
+    exercise = data.get('exercise')
+    name = data.get('name')
+    parameter = data.get('parameter')
+    comment = data.get('comment')
+    expected = data.get('expected')
+    if exercise is not None and name is not None and parameter is not None and expected is not None:
+        if comment is not None:
+            if tests.add_test_complete(name,comment, exercise,parameter,expected) == True:
+                return jsonify({'added': True }), 200
+            else:
+                return jsonify({'added': False}), 403   
+        else:
+            if tests.add_test_uncomplete(name,exercise,parameter,expected) == True:
+                return jsonify({'added': True}), 200
+            else:
+                return jsonify({'added': False}), 403 
+    else:
+        return jsonify({'added': False}), 403
 
 
 if __name__ == '__main__':

@@ -18,6 +18,16 @@ class User(database.Base):
     role = sqlalchemy.Column(roles_enum, nullable=False)
     creation = sqlalchemy.Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
+def obj_to_dict(obj: User):  # for build json format
+    return {
+        "name": obj.name,
+        "surname":obj.surname,
+        "email":obj.email,
+        "role":obj.role,
+        "creation":obj.creation
+    }
+
+
 
 def add_user_complete(username, password, salt, name, surname, role):
     session = database.Session()
