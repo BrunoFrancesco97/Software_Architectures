@@ -78,7 +78,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                               //child: BookDetailsScreen(
                                 //book: selectedBook,
                               child: Text(
-                                "testo"
+                                "testo" //<----- inserire consegna
                               )
                             //),
                           ),
@@ -89,7 +89,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       Center(
                         child: SizedBox(
                           width: 800.0,
-                          child: Text('Language Code:'),
+                          child: Text('Code language:'),
                         ),
                       ),
                       Center(
@@ -106,7 +106,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                               onChanged: (String? value) {
                                 // This is called when the user selects an item.
                                 setState(() {
-                                  dropdownValue = value!;
+                                  dropdownValue = value!; // <---- linguaggio usato
                                 });
                               },
                               items: list.map<DropdownMenuItem<String>>((String value) {
@@ -122,7 +122,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       Center(
                         child: SizedBox(
                           width: 800.0,
-                           child: Text('Code:'),
+                           child: Text('Insert code:'),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -132,7 +132,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                           child: TextField(
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
-                            //controller: _textExercise,
+                            //controller: _textExercise, <--- inserire testo code
                             decoration: InputDecoration(
                                 filled: true,
                                 //fillColor: Colors.grey,
@@ -181,7 +181,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       Center(
                         child: SizedBox(
                           width: 800.0,
-                          child: Text('Output:'),
+                            child: Text('Output:'),
                         ),
                       ),
                       Center(
@@ -192,8 +192,29 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                           child: const Card(
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-                              //child: Text( ""),
+                              child: Text(""), //<---- inserire output
                             ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Center(
+                        child: SizedBox(
+                          width: 800.0,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text('Result:'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Center(
+                        child: SizedBox(
+                          width: 800.0,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text('100', //<----- inserire voto
+                              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),),
                           ),
                         ),
                       ),
