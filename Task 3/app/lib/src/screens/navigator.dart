@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -78,6 +80,7 @@ class _HackerrankNavigatorState extends State<HackerrankNavigator> {
               onSignIn: (credentials) async {
                 var signedIn = await authState.signIn(
                     credentials.email, credentials.password);
+                log(signedIn.toString());
                 if (signedIn) {
                   await routeState.go('/books/popular');
                 }

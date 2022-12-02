@@ -2,14 +2,19 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hackerrank/src/data/api_service.dart';
+//import 'package:hackerrank/src/data/api_service.dart';
+import 'package:hackerrank/src/data/api_wrapper.dart';
 import 'data.dart';
 
 /// A simple authentication service
 class HackerrankAuth extends ChangeNotifier {
+  ApiWrapper api = ApiWrapper();
+
   bool _signedIn = false;
 
   bool get signedIn => _signedIn;
@@ -17,30 +22,101 @@ class HackerrankAuth extends ChangeNotifier {
   Future<void> signOut() async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
     // Sign out.
+    await api.logout();
     _signedIn = false;
     notifyListeners();
   }
 
   Future<bool> signIn(String username, String password) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
-    var api = ApiService();
+
+    bool result = false;
+    try {
+      result = await api.login(username, password);
+      if(result == true) {
+        log("[AUTH] login successful");
+      }
+      else {
+        log("[AUTH] login denied");
+      }
+    } catch (e) {
+      log("[AUTH ERROR] "+e.toString());
+    }
+    _signedIn = result;
+    notifyListeners();
+
+    return result;
+      //Codec<String, String> stringToBase64 = utf8.fuse(base64);
+      //String encoded_credentials =  stringToBase64.encode(username+":"+password);
+      //var r = await api.login(username, password);
+      log("[AUTH] login call..");
+
+
+      /*
+      var response = await Dio().get(
+          ApiConstants.baseUrl + ApiConstants.login,
+          options: Options(
+              headers: {
+                "Authorization": "Basic "+encoded_credentials
+              }
+          )
+      );
+      log(response.toString());
+      if(response.statusCode==200) {
+        result = true;
+      }
+
+    } catch (e) {
+      log("[AUTH ERROR]"+e.toString());
+    }
+    return result;
+    */
+
+    /*ApiService.setCredentials(username, password);
+    Dio? api = ApiService.getInstance();
+    log(api.toString());
+    log(api.hashCode.toString());*/
+
+    //api.get()
+
+
     // Sign in. Allow any password.
     //TODO add API JWT login
-    bool state = false;
+    /*bool state = false;
     try {
-      var r = await api.login(username, password);
+      var result = api.login(username, password);
+      if(await result == true) {
+        state = true;
+      }
+      /*Codec<String, String> stringToBase64 = utf8.fuse(base64);
+      String encoded_credentials =  stringToBase64.encode(username+":"+password);
+      //var r = await api.login(username, password);
+      log("login call..");
+      var response = await api?.get(
+          ApiConstants.baseUrl + ApiConstants.login,
+          options: Options(
+              headers: {
+                "Authorization": "Basic "+encoded_credentials
+              }
+          )
+      );
       state = false;
-      log(r.toString());
+      log(response.toString());
+
+      response = await api?.get(
+          ApiConstants.baseUrl + ApiConstants.logout
+      );*/
     } catch (e) {
-      log("login error");
+      log("[AUTH ERROR]"+e.toString());
+      state = false;
     }
-    if(username=="pino" && password=="pino") {
+    /*if(username=="pino" && password=="pino") {
       state = true;
-    }
+    }*/
     log('login as: $username');
-    _signedIn = true;
+    _signedIn = state;
     notifyListeners();
-    return state;
+    return state;*/
   }
 
   @override

@@ -34,7 +34,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   String dropdownValue = list.first;
 
   void _testAPI() {
-    var api = new ApiService();
+    /*var api = new ApiService();
     api.test().then((weather) {
       setState(() {
         apiCall= false; //Disable Progressbar
@@ -45,7 +45,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         apiCall=false; //Disable Progressbar
         _currentWeather = error.toString();
       });
-    });
+    });*/
   }
 
   Widget build(BuildContext context) => Scaffold(
