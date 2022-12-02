@@ -7,7 +7,14 @@ TODO:
 - final build scripts
 - final dockerfiles
 - final docker-compose
-## Requirements
+## Requirements and approach
+For this task is asked to build up an Hackerrank-like application over a monolithic architecture, thus all parts that form the application are stored inside the same machine.
+In order to solve the task we have developed a classical frontend/backend layered application since this approach fits well for our needs. 
+
+In particular our frontend is a Flutter application, meanwhile our backend is divided into three parts:
+- the RestAPI server is made by using Flask, an efficient Python framework that allows to build web services
+- A persistence layer built using SQLAlchemy
+- A database built using MariaDB RDBMS
 ## Backend
 Backend is composed from 3 different layers, they are:
 - _APIRest_ layer
@@ -26,6 +33,8 @@ This division of layers allows the program to scale services if needed in an eff
 Backend documentation can be found inside each respective folder on _main_ branch, so:
 - _Software_Architectures/Task 3/backend/server/_ contains a README that explains how to build and run the single image used to run the APIRest server but also it analyzes each endpoint implemented, how login was secured and a small description about SQLAlchemy, a library that allows the persistence of data between the API and the DB;
 - _Software_Architectures/Task 3/backend/db/_ contains a README that explains how to build and run the single image used to run the DBMS used but also it contains a small description of the structure of our database.
+
+## Build guide 
 
 '''
 REPOSITORY                 TAG             IMAGE ID       CREATED          SIZE

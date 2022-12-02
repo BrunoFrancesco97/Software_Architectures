@@ -15,10 +15,10 @@ class Assignment(database.Base):
     course = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("courses.name"), nullable=False)
 
 
-def add_assignment(name: str, year : int, month : int, day : int, hour : int, seconds : int, course_el: str):
+def add_assignment(name: str, year : int, month : int, day : int, hour : int, minutes : int, course_el: str):
     session = database.Session()
     try:
-        x = datetime.datetime(int(year), int(month), int(day), int(hour), int(seconds), 00)
+        x = datetime.datetime(int(year), int(month), int(day), int(hour), int(minutes), 00)
         new_assignments = Assignment(name=name, deadline=x, course=course_el)
         session.add(new_assignments)
     except Exception as e:

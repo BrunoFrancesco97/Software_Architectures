@@ -39,16 +39,15 @@ def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def check_integrity_solution(exercise_id,user, res, expected, correct):
+def check_integrity_solution(exercise_id,user):
     solutions_got = solution.get_solutions_by_name_and_exercise(user, exercise_id,True)
     if len(solutions_got) == 1:
         hash_generated = solutions_got[0].hash
         similar_solutions = solution.get_solutions_by_hash(hash_generated, exercise_id)
-        if len(similar_solutions) > 0:
-            response = jsonify({'return': res, 'correct': correct, 'expected':expected, 'similar_questions':'true'}), 200
+        if len(similar_solutions) > 1:
+            return True 
         else:
-            response = jsonify({'return': res, 'correct': correct, 'expected':expected, 'similar_questions':'false'}), 200
-        return response
+            return False 
     return None  
 
 def get_result_assignment(user : str,assigment : int):
