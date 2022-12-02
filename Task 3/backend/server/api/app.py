@@ -176,8 +176,7 @@ def login():
                         if password_hash == passwordHashedDB:
                             access_token = create_access_token(identity={'user': username, 'role': user_DB[0].role})
                             resp = jsonify({'login': True})
-                            #set_access_cookies(resp, access_token)
-                            resp.set_cookie('access_token_cookie', access_token, samesite='None');
+                            set_access_cookies(resp, access_token)
                             return resp, 200
     except Exception as e:
         print(e)
