@@ -158,7 +158,7 @@ IT SETS A COOKIE IS LOGIN IS SUCCESSFUL
 
 # LOGIN
 @app.get('/login')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def login():
     try:
         token = base64.b64decode(request.headers.get('Authorization').split(' ')[1]).decode('UTF-8')
@@ -176,7 +176,8 @@ def login():
                         if password_hash == passwordHashedDB:
                             access_token = create_access_token(identity={'user': username, 'role': user_DB[0].role})
                             resp = jsonify({'login': True})
-                            set_access_cookies(resp, access_token)
+                            #set_access_cookies(resp, access_token)
+                            resp.set_cookie('access_token', access_token)
                             return resp, 200
     except Exception as e:
         print(e)
