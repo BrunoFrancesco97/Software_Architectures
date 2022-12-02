@@ -41,8 +41,10 @@ class ApiService {
       ApiConstants.baseUrl + ApiConstants.login,
         options: Options(
           headers: {
-          "Authorization": "Basic "+encryptedCredentials
-          }
+            "Authorization": "Basic "+encryptedCredentials,
+            "Accept" : "*/*",
+            "Access-Control-Allow-Origin": "http://localhost:5000"
+        }
         )
     );
 
