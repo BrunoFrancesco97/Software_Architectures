@@ -54,7 +54,7 @@ IT RETURNS A LIST OF AVAILABLE ENDPOINT NAMES
 
 
 @app.get('/')
-@cross_origin(supports_credentials=True)
+@cross_origin()
 def show_endpoints():
     data = ['login', 'logout', 'channel', 'course', 'channel_subscription', 'course_subscription', 'file', 'message',
             'assignment', 'exercise', 'solution','test','user']
@@ -64,7 +64,7 @@ def show_endpoints():
 
 @app.get('/user')
 @cross_origin()
-@jwt_required(supports_credentials=True)
+@jwt_required()
 def get_user():
     username = get_jwt_identity()
     if username['role'] == 'admin':
@@ -85,7 +85,7 @@ HEADER:
 
 @app.get('/solution')
 @cross_origin()
-@jwt_required(supports_credentials=True)
+@jwt_required()
 def get_open_question():
     username = get_jwt_identity()
     if username['role'] == 'admin':
@@ -109,7 +109,7 @@ HEADER:
 
 
 @app.post('/solution')
-@cross_origin(supports_credentials=True)
+@cross_origin()
 @jwt_required()
 def check_open_question():
     username = get_jwt_identity()
@@ -158,7 +158,7 @@ IT SETS A COOKIE IS LOGIN IS SUCCESSFUL
 
 # LOGIN
 @app.get('/login')
-@cross_origin(supports_credentials=True)
+@cross_origin()
 def login():
     try:
         token = base64.b64decode(request.headers.get('Authorization').split(' ')[1]).decode('UTF-8')
@@ -193,7 +193,7 @@ ENDPOINT USED IN ORDER TO REGISTRATE A USER INTO THE PLATFORM
 
 
 @app.post('/login')
-@cross_origin(supports_credentials=True)
+@cross_origin()
 def registration():
     try:
         data = json.loads(request.data.decode(encoding='UTF-8'))
@@ -226,7 +226,7 @@ ENDPOINT USED BY USERS TO PERFORM A LOGOUT
 
 
 @app.get('/logout')
-@cross_origin(supports_credentials=True)
+@cross_origin()
 @jwt_required()
 def logout():
     resp = jsonify({'logout': True})
