@@ -750,7 +750,7 @@ def send_exercise_develop():
     username = get_jwt_identity()
     response = jsonify({'ok': 'no'}), 400
     SIMILARITY_CONSTRAINT = 0.82
-    if username['role'] == 'admin': #TODO: 
+    if username['role'] == 'user': 
         type = request.form['type']
         result_json = []
         if type == "develop":
