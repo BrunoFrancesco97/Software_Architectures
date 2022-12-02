@@ -29,7 +29,7 @@ import tests
 # https://flask-jwt-extended.readthedocs.io/en/3.0.0_release/tokens_in_cookies/
 
 app = Flask(__name__)
-cors = CORS(app, allow_headers="Authorization",supports_credentials=True, origins="127.0.0.1:8080")
+cors = CORS(app, allow_headers=["Authorization","Access-Control-Allow-Credentials"],supports_credentials=True, origins="127.0.0.1:8080")
 
 UPLOAD_FOLDER = 'userdata/'
 ALLOWED_EXTENSIONS = {'pdf'}
