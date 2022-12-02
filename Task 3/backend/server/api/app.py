@@ -158,7 +158,7 @@ IT SETS A COOKIE IS LOGIN IS SUCCESSFUL
 
 # LOGIN
 @app.get('/login')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def login():
     try:
         token = base64.b64decode(request.headers.get('Authorization').split(' ')[1]).decode('UTF-8')
@@ -193,7 +193,7 @@ ENDPOINT USED IN ORDER TO REGISTRATE A USER INTO THE PLATFORM
 
 
 @app.post('/login')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def registration():
     try:
         data = json.loads(request.data.decode(encoding='UTF-8'))
@@ -226,7 +226,7 @@ ENDPOINT USED BY USERS TO PERFORM A LOGOUT
 
 
 @app.get('/logout')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def logout():
     resp = jsonify({'logout': True})
