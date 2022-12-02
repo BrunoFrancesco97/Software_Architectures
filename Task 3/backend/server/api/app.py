@@ -29,7 +29,7 @@ import tests
 # https://flask-jwt-extended.readthedocs.io/en/3.0.0_release/tokens_in_cookies/
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app,expose_headers="Authorization",allow_headers="localhost:8080",supports_credentials=True)
 
 UPLOAD_FOLDER = 'userdata/'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -42,7 +42,6 @@ app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 jwt = JWTManager(app)
 
@@ -155,7 +154,6 @@ IT SETS A COOKIE IS LOGIN IS SUCCESSFUL
 
 # LOGIN
 @app.get('/login')
-@cross_origin()
 def login():
     try:
         token = base64.b64decode(request.headers.get('Authorization').split(' ')[1]).decode('UTF-8')
@@ -190,7 +188,6 @@ ENDPOINT USED IN ORDER TO REGISTRATE A USER INTO THE PLATFORM
 
 
 @app.post('/login')
-@cross_origin()
 def registration():
     try:
         data = json.loads(request.data.decode(encoding='UTF-8'))
