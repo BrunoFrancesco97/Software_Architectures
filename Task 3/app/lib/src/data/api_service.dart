@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
 import 'course.dart';
@@ -36,14 +37,17 @@ class ApiService {
     var dio = Dio();
     // adding interceptor
     dio.interceptors.clear();
-    dio.interceptors.add(CookieManager(cookieJar));
+    if(!kIsWeb) {
+      dio.interceptors.add(CookieManager(cookieJar));
+    }
+    log("created");
     dio.get(
       ApiConstants.baseUrl + ApiConstants.login,
         options: Options(
           headers: {
             "Authorization": "Basic "+encryptedCredentials,
-            "Accept" : "*/*",
-            "Access-Control-Allow-Origin": "http://localhost:5000"
+            "Accept" : "*/*"
+            //"Access-Control-Allow-Origin": "http://localhost"
         }
         )
     );
