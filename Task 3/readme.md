@@ -52,8 +52,6 @@ $> git clone git@github.com:BrunoFrancesco97/Software_Architectures.git
 ```
 Or you can simply use GitHub Desktop, open a terminal and cd in the root folder of this project.
 
-Now cd in the
-
 You can build the system with this command:
 
 ```
