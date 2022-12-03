@@ -1,20 +1,18 @@
 # Task 3 Documentation
-- added app
 
-TODO:
-- build guide (super easy)
-- add backend
-- final build scripts
-- final dockerfiles
-- final docker-compose
 ## Requirements and approach
 For this task is asked to build up an Hackerrank-like application over a monolithic architecture, thus all parts that form the application are stored inside the same machine.
 In order to solve the task we have developed a classical frontend/backend layered application since this approach fits well for our needs. 
 
-In particular our frontend is a Flutter application, meanwhile our backend is divided into three parts:
+In particular our frontend is a Javascript application, meanwhile our backend is divided into three parts:
 - the RestAPI server is made by using Flask, an efficient Python framework that allows to build web services
 - A persistence layer built using SQLAlchemy
 - A database built using MariaDB RDBMS
+
+## Frontend
+Frontend is a simple Javascript app, served by an nginx service.
+This app run directly in browser, and work as a presentation level.
+
 ## Backend
 Backend is composed from 3 different layers, they are:
 - _APIRest_ layer
@@ -35,6 +33,40 @@ Backend documentation can be found inside each respective folder on _main_ branc
 - _Software_Architectures/Task 3/backend/db/_ contains a README that explains how to build and run the single image used to run the DBMS used but also it contains a small description of the structure of our database.
 
 ## Build guide 
+In order to build this system there are 2 requirements:
+- Docker
+- Compose
+
+If you have an updated version of Docker/Docker Desktop, Compose was installed with it.
+
+First of all you can clone this repo with:
+```
+$> git clone git@github.com:BrunoFrancesco97/Software_Architectures.git
+```
+Or you can simply use GitHub Desktop, open a terminal and cd in the root folder of this project.
+
+Now cd in the
+
+You can build the system with this command:
+
+```
+$> docker compose build
+```
+
+It will create these three docker images:
+```
+$> docker image ls
+REPOSITORY              TAG
+hackerrank/api          latest
+hackerrank/db           latest
+hackerrank/app-web      latest
+```
+
+Now you can start the system with:
+```
+$> docker compose build
+```
+
 
 '''
 REPOSITORY                 TAG             IMAGE ID       CREATED          SIZE
