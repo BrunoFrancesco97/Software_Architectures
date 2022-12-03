@@ -37,7 +37,7 @@ ALLOWED_EXTENSIONS = {'pdf'}
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config[
     'JWT_SECRET_KEY'] = 'vnjfueofkskf'  # TODO: IN APP SERIE QUESTA ANDREBBE PORTATA FUORI DA QUI, MAGARI IN UN FILE
-app.config['JWT_COOKIE_SECURE'] = False
+app.config['JWT_COOKIE_SECURE'] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
@@ -176,7 +176,8 @@ def login():
                         if password_hash == passwordHashedDB:
                             access_token = create_access_token(identity={'user': username, 'role': user_DB[0].role})
                             resp = jsonify({'login': True})
-                            set_access_cookies(resp, access_token)
+                            #set_access_cookies(resp, access_token)
+                            resp.set_cookie('access_token_cookie',access_token, path='/', samesite="None", secure=True)
                             return resp, 200
     except Exception as e:
         print(e)
@@ -230,7 +231,7 @@ ENDPOINT USED BY USERS TO PERFORM A LOGOUT
 @jwt_required()
 def logout():
     resp = jsonify({'logout': True})
-    unset_jwt_cookies(resp)
+    #unset_jwt_cookies(resp)
     return resp, 200
 
 
