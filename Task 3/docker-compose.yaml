@@ -4,7 +4,7 @@ services:
   db:
     #TODO: import a test at first startup
     image: hackerrank/db:latest
-    build: ../backend/db
+    build: backend/db
     container_name: hackerrank_db
     restart: always
     #volumes:
@@ -17,7 +17,7 @@ services:
 
   api:
     image: hackerrank/api:latest
-    build: ../backend/server
+    build: backend/server
     container_name: hackerrank_api
     restart: always
     ports:
@@ -34,7 +34,7 @@ services:
   app:
     image: hackerrank/app-web:latest
     container_name: hackerrank_app
-    build: ../test
+    build: test
     restart: always
     ports:
       - 127.0.0.1:8080:80
