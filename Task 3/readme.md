@@ -9,6 +9,13 @@ In particular our frontend is a Javascript application, meanwhile our backend is
 - A persistence layer built using SQLAlchemy
 - A database built using MariaDB RDBMS
 
+Acturally we build the system as three Docker image, and we deploy these image inthree different containers.
+
+As you can see, our backend is isolated in Docker envronment.
+The frontend is served by and nginx server, runs directly in browser, and send requests to the api server:
+
+![Alt Image text](/Task%203/img/architecture.svg?raw=true "Backend structure")
+
 ## Frontend
 Frontend is a simple Javascript app, served by an nginx service.
 This app run directly in browser, and work as a presentation level.
@@ -39,7 +46,7 @@ In order to build this system there are 2 requirements:
 
 If you have an updated version of Docker/Docker Desktop, Compose was installed with it.
 
-First of all you can clone this repo with:
+First of all you have to clone this repo with:
 ```
 $> git clone git@github.com:BrunoFrancesco97/Software_Architectures.git
 ```
@@ -67,11 +74,6 @@ Now you can start the system with:
 $> docker compose build
 ```
 
-
-'''
-REPOSITORY                 TAG             IMAGE ID       CREATED          SIZE
-<none>                     <none>          872e79c4df55   2 minutes ago    7.05MB
-hackerrank.qg/api-server   latest          d260f2929390   6 minutes ago    931MB
-hackerrank.qg/db           latest          72c320ba7d16   9 minutes ago    449MB
-hackerrank.qg/app-web      latest          5474a7212982   10 minutes ago   44.1MB
-'''
+According to docker-compose declaration, there are only two exposed endpoints:
+- [api server](http://localhost:5000) - port 5000
+- [web app](http://localhost:8080) - port 8080
