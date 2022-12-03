@@ -158,7 +158,7 @@ IT SETS A COOKIE IS LOGIN IS SUCCESSFUL
 
 # LOGIN
 @app.get('/login')
-@cross_origin(supports_credentials=True)
+@cross_origin()
 def login():
     try:
         token = base64.b64decode(request.headers.get('Authorization').split(' ')[1]).decode('UTF-8')
