@@ -59,18 +59,18 @@ def remove_test(id_el):
 def selectAll():
     session = database.Session()
     exercise = session.query(Test).all()
-    session.flush()
+    session.close()
     return exercise
 
 
 def get_test_by_id(id_el):
     session = database.Session()
     exercise = session.query(Test).filter_by(id=id_el).all()
-    session.flush()
+    session.close()
     return exercise
 
 def get_tests_by_exercise(exercise):
     session = database.Session()
     exercise = session.query(Test).filter_by(exercise=exercise).all()
-    session.flush()
+    session.close()
     return exercise

@@ -38,7 +38,7 @@ def add_exercise_uncomplete(quest: str, correct: str, assignment, type: str):
     else:
         session.commit()
         exercise = session.query(Exercise).filter_by(quest=quest, assignment=assignment).all()
-        session.flush()
+        session.close()
         return (True,exercise[0])
 
 
@@ -63,27 +63,27 @@ def remove_exercise(id_el):
 def selectAll():
     session = database.Session()
     exercise = session.query(Exercise).all()
-    session.flush()
+    session.close()
     return exercise
 
 
 def get_exercise_by_id(id_el):
     session = database.Session()
     exercise = session.query(Exercise).filter_by(id=id_el).all()
-    session.flush()
+    session.close()
     return exercise
 
 
 def get_exercises_by_assignment(assignment):
     session = database.Session()
     exercise = session.query(Exercise).filter_by(assignment=assignment).all()
-    session.flush()
+    session.close()
     return exercise
 
 
 def get_exercise_by_type_and_assignment(type, assignment):
     session = database.Session()
     exercise = session.query(Exercise).filter_by(type=type, assignment=assignment).all()
-    session.flush()
+    session.close()
     return exercise
 

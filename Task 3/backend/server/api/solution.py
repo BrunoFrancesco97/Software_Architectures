@@ -74,35 +74,35 @@ def add_solution_open(exercise: int, answer: str, user: str, review):
 def get_solutions_by_name(user: str):
     session = database.Session()
     solutions = session.query(Solution).filter_by(user=user).all()
-    session.flush()
+    session.close()
     return solutions
 
 
 def get_solutions_by_exercise(exercise: str):
     session = database.Session()
     solutions = session.query(Solution).filter_by(exercise=exercise).all()
-    session.flush()
+    session.close()
     return solutions
 
 
 def get_solutions_by_name_and_exercise(user: str, exercise, review):
     session = database.Session()
     solutions = session.query(Solution).filter_by(exercise=exercise, user=user, review=review).all()
-    session.flush()
+    session.close()
     return solutions
 
 
 def get_solutions_by_hash(hash: str, exercise: int):
     session = database.Session()
     solutions = session.query(Solution).filter_by(hash=hash, exercise=exercise).all()
-    session.flush()
+    session.close()
     return solutions
 
 
 def get_unreviewed_solution(exercise):
     session = database.Session()
     solutions = session.query(Solution).filter_by(exercise=exercise, review=False).all()
-    session.flush()
+    session.close()
     return solutions
 
 

@@ -36,5 +36,5 @@ def send_message(sender: str, receiver: str, object_message: str, message: str):
 def select_messages_by_receiver(receiver: str):
     session = database.Session()
     messages = session.query(Support).filter_by(receiver=receiver).all()
-    session.flush()
+    session.close()
     return messages

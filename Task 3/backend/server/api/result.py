@@ -68,32 +68,32 @@ def remove_result(id_el):
 def selectAll():
     session = database.Session()
     results = session.query(Result).all()
-    session.flush()
+    session.close()
     return results
 
 
 def get_result_by_id(id_el):
     session = database.Session()
     results = session.query(Result).filter_by(id=id_el).all()
-    session.flush()
+    session.close()
     return results
 
 
 def get_results_by_user(user : str):
     session = database.Session()
     results = session.query(Result).filter_by(user=user).all()
-    session.flush()
+    session.close()
     return results
 
 
 def get_results_by_assignment(assignment: int):
     session = database.Session()
     results = session.query(Result).filter_by(assignment=assignment).all()
-    session.flush()
+    session.close()
     return results
 
 def get_results_by_assignment_user(assignment: int, user : str):
     session = database.Session()
     results = session.query(Result).filter_by(assignment=assignment,user=user).all()
-    session.flush()
+    session.close()
     return results

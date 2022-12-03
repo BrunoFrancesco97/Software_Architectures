@@ -53,19 +53,19 @@ def remove_file(name: str, course: str, channel_name: str):
 def select_all():
     session = database.Session()
     courses = session.query(File).all()
-    session.flush()
+    session.close()
     return courses
 
 
 def select_files_by_course(course: str):
     session = database.Session()
     files = session.query(File).filter_by(course=course).all()
-    session.flush()
+    session.close()
     return files
 
 
 def select_file(name: str, course: str):
     session = database.Session()
     files = session.query(File).filter_by(name=name, course=course).all()
-    session.flush()
+    session.close()
     return files

@@ -43,19 +43,19 @@ def remove_channel(name: str):
 def selectAll():
     session = database.Session()
     channels = session.query(Channel).all()
-    session.flush()
+    session.close()
     return channels
 
 
 def get_channels_by_id(id):
     session = database.Session()
     channels = session.query(Channel).filter_by(id=id).all()
-    session.flush()
+    session.close()
     return channels
 
 
 def get_channels_by_name(name: str):
     session = database.Session()
     channels = session.query(Channel).filter_by(name=name).all()
-    session.flush()
+    session.close()
     return channels

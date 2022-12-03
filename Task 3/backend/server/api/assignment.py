@@ -27,7 +27,7 @@ def add_assignment(name: str, year : int, month : int, day : int, hour : int, mi
     else:
         session.commit()
         channels = session.query(Assignment).filter_by(name=name, course=course_el).all()
-        session.flush()
+        session.close()
         return (True,channels[0])
 
 
@@ -49,38 +49,38 @@ def remove_assignment(id_el):
 def selectAll():
     session = database.Session()
     assignments = session.query(Assignment).all()
-    session.flush()
+    session.close()
     return assignments
 
 
 def get_assignments_by_id(id_el):
     session = database.Session()
     assignments = session.query(Assignment).filter_by(id=id_el).all()
-    session.flush()
+    session.close()
     return assignments
 
 
 def get_assignments_by_name(name):
     session = database.Session()
     assignments = session.query(Assignment).filter_by(name=name).all()
-    session.flush()
+    session.close()
     return assignments
 
 
 def get_assignments_by_course(course: str):
     session = database.Session()
     assignments = session.query(Assignment).filter_by(course=course).all()
-    session.flush()
+    session.close()
     return assignments
 
 def get_assignments_by_course_done(course: str):
     session = database.Session()
     assignments = session.query(Assignment).join(result.Result).filter(Assignment.course == course).all()
-    session.flush()
+    session.close()
     return assignments
 
 def get_assignments_by_name_course(name : str, course: str):
     session = database.Session()
     assignments = session.query(Assignment).filter_by(name=name, course=course).all()
-    session.flush()
+    session.close()
     return assignments

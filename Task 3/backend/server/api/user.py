@@ -63,21 +63,21 @@ def remove_user(username: str):
 def select_all():
     session = database.Session()
     users = session.query(User).all()
-    session.flush()
+    session.close()
     return users
 
 
 def select_user_by_email(email: str):
     session = database.Session()
     user = session.query(User).filter_by(email=email).all()
-    session.flush()
+    session.close()
     return user
 
 
 def get_password_salt(email: str):
     session = database.Session()
     user = session.query(User).filter_by(email=email).all()
-    session.flush()
+    session.close()
     if len(user) > 0:
         return user[0].password, user[0].salt
     return None
@@ -87,5 +87,5 @@ def select_user_by_email_password(email: str, password: str, salt: str):
     hash = crypto.sha256_encode_salt(password, salt)
     session = database.Session()
     user = session.query(User).filter_by(email=email).all()
-    session.flush()
+    session.close()
     return user

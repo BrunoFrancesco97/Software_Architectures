@@ -35,33 +35,33 @@ def add_subscription(course: str, user: str):
 def remove_subscription(name: str, course: str):
     session = database.Session()
     session.query(Course_Sub).filter_by(user=name, course=course).delete(synchronize_session="evaluate")
-    session.flush()
+    session.close()
     session.commit()
 
 
 def select_all():
     session = database.Session()
     courses = session.query(Course_Sub).all()
-    session.flush()
+    session.close()
     return courses
 
 
 def select_course_subs_by_courses(course: str):
     session = database.Session()
     sub = session.query(Course_Sub).filter_by(course=course).all()
-    session.flush()
+    session.close()
     return sub
 
 
 def select_course_subs_by_user(name: str):
     session = database.Session()
     sub = session.query(Course_Sub).filter_by(user=name).all()
-    session.flush()
+    session.close()
     return sub
 
 
 def select_course_subs(name: str, course: str):
     session = database.Session()
     sub = session.query(Course_Sub).filter_by(user=name, course=course).all()
-    session.flush()
+    session.close()
     return sub

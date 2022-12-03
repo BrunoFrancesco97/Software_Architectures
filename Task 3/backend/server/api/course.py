@@ -42,26 +42,26 @@ def add_course(name: str, channel_ID):
 def remove_course(name: str, channel_ID, channel_name: str):
     session = database.Session()
     session.query(Course).filter_by(name=name, channel=channel_ID).delete(synchronize_session="evaluate")
-    session.commit()
+    session.close()
     shutil.rmtree(app.UPLOAD_FOLDER + channel_name + "/" + name)
 
 
 def select_all():
     session = database.Session()
     courses = session.query(Course).all()
-    session.flush()
+    session
     return courses
 
 
 def select_course_by_channel(channel_ID):
     session = database.Session()
     course = session.query(Course).filter_by(channel=channel_ID).all()
-    session.flush()
+    session.close()
     return course
 
 
 def select_course_by_name(name: str):
     session = database.Session()
     course = session.query(Course).filter_by(name=name).all()
-    session.flush()
+    session.close()
     return course

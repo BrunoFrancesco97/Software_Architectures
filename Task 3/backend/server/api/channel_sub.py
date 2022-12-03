@@ -48,14 +48,14 @@ def remove_subscription(name: str, channel: id):
 def select_all():
     session = database.Session()
     courses = session.query(Channel_Sub).all()
-    session.flush()
+    session.close()
     return courses
 
 
 def select_channel_subs_by_channels(channel):
     session = database.Session()
     sub = session.query(Channel_Sub).filter_by(channel=channel).all()
-    session.flush()
+    session.close()
     return sub
 
 
@@ -63,12 +63,12 @@ def select_channel_subs_by_user(name: str):
     session = database.Session()
     # sub = session.query(Channel_Sub).filter_by(user=name).all()
     sub = session.query(channel.Channel).join(Channel_Sub).filter(Channel_Sub.user==name).all()
-    session.flush()
+    session.close()
     return sub
 
 
 def select_channel_subs(name: str, channel):
     session = database.Session()
     sub = session.query(Channel_Sub).filter_by(user=name, channel=channel).all()
-    session.flush()
+    session.close()
     return sub
