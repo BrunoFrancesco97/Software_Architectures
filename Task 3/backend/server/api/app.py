@@ -29,7 +29,7 @@ import tests
 # https://flask-jwt-extended.readthedocs.io/en/3.0.0_release/tokens_in_cookies/
 
 app = Flask(__name__)
-cors = CORS(app, allow_headers=["Authorization","Access-Control-Allow-Credentials"],supports_credentials=True, origins="127.0.0.1:8080")
+cors = CORS(app, allow_headers=["Access-Control-Allow-Credentials"],supports_credentials=True, origins="127.0.0.1:8080")
 
 UPLOAD_FOLDER = 'userdata/'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -176,7 +176,7 @@ def login():
                         password_hash = crypto.sha256_encode_salt(password, salt)
                         if password_hash == passwordHashedDB:
                             access_token = create_access_token(identity={'user': username, 'role': user_DB[0].role})
-                            resp = jsonify({'login': True})
+                            resp = jsonify({'login': True,'jwt':access_token})
                             set_access_cookies(resp, access_token)
                             #resp.set_cookie('access_token_cookie',access_token, path='/', samesite="None", secure=True, domain='127.0.0.1')
                             return resp, 200
