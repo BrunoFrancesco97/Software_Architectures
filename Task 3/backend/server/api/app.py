@@ -177,7 +177,7 @@ def login():
                             access_token = create_access_token(identity={'user': username, 'role': user_DB[0].role})
                             resp = jsonify({'login': True})
                             #set_access_cookies(resp, access_token)
-                            resp.set_cookie('access_token_cookie',access_token, path='/', samesite="None", secure=True)
+                            resp.set_cookie('access_token_cookie',access_token, path='/', samesite="None", secure=True, domain='127.0.0.1')
                             return resp, 200
     except Exception as e:
         print(e)
