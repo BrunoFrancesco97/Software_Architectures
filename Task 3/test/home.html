@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <title>Home API</title>
+        <script scr="js/login/channel.js"></script>
+        <script src="script.js"></script>
+        <script src="js/login/logout.js"></script>  
+    </head>
+    <body>
+       
+        
+        <button type="button" onclick="logout()">Logout</button>
+        <div id="channel_container">
+            <div class="channels channel_template" id="channel_template" style="visibility: hidden;">
+                <div class="name" onclick="get_courses(this.innerText)">
+                </div>
+                <div class="id" style="display: none;">
+                </div>
+            </div>
+        </div>
+        <div id="course_container">
+            <div class="courses course_template" id="course_template" style="visibility: hidden;">
+                <div class="name" onclick="get_materials(this.innerText)">
+                </div>
+                <div class="id" style="display: none;">
+                </div>
+            </div>
+        </div>
+        <script>
+            (function() {
+                var request = new XMLHttpRequest();
+                request.open("GET", "http://localhost:5000/channel", true);
+                request.onreadystatechange = function() {
+                if(request.status == 200 && request.readyState == 4){
+                    obj = JSON.parse(request.responseText);
+                    console.log(obj.channels);
+                    for(let i = 0; i < obj.channels.length; i++){
+                        parent_div = document.querySelector('#channel_template');
+                        //Remove all previous loaded channels 
+                        element_to_delete = document.querySelector('#channel_template :not(.channel_template)');
+                        for (let i = 0; i < parent_div.length; i++) {
+                            parent_div[i].parentNode.removeChild(els[i])
+                        }
+                        //Clone div so to add new channels 
+                        let clone = parent_div.cloneNode( true );  
+                        clone.classList.remove('channel_template');
+                        clone.style.visibility='visible';
+                        let name = document.getElementsByClassName('name');
+                        let id = document.getElementsByClassName('id');    
+                        clone.setAttribute( 'id', obj.channels[i].id );
+                        name[0].innerText = obj.channels[i].name;
+                        id[0].innerText = obj.channels[i].id;
+                        document.querySelector('#channel_container').appendChild( clone ); 
+                    }
+                }
+                };
+                request.withCredentials = true;
+                request.send();
+            })();
+        </script>
+    </body>
+</html>
