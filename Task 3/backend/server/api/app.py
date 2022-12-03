@@ -29,7 +29,7 @@ import tests
 # https://flask-jwt-extended.readthedocs.io/en/3.0.0_release/tokens_in_cookies/
 
 app = Flask(__name__)
-cors = CORS(app, allow_headers=["Access-Control-Allow-Credentials"],supports_credentials=True, origins="127.0.0.1:8080")
+cors = CORS(app, allow_headers=["Access-Control-Allow-Credentials"],supports_credentials=True, origins="localhost:8080")
 
 UPLOAD_FOLDER = 'userdata/'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -64,7 +64,7 @@ def show_endpoints():
 
 
 @app.get('/user')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_user():
     username = get_jwt_identity()
@@ -85,7 +85,7 @@ HEADER:
 
 
 @app.get('/solution')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_open_question():
     username = get_jwt_identity()
@@ -110,7 +110,7 @@ HEADER:
 
 
 @app.post('/solution')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def check_open_question():
     username = get_jwt_identity()
@@ -195,7 +195,7 @@ ENDPOINT USED IN ORDER TO REGISTRATE A USER INTO THE PLATFORM
 
 
 @app.post('/login')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def registration():
     try:
         data = json.loads(request.data.decode(encoding='UTF-8'))
@@ -228,7 +228,7 @@ ENDPOINT USED BY USERS TO PERFORM A LOGOUT
 
 
 @app.get('/logout')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def logout():
     resp = jsonify({'logout': True})
@@ -244,7 +244,7 @@ ENDPOINT USED IN ORDER TO GET ALL COURSES
 
 
 @app.get('/course')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_courses():
     course_got = course.select_all()
@@ -262,7 +262,7 @@ ENDPOINT USED IN ORDER TO GET ALL CHANNELS
 
 
 @app.get('/channel')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_channels():
     channels_got = channel.selectAll()
@@ -279,7 +279,7 @@ ENDPOINT USED IN ORDER TO GET ALL COURSES OF A SPECIFIC CHANNEL WHICH NAME IS GI
 
 
 @app.get('/channel/<name>')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_channel_courses(name):
     channel_got = channel.get_channels_by_name(name)  # TODO: DOVREI SANITIZZARE NAME
@@ -298,7 +298,7 @@ ENDPOINT USED IN ORDER TO ADD A NEW CHANNEL, ONLY ADMINS AND STAFF MEMBERS CAN P
 
 
 @app.post('/channel')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_channel():
     username = get_jwt_identity()
@@ -320,7 +320,7 @@ ENDPOINT USED BY ADMINS AND STAFF MEMBERS IN ORDER TO REMOVE A CHANNEL
 
 
 @app.delete('/channel')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def remove_channel():
     username = get_jwt_identity()
@@ -343,7 +343,7 @@ ENDPOINT USED IN ORDER TO GET ALL FILES AND ASSIGNMENTS OF A SPECIFIC COURSE WHI
 
 
 @app.get('/course/<name>')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_course_stuff(name):
     username = get_jwt_identity()
@@ -375,7 +375,7 @@ ENDPOINT USED BY ADMINS AND STAFF MEMBERS TO ADD A NEW COURSE RELATED TO A CHANN
 
 
 @app.post('/course')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_course():
     username = get_jwt_identity()
@@ -400,7 +400,7 @@ ENDPOINT USED BY ADMINS AND STAFF MEMBERS TO REMOVE A NEW COURSE RELATED TO A CH
 
 
 @app.delete('/course')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def remove_course():
     username = get_jwt_identity()
@@ -425,7 +425,7 @@ ENDPOINT THAT RETURNS ALL CHANNEL SUBSCRIPTIONS OF THE USER WHO COMMIT THE REQUE
 
 
 @app.get('/channel_subscription')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_channel_sub():
     username = get_jwt_identity()
@@ -443,7 +443,7 @@ ENDPOINT USED BY A USER TO ADD A NEW CHANNEL SUBSCRIPTION
 
 
 @app.post('/channel_subscription')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_channel_sub():
     username = get_jwt_identity()
@@ -466,7 +466,7 @@ ENDPOINT USED BY A USER TO DELETE A NEW CHANNEL SUBSCRIPTION
 
 
 @app.delete('/channel_subscription')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def delete_channel_sub():
     username = get_jwt_identity()
@@ -489,7 +489,7 @@ ENDPOINT USED BY A USER TO GET ALL ITS COURSE SUBSCRIPTIONS
 
 
 @app.get('/course_subscription')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_course_sub():
     username = get_jwt_identity()
@@ -507,7 +507,7 @@ ENDPOINT USED BY A USER TO ADD A NEW COURSE SUBSCRIPTION
 
 
 @app.post('/course_subscription')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_course_sub():
     username = get_jwt_identity()
@@ -530,7 +530,7 @@ ENDPOINT USED BY A USER TO REMOVE A NEW COURSE SUBSCRIPTION
 
 
 @app.delete('/course_subscription')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def delete_course_sub():
     username = get_jwt_identity()
@@ -551,7 +551,7 @@ ENDPOINT USED BY A USER TO UPLOAD A FILES RELATED TO A COURSE AND CHANNEL
 
 
 @app.put('/file')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def upload_file():
     username = get_jwt_identity()
@@ -589,7 +589,7 @@ ENDPOINT USED BY A USER TO DELETE AN ALREADY UPLOADED FILE RELATED TO A COURSE A
 
 
 @app.delete('/file')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def delete_file():
     username = get_jwt_identity()
@@ -630,7 +630,7 @@ ENDPOINT USED IN ORDER TO GET ALL RECEIVED MESSAGES OF AN AUTHENTICATED USER
 
 
 @app.get('/message')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_received_messages():
     username = get_jwt_identity()
@@ -647,7 +647,7 @@ ENDPOINT USED IN ORDER TO GET ALL COURSES OF A SPECIFIC CHANNEL WHICH NAME IS GI
 
 
 @app.post('/message')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def send_message():
     username = get_jwt_identity()
@@ -669,7 +669,7 @@ ENDPOINT USED IN ORDER TO CREATE A NEW ASSIGNMENT
 
 
 @app.post('/assignment')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_assignment():
     username = get_jwt_identity()
@@ -701,7 +701,7 @@ ENDPOINT USED IN ORDER TO DELETE A NEW ASSIGNMENT
 
 
 @app.delete('/assignment/<id>')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def remove_assignment(id):
     username = get_jwt_identity()
@@ -719,7 +719,7 @@ ENDPOINT USED IN ORDER TO GET ALL EXERCISES RELATED TO AN ASSIGNMENT
 
 
 @app.get('/exercise')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_exercises():
     username = get_jwt_identity()
@@ -746,7 +746,7 @@ ENDPOINT USED IN ORDER TO ADD A NEW EXERCISE
 
 
 @app.post('/exercise')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def create_exercise():
     username = get_jwt_identity()
@@ -779,7 +779,7 @@ ENDPOINT USED IN ORDER TO UPLOAD AS USER AN ASSIGNMENT GIVEN
 
 
 @app.put('/exercise')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def send_exercise_develop():
     username = get_jwt_identity()
@@ -1140,7 +1140,7 @@ ENDPOINT USED IN ORDER TO GET TESTS OF AN EXERCISE
 
 
 @app.get('/test')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def get_test():
     data = json.loads(request.data.decode(encoding='UTF-8'))
@@ -1160,7 +1160,7 @@ ENDPOINT USED IN ORDER TO ADD A TEST FOR A EXERCISE
 
 
 @app.post('/test')
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_test():
     data = json.loads(request.data.decode(encoding='UTF-8'))
