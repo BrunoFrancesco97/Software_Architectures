@@ -9,7 +9,7 @@ In particular our frontend is a Javascript application, meanwhile our backend is
 - A persistence layer built using SQLAlchemy
 - A database built using MariaDB RDBMS
 
-Acturally we build the system as three Docker image, and we deploy these image inthree different containers.
+Acturally we build the system as three Docker images, and we deploy these images into three different containers.
 
 As you can see, our backend is isolated in Docker envronment.
 The frontend is served by and nginx server, runs directly in browser, and send requests to the api server:
