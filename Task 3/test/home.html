@@ -10,8 +10,19 @@
         
         <button type="button" onclick="logout()">Logout</button>
         <button type="button" onclick="goBack()" id="go-back-button">Go back</button>
+        <button type="button" onclick="goUser()" id="go-user-button">Visit profile</button>
+        <div id="user_container">
+            <div class="user_template" id="user_template" style="visibility: hidden;">
+                <div class="name"></div>
+                <div class="surname"></div>
+                <div class="email"></div>
+                <div class="role"></div>
+                <div class="creation"></div>
+                </div>
+            </div>
+        </div>
         <div id="channel_container">
-            <div class="channels channel_template" id="channel_template" style="visibility: hidden;">
+            <div class="channel_template" id="channel_template" style="visibility: hidden;">
                 <div class="name" onclick="get_courses(this.innerText)">
                 </div>
                 <div class="id" style="display: none;">
@@ -19,7 +30,7 @@
             </div>
         </div>
         <div id="course_container">
-            <div class="courses course_template" id="course_template" style="visibility: hidden;">
+            <div class="course_template" id="course_template" style="visibility: hidden;">
                 <div class="name" onclick="get_materials(this.innerText)">
                 </div>
                 <div class="id" style="display: none;">
@@ -28,16 +39,17 @@
         </div>
 
         <div id="materials_container">
+            <h2 id="course_name"></h2>
             <h3>Course Material</h3>
             <div id="files_container">
-                <div class="files file_template" id="file_template">
+                <div class="file_template" id="file_template">
                     <div class="name"></div>
                 </div>
             </div>
             <hr/>
             <div id="assignments_done_container">
                 <h3>Assignments Done</h3>
-                <div class="assignments_done assignments_done_template" id="assignments_done_template" style="visibility: hidden;">
+                <div class="assignments_done_template" id="assignments_done_template" style="visibility: hidden;">
                     <div class="name">
                     </div>
                     <div class="id" style="display: none;">
@@ -47,19 +59,64 @@
             <hr/>
             <div id="assignments_remaining_container">
                 <h3>Remaining Assignments</h3>
-                <div class="assignments_remaimning assignments_remaimning_template" id="assignments_remaimning_template" style="visibility: hidden;">
-                    <div class="name" onclick="get_assignment(this.innerText)" title="file">
+                <div class="assignments_remaimning_template" id="assignments_remaimning_template" style="visibility: hidden;" onclick="compute(this)">
+                    <div class="name" title="file">
                     </div>
-                    <div class="id" style="display: none;">
+                    <div class="deadline">
+                    </div>
+                    <div id="id">
                     </div>
                 </div>
             </div>
         </div>
-
+        <div id="exercise_container">
+            <h3 class="content_title"></h3>
+            <div class="exercise_template" id="exercise_template" style="display: none;">
+                <form>
+                    <p class="content_quest"></p>
+                    <p class="content_type"></p>
+                    <p class="content_id" style="display: none;"></p>
+                    <select class="content_language">
+                        <option value ="java" selected>Java</option>
+                        <option value="python">Python</option>
+                        <option value="c++">C++</option>
+                        <option value="c">C</option>
+                    </select>
+                    <p class="content_assignment" style="display: none;"></p>
+                    <input type="file" class="content_file" name="selectedFile" />
+                    <textarea class="text_program" rows="4" cols="50">    
+                    </textarea>
+                    <button type="button" onclick="send_solution(this)">Send</button>
+                </form>
+                
+            </div>
+            <div class="results_template" id="results_template" style="display: none;">
+                    <div class="this_template">
+                        <h3>Exercise results:</h3>
+                        <p class="this_template_error"></p>
+                        <p class="this_template_similar"></p>
+                        <p class="this_template_correct"></p>
+                        <div id="this_template_container">
+                            <div class="this_template_test">
+                                <div class="this_template_test_quest"></div>
+                                <div class="this_template_test_result"></div>
+                                <div class="this_template_test_expected"></div>
+                                <div class="this_template_given"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="final_template">
+                        <h3>Final results:</h3>
+                        <p class="final_template_subscription"></p>
+                        <p class="final_template_comment"></p>
+                        <p class="final_template_result"></p>
+                    </div>
+            </div>
+        </div>
 
         <script>
             (function() {
-                get_channels()
+                get_channels();
             })();
         </script>
     </body>

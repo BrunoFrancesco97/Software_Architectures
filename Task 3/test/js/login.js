@@ -1,11 +1,14 @@
 function login(){
     username =document.getElementsByClassName('text_login')[0].value;
     password = document.getElementsByClassName('password_login')[0].value;
-    console.log(username + " "+ password);
-    let encodedString = btoa(username+":"+password);
-    console.log(encodedString);
-    performLogin(encodedString);
-    
+    if(username != null && password != null){
+        username.replaceAll(' ', '');
+        password.replaceAll(' ', '');
+        if(username != "" && password != ""){
+            let encodedString = btoa(username+":"+password);
+            performLogin(encodedString);
+        } 
+    }
 }
 
 function performLogin(hash){
@@ -15,6 +18,7 @@ function performLogin(hash){
         if(this.status == 200){
             window.location.replace("home.html");   
         }else{
+            document.getElementById('wrong_credentials').style.display = 'inline';
             //TODO: MOSTRARE ERRORE CREDENZIALI
         }
     };
