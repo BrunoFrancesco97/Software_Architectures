@@ -68,11 +68,10 @@ def show_endpoints():
 @jwt_required()
 def get_user():
     username = get_jwt_identity()
-    if username['role'] == 'admin':
-        user_got = user.select_user_by_email(username['user'])
-        if len(user_got) == 1:
-            userr = user_got[0]
-            return jsonify({"user":user.obj_to_dict(userr)}), 401
+    user_got = user.select_user_by_email(username['user'])
+    if len(user_got) == 1:
+        userr = user_got[0]
+        return jsonify({"user":user.obj_to_dict(userr)}), 200
     return jsonify({}), 401
 
 
@@ -176,7 +175,7 @@ def login():
                         password_hash = crypto.sha256_encode_salt(password, salt)
                         if password_hash == passwordHashedDB:
                             access_token = create_access_token(identity={'user': username, 'role': user_DB[0].role})
-                            resp = jsonify({'login': True,'jwt':access_token})
+                            resp = jsonify({'login': True})
                             set_access_cookies(resp, access_token)
                             #resp.set_cookie('access_token_cookie',access_token, path='/', samesite="None", secure=True, domain='127.0.0.1')
                             return resp, 200
@@ -718,18 +717,16 @@ ENDPOINT USED IN ORDER TO GET ALL EXERCISES RELATED TO AN ASSIGNMENT
 """
 
 
-@app.get('/exercise')
+@app.get('/exercise/<id>')
 @cross_origin(supports_credentials=True)
 @jwt_required()
-def get_exercises():
+def get_exercises(id):
     username = get_jwt_identity()
-    data = json.loads(request.data.decode(encoding='UTF-8'))
-    assignment_id = data['assignment']
-    assignment_got = assignment.get_assignments_by_id(assignment_id)
+    assignment_got = assignment.get_assignments_by_id(id)
     if len(assignment_got) == 1:
         sub = course_sub.select_course_subs(username['user'], assignment_got[0].course)
         if len(sub) == 1:  # I'm subscribed to that course thus I must be able to see the exercises of an assignment
-            exercises = exercise.get_exercises_by_assignment(assignment_id)
+            exercises = exercise.get_exercises_by_assignment(id)
             exercises_new = [exercise.obj_to_dict(item) for item in exercises]
             return jsonify({'exercises': exercises_new}), 200
         else:
@@ -785,7 +782,9 @@ def send_exercise_develop():
     username = get_jwt_identity()
     response = jsonify({'ok': 'no'}), 400
     SIMILARITY_CONSTRAINT = 0.82
-    if username['role'] == 'user': 
+    if username['role'] == 'admin': #TODO: USER 
+        form = request.form.to_dict()
+        print(form)
         type = request.form['type']
         result_json = []
         if type == "develop":
@@ -819,7 +818,7 @@ def send_exercise_develop():
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("python3 " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT, 
                                                               shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected):
+                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
@@ -889,7 +888,7 @@ def send_exercise_develop():
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("./ " + path + "/app "+test.given_value, stderr=subprocess.STDOUT,
                                                               shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected):
+                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
@@ -957,7 +956,7 @@ def send_exercise_develop():
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("java " + path + "/app.java "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
                                                               shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected):
+                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
@@ -1028,7 +1027,7 @@ def send_exercise_develop():
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("./" + path + "/app "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
                                                               shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected):
+                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
