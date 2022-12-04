@@ -1,129 +1,188 @@
 <html>
-    <head>
-        <title>Home API</title>
-        <script scr="js/channel.js"></script>
-        <script src="js/script.js"></script>
-        <script src="js/logout.js"></script>  
-    </head>
-    <body>
-       
-        
-        <button type="button" onclick="logout()">Logout</button>
-        <button type="button" onclick="goBack()" id="go-back-button">Go back</button>
-        <button type="button" onclick="goUser()" id="go-user-button">Visit profile</button>
-        <div id="user_container">
-            <div class="user_template" id="user_template" style="visibility: hidden;">
-                <div class="name"></div>
-                <div class="surname"></div>
-                <div class="email"></div>
-                <div class="role"></div>
-                <div class="creation"></div>
+  <head>
+    <title>Home API</title>
+    <script scr="js/channel.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/logout.js"></script>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link href="css/index.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/dce3b3a630.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container-fluid" style="background-color: #f9f6f7; min-height: 100vh">
+      <div class="header-bar w-100 py-3 px-2" style="position: fixed;top: 0;left: 0px;max-height: 180px;background-color: white;">
+        <div class="col-12 text-end px-4">
+          <i
+            class="fa fa-solid fa-user fa-2x pointer"
+            title="User Utility"
+            onclick="toggleMenu()"
+          ></i>
+        </div>
+      </div>
+      <div
+        class="d-none"
+        id="menu_dialog_container"
+        style="
+          background-color: #5a565a;
+          z-index: 100;
+          position: fixed;
+          right: 0px;
+          top: 64px;
+          width: 240px;
+        "
+      >
+        <div class="container-fluid" style="padding-left: 0px; padding-right: 0px">
+          <div class="col-12 py-3 pointer px-3"title="User profile"id="go-user-button"onclick="goUser()">
+            <p class="text-white">User profile</p>
+          </div>
+          <div
+            class="col-12 py-3 px-3 bg-danger pointer"
+            title="Logout"
+            onclick="logout()"
+          >
+            <p class="text-white">Logout</p>
+          </div>
+        </div>
+      </div>
+      <div class="container" style="position: relative; top: 100px">
+        <div class="row go-back">
+          <i
+            class="fa fa-solid fa-arrow-left pointer"
+            title="Go back"
+            id="go-back-button"
+            onclick="goBack()"
+          ></i>
+        </div>
+        <div class="row py-3 " id="channel_container">
+          <div class="channel_template col-4 py-4 border bg-light d-none" id="channel_template">
+            <div class="title_name text-center">
+              <p class="fw-bold"></p>
+              Channel
+            </div>
+            <div class="name text-center" onclick="get_courses(this.innerText)">
+            </div>
+            <div class="id d-none"></div>
+          </div>
+        </div>
+        <div class="row py-3 gx-5" id="user_container">
+          <div class="user_template d-none" id="user_template">
+            <div class="name"></div>
+            <div class="surname"></div>
+            <div class="email"></div>
+            <div class="role"></div>
+            <div class="creation"></div>
+          </div>
+        </div>
+        <div class="row py-3 gx-5" id="course_container">
+          <div class="col course_template py-4 border bg-light d-none" id="course_template">
+            <div class="name" onclick="get_materials(this.innerText)"></div>
+            <div class="id d-none"></div>
+          </div>
+        </div>
+        <div class="row py-3 gx-5" id="materials_container">
+            <h2 class="col-12" id="course_name"></h2>
+            <h3 class="col-12">Course Material</h3>
+            <div class="row gx-5" id="files_container">
+              <div class="col file_template d-none" id="file_template">
+                <div class="name text-primary pointer"></div>
+              </div>
+            </div>
+            <hr />
+            <div class="row" id="assignments_done_container">
+              <h3 class="col-12">Assignments Done</h3>
+              <div class="assignments_done_template col d-none" id="assignments_done_template" onclick="seePrevious(this)">
+                <div class="name pointer"></div>
+                <div class="id d-none"></div>
+              </div>
+            </div>
+            <hr />
+            <div class="row" id="assignments_remaining_container">
+              <h3 class="col-12">Remaining Assignments</h3>
+              <div class="assignments_remaimning_template col d-none" id="assignments_remaimning_template" onclick="compute(this)">
+                <div class="name pointer" title=""></div>
+                <div class="deadline"></div>
+                <div id="id"></div>
+              </div>
             </div>
         </div>
-        <div id="channel_container">
-            <div class="channel_template" id="channel_template" style="visibility: hidden;">
-                <div class="name" onclick="get_courses(this.innerText)">
-                </div>
-                <div class="id" style="display: none;">
-                </div>
+        <div class="row py-3" id="previous_container">
+            <div class=" col-12 final_template2 d-none" id="final_template2">
+              <h3>Final results:</h3>
+              <p class="final_template_subscription2"></p>
+              <p class="final_template_comment2"></p>
+              <p class="final_template_result2"></p>
             </div>
         </div>
-        <div id="course_container">
-            <div class="course_template" id="course_template" style="visibility: hidden;">
-                <div class="name" onclick="get_materials(this.innerText)">
-                </div>
-                <div class="id" style="display: none;">
-                </div>
-            </div>
-        </div>
-
-        <div id="materials_container">
-            <h2 id="course_name"></h2>
-            <h3>Course Material</h3>
-            <div id="files_container">
-                <div class="file_template" id="file_template">
-                    <div class="name"></div>
-                </div>
-            </div>
-            <hr/>
-            <div id="assignments_done_container">
-                <h3>Assignments Done</h3>
-                <div class="assignments_done_template" id="assignments_done_template" style="visibility: hidden;" onclick="seePrevious(this)">
-                    <div class="name">
-                    </div>
-                    <div class="id" style="display: none;">
-                    </div>
-                </div>
-            </div>
-            <hr/>
-            <div id="assignments_remaining_container">
-                <h3>Remaining Assignments</h3>
-                <div class="assignments_remaimning_template" id="assignments_remaimning_template" style="visibility: hidden;" onclick="compute(this)">
-                    <div class="name" title="file">
-                    </div>
-                    <div class="deadline">
-                    </div>
-                    <div id="id">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="exercise_container">
+        <div class="row" id="exercise_container">
             <h3 class="content_title"></h3>
-            <div class="exercise_template" id="exercise_template" style="display: none;">
-                <form>
-                    <p class="content_quest"></p>
-                    <p class="content_type"></p>
-                    <p class="content_id" style="display: none;"></p>
-                    <select class="content_language">
-                        <option value ="java" selected>Java</option>
-                        <option value="python">Python</option>
-                        <option value="c++">C++</option>
-                        <option value="c">C</option>
-                    </select>
-                    <p class="content_assignment" style="display: none;"></p>
-                    <input type="file" class="content_file" name="selectedFile" />
-                    <textarea class="text_program" rows="4" cols="50">    
-                    </textarea>
-                    <button type="button" onclick="send_solution(this)" id="send_button">Send</button>
-                </form>
-                
+            <div class="exercise_template d-none" id="exercise_template">
+              <form>
+                <p class="content_quest"></p>
+                <p class="content_type"></p>
+                <p class="content_id d-none"></p>
+                <select class="content_language">
+                  <option value="java" selected>Java</option>
+                  <option value="python">Python</option>
+                  <option value="c++">C++</option>
+                  <option value="c">C</option>
+                </select>
+                <p class="content_assignment d-none"></p>
+                <input type="file" class="content_file" name="selectedFile" />
+                <textarea class="text_program" rows="4" cols="50"> </textarea>
+                <button type="button" onclick="send_solution(this)" id="send_button">
+                  Send
+                </button>
+              </form>
             </div>
-            <div class="results_template" id="results_template" style="display: none;">
-                    <div class="this_template">
-                        <h3>Exercise results:</h3>
-                        <p class="this_template_error"></p>
-                        <p class="this_template_similar"></p>
-                        <p class="this_template_correct"></p>
-                        <div id="this_template_container">
-                            <div class="this_template_test">
-                                <div class="this_template_test_quest"></div>
-                                <div class="this_template_test_result"></div>
-                                <div class="this_template_test_expected"></div>
-                                <div class="this_template_given"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="final_template">
-                        <h3>Final results:</h3>
-                        <p class="final_template_subscription"></p>
-                        <p class="final_template_comment"></p>
-                        <p class="final_template_result"></p>
-                    </div>
-            </div>
-        </div>
-        <div id="previous_container">
-            <div class="final_template2" id="final_template2" style="display: none;">
+            <div class="results_template d-none" id="results_template" >
+              <div class="this_template">
+                <h3>Exercise results:</h3>
+                <p class="this_template_error"></p>
+                <p class="this_template_similar"></p>
+                <p class="this_template_correct"></p>
+                <div id="this_template_container">
+                  <div class="this_template_test">
+                    <div class="this_template_test_quest"></div>
+                    <div class="this_template_test_result"></div>
+                    <div class="this_template_test_expected"></div>
+                    <div class="this_template_given"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="final_template">
                 <h3>Final results:</h3>
-                <p class="final_template_subscription2"></p>
-                <p class="final_template_comment2"></p>
-                <p class="final_template_result2"></p>
+                <p class="final_template_subscription"></p>
+                <p class="final_template_comment"></p>
+                <p class="final_template_result"></p>
+              </div>
             </div>
-        </div>
-        <script>
-            (function() {
-                get_channels();
-            })();
-        </script>
-    </body>
+          </div>
+      </div>
+    </div>
+
+    
+    
+    
+    <script>
+      (function () {
+        get_channels();
+      })();
+    </script>
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

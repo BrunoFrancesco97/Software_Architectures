@@ -4,64 +4,58 @@ function router() {
   console.log(position);
   switch (position) {
     case 0: //Channel list
-      document.querySelector("#go-back-button").style.display = "none";
-      document.querySelector("#go-user-button").style.display = "inline";
-      document.querySelector("#channel_container").style.display = "inline";
-      document.querySelector("#course_container").style.display = "none";
-      document.querySelector("#materials_container").style.display = "none";
-      document.querySelector("#exercise_container").style.display = "none";
-      document.querySelector("#user_container").style.display = "none";
-      document.querySelector("#previous_container").style.display = "none";
+      document.querySelector("#go-back-button").classList.add("d-none");
+      document.querySelector("#channel_container").classList.remove("d-none");
+      document.querySelector("#course_container").classList.add("d-none");
+      document.querySelector("#materials_container").classList.add("d-none");
+      document.querySelector("#exercise_container").classList.add("d-none");
+      document.querySelector("#user_container").classList.add("d-none");
+      document.querySelector("#previous_container").classList.add("d-none");
       break;
     case 1: //Course list
-      document.querySelector("#go-back-button").style.display = "inline";
-      document.querySelector("#go-user-button").style.display = "none";
-      document.querySelector("#course_container").style.display = "inline";
-      document.querySelector("#channel_container").style.display = "none";
-      document.querySelector("#materials_container").style.display = "none";
-      document.querySelector("#exercise_container").style.display = "none";
-      document.querySelector("#user_container").style.display = "none";
-      document.querySelector("#previous_container").style.display = "none";
+      document.querySelector("#go-back-button").classList.remove("d-none");
+      document.querySelector("#course_container").classList.remove("d-none");
+      document.querySelector("#channel_container").classList.add("d-none");
+      document.querySelector("#materials_container").classList.add("d-none");
+      document.querySelector("#exercise_container").classList.add("d-none");
+      document.querySelector("#user_container").classList.add("d-none");
+      document.querySelector("#previous_container").classList.add("d-none");
       break;
     case 2: //Assignment list
-      document.querySelector("#go-back-button").style.display = "inline";
-      document.querySelector("#go-user-button").style.display = "none";
-      document.querySelector("#materials_container").style.display = "inline";
-      document.querySelector("#course_container").style.display = "none";
-      document.querySelector("#channel_container").style.display = "none";
-      document.querySelector("#exercise_container").style.display = "none";
-      document.querySelector("#user_container").style.display = "none";
-      document.querySelector("#previous_container").style.display = "none";
+      document.querySelector("#go-back-button").classList.remove("d-none");
+      document.querySelector("#materials_container").classList.remove("d-none");
+      document.querySelector("#course_container").classList.add("d-none");
+       document.querySelector("#channel_container").classList.add("d-none");
+      document.querySelector("#exercise_container").classList.add("d-none");
+      document.querySelector("#user_container").classList.add("d-none");
+      document.querySelector("#previous_container").classList.add("d-none");
       break;
     case 3: //Assignment content
-      document.querySelector("#go-back-button").style.display = "inline";
-      document.querySelector("#go-user-button").style.display = "none";
-      document.querySelector("#materials_container").style.display = "none";
-      document.querySelector("#course_container").style.display = "none";
-      document.querySelector("#channel_container").style.display = "none";
-      document.querySelector("#user_container").style.display = "none";
-      document.querySelector("#exercise_container").style.display = "inline";
-      document.querySelector("#previous_container").style.display = "none";
+      document.querySelector("#go-back-button").classList.remove("d-none");
+      document.querySelector("#materials_container").classList.add("d-none");
+      document.querySelector("#course_container").classList.add("d-none");
+       document.querySelector("#channel_container").classList.add("d-none");
+      document.querySelector("#user_container").classList.add("d-none");
+      document.querySelector("#exercise_container").classList.remove("d-none");
+      document.querySelector("#previous_container").classList.add("d-none");
       break;
     case 4:
-      document.querySelector("#go-back-button").style.display = "inline";
-      document.querySelector("#go-user-button").style.display = "none";
-      document.querySelector("#channel_container").style.display = "none";
-      document.querySelector("#course_container").style.display = "none";
-      document.querySelector("#materials_container").style.display = "none";
-      document.querySelector("#exercise_container").style.display = "none";
-      document.querySelector("#user_container").style.display = "inline";
-      document.querySelector("#previous_container").style.display = "none";
+      document.querySelector("#go-back-button").classList.remove("d-none");
+       document.querySelector("#channel_container").classList.add("d-none");
+      document.querySelector("#course_container").classList.add("d-none");
+      document.querySelector("#materials_container").classList.add("d-none");
+      document.querySelector("#exercise_container").classList.add("d-none");
+      document.querySelector("#user_container").classList.remove("d-none");
+      document.querySelector("#previous_container").classList.add("d-none");
       break;
     case 5:
-      document.querySelector("#go-back-button").style.display = "inline";
-      document.querySelector("#go-user-button").style.display = "none";
-      document.querySelector("#channel_container").style.display = "none";
-      document.querySelector("#course_container").style.display = "none";
-      document.querySelector("#materials_container").style.display = "none";
-      document.querySelector("#exercise_container").style.display = "none";
-      document.querySelector("#user_container").style.display = "none";
-      document.querySelector("#previous_container").style.display = "inline";
+      document.querySelector("#go-back-button").classList.remove("d-none");
+       document.querySelector("#channel_container").classList.add("d-none");
+      document.querySelector("#course_container").classList.add("d-none");
+      document.querySelector("#materials_container").classList.add("d-none");
+      document.querySelector("#exercise_container").classList.add("d-none");
+      document.querySelector("#user_container").classList.add("d-none");
+      document.querySelector("#previous_container").classList.remove("d-none");
       break;
   }
 }
@@ -81,7 +75,7 @@ function goUser() {
       let clone = parent_div.cloneNode(true);
       clone.classList.add("users");
       clone.classList.remove("user_template");
-      clone.style.visibility = "visible";
+      clone.classList.remove("d-none");
       let name = clone.getElementsByClassName("name");
       let surname = clone.getElementsByClassName("surname");
       let email = clone.getElementsByClassName("email");
@@ -115,7 +109,7 @@ function get_courses(name) {
         let clone = parent_div.cloneNode(true);
         clone.classList.add("courses");
         clone.classList.remove("course_template");
-        clone.style.visibility = "visible";
+        clone.classList.remove("d-none");
         let name = clone.getElementsByClassName("name");
         let id = clone.getElementsByClassName("id");
         clone.setAttribute("id", obj[i].name);
@@ -148,7 +142,7 @@ function get_materials(name) {
         let clone = parent_div.cloneNode(true);
         clone.classList.add("files");
         clone.classList.remove("file_template");
-        clone.style.visibility = "visible";
+        clone.classList.remove("d-none");
         let name = clone.getElementsByClassName("name");
         clone.setAttribute("id", files[i].name);
         name[0].innerText = files[i].name;
@@ -162,7 +156,7 @@ function get_materials(name) {
         let clone = parent_div.cloneNode(true);
         clone.classList.add("assignments_done");
         clone.classList.remove("assignments_done_template");
-        clone.style.visibility = "visible";
+        clone.classList.remove("d-none");
         let name = clone.getElementsByClassName("name");
         clone.setAttribute("id", assignments_done[i].id);
         name[0].innerText = assignments_done[i].name;
@@ -179,7 +173,7 @@ function get_materials(name) {
         let clone = parent_div.cloneNode(true);
         clone.classList.add("assignments_remaining");
         clone.classList.remove("assignments_remaimning_template");
-        clone.style.visibility = "visible";
+        clone.classList.remove("d-none");
         let name = clone.getElementsByClassName("name");
         let deadline = clone.getElementsByClassName("deadline");
         clone.setAttribute("id", assignments_remaining[i].id);
@@ -214,7 +208,7 @@ function get_channels() {
         let clone = parent_div.cloneNode(true);
         clone.classList.add("channels");
         clone.classList.remove("channel_template");
-        clone.style.visibility = "visible";
+        clone.classList.remove("d-none");
         let name = clone.getElementsByClassName("name");
         let id = clone.getElementsByClassName("id");
         clone.setAttribute("id", obj.channels[i].id);
@@ -265,14 +259,14 @@ function compute(el) {
       //Remove all previous loaded exercises
       document.querySelectorAll(".exercises").forEach((el) => el.remove());
       document.querySelectorAll(".results").forEach((el) => el.remove());
-      document.querySelector("#send_button").style.display = "inline";
+      document.querySelector("#send_button").classList.remove("d-none");
       for (let i = 0; i < obj.exercises.length; i++) {
         parent_div = document.querySelector("#exercise_template");
         //Clone div so to add new exercise
         let clone = parent_div.cloneNode(true);
         clone.classList.add("exercises");
         clone.classList.remove("exercise_template");
-        clone.style.display = "inline";
+        clone.classList.remove("d-none");
         let quest = clone.getElementsByClassName("content_quest");
         let type = clone.getElementsByClassName("content_type");
         let id = clone.getElementsByClassName("content_id");
@@ -309,7 +303,7 @@ function seePrevious(el) {
       let clone = parent_div.cloneNode(true);
       clone.classList.add("results_prev");
       clone.classList.remove("final_template2");
-      clone.style.display = "inline";
+      clone.classList.remove("d-none");
       let sub = clone.getElementsByClassName("final_template_subscription2");
       let comment = clone.getElementsByClassName("final_template_comment2");
       let score = clone.getElementsByClassName("final_template_result2");
@@ -336,7 +330,7 @@ function send_solution(el) {
   formData.append("language", language);
   formData.append("exercise", exercise);
   formData.append("file", file);
-  document.querySelector("#send_button").style.display = "none";
+  document.querySelector("#send_button").classList.add("d-none");
   let request = new XMLHttpRequest();
   request.open("PUT", "http://localhost:5000/exercise", true);
   request.onreadystatechange = function () {
@@ -382,11 +376,20 @@ function send_solution(el) {
             test[1];
           tests_container.appendChild(clone2);
         }
-        clone.style.display = "inline";
+        clone.classList.remove("d-none");
         document.querySelector("#exercise_container").appendChild(clone);
       }
     }
   };
   request.withCredentials = true;
   request.send(formData);
+}
+
+
+function toggleMenu(){
+  if(document.getElementById('menu_dialog_container').classList.contains('d-none')){
+    document.getElementById('menu_dialog_container').classList.remove('d-none');
+  }else{
+    document.getElementById('menu_dialog_container').classList.add('d-none');
+  }
 }
