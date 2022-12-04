@@ -59,3 +59,4 @@ def get_channels_by_name(name: str):
     channels = session.query(Channel).filter_by(name=name).all()
     session.close()
     return channels
+

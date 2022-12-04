@@ -281,10 +281,15 @@ ENDPOINT USED IN ORDER TO GET ALL COURSES OF A SPECIFIC CHANNEL WHICH NAME IS GI
 @cross_origin(supports_credentials=True)
 @jwt_required()
 def get_channel_courses(name):
+    username = get_jwt_identity()
     channel_got = channel.get_channels_by_name(name)  # TODO: DOVREI SANITIZZARE NAME
     if channel_got is not None and len(channel_got) == 1:
-        courses_got = course.select_course_by_channel(channel_got[0].id)
-        courses_new = [course.obj_to_dict(item) for item in courses_got]
+        channel_subcr = channel_sub.select_channel_subs(username['user'],channel_got[0].id)
+        if channel_subcr is not None and len(channel_subcr) == 1:
+            courses_got = course.select_course_by_channel(channel_got[0].id)
+            courses_new = [course.obj_to_dict(item) for item in courses_got]
+        else:
+            return jsonify({'courses': []}), 401
         return jsonify(courses_new), 200
     return jsonify({'courses': []}), 403
 
