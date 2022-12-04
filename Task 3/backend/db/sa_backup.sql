@@ -31,7 +31,7 @@ CREATE TABLE `assignments` (
   PRIMARY KEY (`id`),
   KEY `course` (`course`),
   CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`course`) REFERENCES `courses` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `assignments` (
 
 LOCK TABLES `assignments` WRITE;
 /*!40000 ALTER TABLE `assignments` DISABLE KEYS */;
-INSERT INTO `assignments` VALUES (6,'task_1','2022-11-28 10:53:11','Software_Architectures','2023-04-12 14:45:00'),(7,'task_2','2022-11-28 10:54:08','Software_Architectures','2023-04-12 14:45:00'),(14,'test_3','2022-12-01 14:40:17','Software_Architectures','2022-07-14 10:30:00');
+INSERT INTO `assignments` VALUES (14,'Task 1','2022-12-04 20:26:47','Software Architectures','2023-01-05 11:40:00');
 /*!40000 ALTER TABLE `assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `channel_subscriptions` (
 
 LOCK TABLES `channel_subscriptions` WRITE;
 /*!40000 ALTER TABLE `channel_subscriptions` DISABLE KEYS */;
-INSERT INTO `channel_subscriptions` VALUES (13,'test','2022-11-24 21:52:18'),(16,'francym4@gmail.com','2022-11-30 12:40:37'),(16,'prova@gmail.com','2022-11-28 10:55:40'),(16,'test@gmail.com','2022-11-30 12:44:38');
+INSERT INTO `channel_subscriptions` VALUES (51,'francym4@gmail.com','2022-12-04 20:21:04');
 /*!40000 ALTER TABLE `channel_subscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +83,7 @@ CREATE TABLE `channels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ CREATE TABLE `channels` (
 
 LOCK TABLES `channels` WRITE;
 /*!40000 ALTER TABLE `channels` DISABLE KEYS */;
-INSERT INTO `channels` VALUES (13,'test1'),(16,'cafoscari');
+INSERT INTO `channels` VALUES (51,'Ca Foscari');
 /*!40000 ALTER TABLE `channels` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,7 +120,7 @@ CREATE TABLE `course_subscriptions` (
 
 LOCK TABLES `course_subscriptions` WRITE;
 /*!40000 ALTER TABLE `course_subscriptions` DISABLE KEYS */;
-INSERT INTO `course_subscriptions` VALUES ('Software Developmente Methodologies','test','2022-11-24 22:46:30'),('Software_Architectures','francym4@gmail.com','2022-11-30 12:42:11'),('Software_Architectures','prova@gmail.com','2022-11-28 10:57:10'),('Software_Architectures','test@gmail.com','2022-11-30 12:44:54');
+INSERT INTO `course_subscriptions` VALUES ('Software Architectures','francym4@gmail.com','2022-12-04 20:21:31');
 /*!40000 ALTER TABLE `course_subscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +146,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
-INSERT INTO `courses` VALUES ('Software Architectures',13),('Software Developmente Methodologies',13),('Software_Architectures',16);
+INSERT INTO `courses` VALUES ('Software Architectures',51);
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +169,7 @@ CREATE TABLE `exercises` (
   PRIMARY KEY (`id`),
   KEY `assignment` (`assignment`),
   CONSTRAINT `exercises_ibfk_2` FOREIGN KEY (`assignment`) REFERENCES `assignments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `exercises` (
 
 LOCK TABLES `exercises` WRITE;
 /*!40000 ALTER TABLE `exercises` DISABLE KEYS */;
-INSERT INTO `exercises` VALUES (7,'Sviluppa un programma che mi ritorni hello world','hello world',NULL,NULL,NULL,6,'develop'),(13,'Scrivi una funzione che dato in input un numero mi stampa 1 se è pari, 0 se è dispari',NULL,NULL,NULL,NULL,14,'develop');
+INSERT INTO `exercises` VALUES (34,'Write a program that given as input as command line parameter a number, prints 1 if even, 0 if odd',NULL,NULL,NULL,NULL,14,'develop');
 /*!40000 ALTER TABLE `exercises` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +204,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES ('List_4_1.pdf','Software_Architectures'),('List_8_1.pdf','Software_Architectures');
+INSERT INTO `files` VALUES ('test.pdf','Software Architectures');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +227,7 @@ CREATE TABLE `results` (
   KEY `user` (`user`),
   CONSTRAINT `results_ibfk_1` FOREIGN KEY (`assignment`) REFERENCES `assignments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `results_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +236,7 @@ CREATE TABLE `results` (
 
 LOCK TABLES `results` WRITE;
 /*!40000 ALTER TABLE `results` DISABLE KEYS */;
-INSERT INTO `results` VALUES (14,'francym4@gmail.com','2022-12-01 15:46:49',100,NULL,43);
+INSERT INTO `results` VALUES (14,'francym4@gmail.com','2022-12-04 20:32:24',0,NULL,164);
 /*!40000 ALTER TABLE `results` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +267,7 @@ CREATE TABLE `solution` (
 
 LOCK TABLES `solution` WRITE;
 /*!40000 ALTER TABLE `solution` DISABLE KEYS */;
-INSERT INTO `solution` VALUES (7,'print(\"ciao\")','prova@gmail.com',0,'120fde05c487848e306da1d5f258c1f5c2a915868c42b8dcedbec9e75a385d1c',1),(13,'\r\nimport sys \r\n\r\ndef parity():\r\n    if len(sys.argv) == 2:\r\n        if int(sys.argv[1]) % 2 == 0:\r\n            print(\"1\")\r\n        else:\r\n            print(\"0\")\r\n\r\nif __name__ == \'__main__\':\r\n    parity()','francym4@gmail.com',1,'704569818c4e4e804a46842594aa5a44e5419edfd440270ea6876ff1ecfaf915',1);
+INSERT INTO `solution` VALUES (34,'class Test{\r\n    public static void main(String[] args){\r\n        try{\r\n            if(Integer.parseInt(args[0]) % 2 == 0){\r\n                System.out.println(\"12\");\r\n            }else{\r\n                System.out.println(\"0\");\r\n            }\r\n        }c','francym4@gmail.com',0,'fa5fe30c098c60d0e2e24bca4587cd41b1544c5f447f48ad1e7fa690256fc59e',1);
 /*!40000 ALTER TABLE `solution` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -318,7 +318,7 @@ CREATE TABLE `tests` (
   PRIMARY KEY (`id`),
   KEY `exercise` (`exercise`),
   CONSTRAINT `tests_ibfk_1` FOREIGN KEY (`exercise`) REFERENCES `exercises` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -327,7 +327,7 @@ CREATE TABLE `tests` (
 
 LOCK TABLES `tests` WRITE;
 /*!40000 ALTER TABLE `tests` DISABLE KEYS */;
-INSERT INTO `tests` VALUES (1,'test_1','Test if number',7,'10',''),(2,'Check 10',NULL,13,'10','1'),(3,'Check 11',NULL,13,'11','0');
+INSERT INTO `tests` VALUES (55,'Checking 10',NULL,34,'10','1'),(56,'Checking 11',NULL,34,'11','0'),(57,'Checking 1',NULL,34,'11','0'),(58,'Checking 0',NULL,34,'11','1');
 /*!40000 ALTER TABLE `tests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +356,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('francym4@gmail.com','5d61da0b40b87c0f4b218248c109c0bf204923118b9b90e951b170a8b8908b49','5AESAPXBKAM735X5S5CRU9F8JE5PG3','Francesco','Bruno','admin','2022-11-30 12:27:42'),('prova@gmail.com','de915337ef8f0a42a1b7175ab0616340bb9f85893396ba42280c568958fed6f2','Z399EOG0DXAH3AKNPHNIK42U7HX6JF','provaN','provaS','user','2022-11-28 10:05:26'),('test','1920f14b515e4a580bdd7e187406684928f2c7950a0b10cc7b29248c30cff842','GRJUUKFRCAKHTH2Y7WV69XL3N726Q8','Francesco','Bruno','user','2022-11-07 19:32:37'),('test@gmail.com','6a05035a9946de88700ce75a662d74e62b0457bc79fa0f203605e492ab5e71f6','ZI7TQTOYRZ3H8GUUYF9FTIP23QCSI4','Andrea','Bruno','user','2022-11-30 12:31:15');
+INSERT INTO `user` VALUES ('dorigo@gmail.com','91cb1f7f26e53e0cdf0dee01af5b2674a4c5cd08857fb907657ce99e81df9e49','V1XULKIU4NC73ZD3NBGKCK7BEUNMFP','Andrea','Dorigo','admin','2022-12-04 18:39:06'),('francym4@gmail.com','5d61da0b40b87c0f4b218248c109c0bf204923118b9b90e951b170a8b8908b49','5AESAPXBKAM735X5S5CRU9F8JE5PG3','Francesco','Bruno','admin','2022-11-30 12:27:42'),('prova@gmail.com','de915337ef8f0a42a1b7175ab0616340bb9f85893396ba42280c568958fed6f2','Z399EOG0DXAH3AKNPHNIK42U7HX6JF','provaN','provaS','user','2022-11-28 10:05:26'),('test','1920f14b515e4a580bdd7e187406684928f2c7950a0b10cc7b29248c30cff842','GRJUUKFRCAKHTH2Y7WV69XL3N726Q8','Francesco','Bruno','user','2022-11-07 19:32:37'),('test@gmail.com','6a05035a9946de88700ce75a662d74e62b0457bc79fa0f203605e492ab5e71f6','ZI7TQTOYRZ3H8GUUYF9FTIP23QCSI4','Andrea','Bruno','user','2022-11-30 12:31:15');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -369,4 +369,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-02  9:41:48
+-- Dump completed on 2022-12-04 21:48:20
