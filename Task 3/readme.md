@@ -17,7 +17,7 @@ The frontend is served by and nginx server, runs directly in browser, and send r
 ![Alt Image text](/Task%203/img/architecture.svg?raw=true "Backend structure")
 
 ## Frontend
-Frontend is a simple Javascript app, served by an nginx service.
+Frontend is a simple handmade Javascript app, served by an nginx service.
 This app run directly in browser, and work as a presentation level.
 
 ## Backend
