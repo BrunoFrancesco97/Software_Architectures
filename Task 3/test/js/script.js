@@ -1,6 +1,7 @@
 var position = 0;
 
 function router() {
+  console.log(position);
   switch (position) {
     case 0: //Channel list
       document.querySelector("#go-back-button").style.display = "none";
@@ -10,6 +11,7 @@ function router() {
       document.querySelector("#materials_container").style.display = "none";
       document.querySelector("#exercise_container").style.display = "none";
       document.querySelector("#user_container").style.display = "none";
+      document.querySelector("#previous_container").style.display = "none";
       break;
     case 1: //Course list
       document.querySelector("#go-back-button").style.display = "inline";
@@ -19,6 +21,7 @@ function router() {
       document.querySelector("#materials_container").style.display = "none";
       document.querySelector("#exercise_container").style.display = "none";
       document.querySelector("#user_container").style.display = "none";
+      document.querySelector("#previous_container").style.display = "none";
       break;
     case 2: //Assignment list
       document.querySelector("#go-back-button").style.display = "inline";
@@ -28,6 +31,7 @@ function router() {
       document.querySelector("#channel_container").style.display = "none";
       document.querySelector("#exercise_container").style.display = "none";
       document.querySelector("#user_container").style.display = "none";
+      document.querySelector("#previous_container").style.display = "none";
       break;
     case 3: //Assignment content
       document.querySelector("#go-back-button").style.display = "inline";
@@ -37,6 +41,7 @@ function router() {
       document.querySelector("#channel_container").style.display = "none";
       document.querySelector("#user_container").style.display = "none";
       document.querySelector("#exercise_container").style.display = "inline";
+      document.querySelector("#previous_container").style.display = "none";
       break;
     case 4:
       document.querySelector("#go-back-button").style.display = "inline";
@@ -46,6 +51,17 @@ function router() {
       document.querySelector("#materials_container").style.display = "none";
       document.querySelector("#exercise_container").style.display = "none";
       document.querySelector("#user_container").style.display = "inline";
+      document.querySelector("#previous_container").style.display = "none";
+      break;
+    case 5:
+      document.querySelector("#go-back-button").style.display = "inline";
+      document.querySelector("#go-user-button").style.display = "none";
+      document.querySelector("#channel_container").style.display = "none";
+      document.querySelector("#course_container").style.display = "none";
+      document.querySelector("#materials_container").style.display = "none";
+      document.querySelector("#exercise_container").style.display = "none";
+      document.querySelector("#user_container").style.display = "none";
+      document.querySelector("#previous_container").style.display = "inline";
       break;
   }
 }
@@ -120,17 +136,15 @@ function get_materials(name) {
     if (request.status == 200 && request.readyState == 4) {
       position = 2;
       router();
-      document.getElementById('course_name').innerText = name;
+      document.getElementById("course_name").innerText = name;
       obj = JSON.parse(request.responseText);
       files = obj.files;
       assignments_done = obj.assignment_done;
       assignments_remaining = obj.assignments_remaining;
       console.log(assignments_remaining);
-      //Remove all previous loaded channels
       document.querySelectorAll(".files").forEach((el) => el.remove());
       for (let i = 0; i < files.length; i++) {
         parent_div = document.querySelector("#file_template");
-        //Clone div so to add new channels
         let clone = parent_div.cloneNode(true);
         clone.classList.add("files");
         clone.classList.remove("file_template");
@@ -140,25 +154,22 @@ function get_materials(name) {
         name[0].innerText = files[i].name;
         document.querySelector("#files_container").appendChild(clone);
       }
-      //Remove all previous loaded channels
       document
         .querySelectorAll(".assignments_done")
         .forEach((el) => el.remove());
       for (let i = 0; i < assignments_done.length; i++) {
         parent_div = document.querySelector("#assignments_done_template");
-        //Clone div so to add new channels
         let clone = parent_div.cloneNode(true);
         clone.classList.add("assignments_done");
         clone.classList.remove("assignments_done_template");
         clone.style.visibility = "visible";
         let name = clone.getElementsByClassName("name");
-        clone.setAttribute("id", assignments_done[i].name);
+        clone.setAttribute("id", assignments_done[i].id);
         name[0].innerText = assignments_done[i].name;
         document
           .querySelector("#assignments_done_container")
           .appendChild(clone);
       }
-      //Remove all previous loaded channels
       document
         .querySelectorAll(".assignments_remaining")
         .forEach((el) => el.remove());
@@ -211,10 +222,10 @@ function get_channels() {
         id[0].innerText = obj.channels[i].id;
         document.querySelector("#channel_container").appendChild(clone);
       }
-    }else{
-      console.log(request.status)
-      if(request.status == 0){
-        window.location.replace('index.html');
+    } else {
+      console.log(request.status);
+      if (request.status == 0) {
+        window.location.replace("index.html");
       }
     }
   };
@@ -222,13 +233,17 @@ function get_channels() {
   request.send();
 }
 function goBack() {
-  if(position != 4){
+  if (position != 4) {
     position--;
-    if(position == 2){
-      let name = document.getElementById('course_name').innerText;
-      get_materials(name);
+    if ((position == 4)) {
+      position = 2;
     }
-  }else{
+    if (position == 2) {
+      let name = document.getElementById("course_name").innerText;
+      get_materials(name);
+      position--;
+    }
+  } else {
     position = 0;
   }
   router();
@@ -249,6 +264,8 @@ function compute(el) {
       console.log(obj);
       //Remove all previous loaded exercises
       document.querySelectorAll(".exercises").forEach((el) => el.remove());
+      document.querySelectorAll(".results").forEach((el) => el.remove());
+      document.querySelector("#send_button").style.display = "inline";
       for (let i = 0; i < obj.exercises.length; i++) {
         parent_div = document.querySelector("#exercise_template");
         //Clone div so to add new exercise
@@ -272,7 +289,39 @@ function compute(el) {
   request.withCredentials = true;
   request.send();
 }
-
+function seePrevious(el) {
+  let nameDiv = el.getElementsByClassName("name")[0].innerText;
+  document.getElementsByClassName("content_title")[0].innerText = nameDiv;
+  let idDiv = el.getAttribute("id");
+  let request = new XMLHttpRequest();
+  request.open("GET", "http://localhost:5000/result/" + idDiv, true);
+  //request.setRequestHeader('Content-Type', 'application/json');
+  request.onreadystatechange = function () {
+    if (request.status == 200 && request.readyState == 4) {
+      position = 5;
+      router();
+      obj = JSON.parse(request.responseText);
+      console.log(obj);
+      //Remove all previous loaded exercises
+      document.querySelectorAll(".results_prev").forEach((el) => el.remove());
+      parent_div = document.querySelector("#final_template2");
+      //Clone div so to add new exercise
+      let clone = parent_div.cloneNode(true);
+      clone.classList.add("results_prev");
+      clone.classList.remove("final_template2");
+      clone.style.display = "inline";
+      let sub = clone.getElementsByClassName("final_template_subscription2");
+      let comment = clone.getElementsByClassName("final_template_comment2");
+      let score = clone.getElementsByClassName("final_template_result2");
+      sub[0].innerText = obj.result[0].subscription;
+      comment[0].innerText = obj.result[0].comment;
+      score[0].innerText = obj.result[0].result;
+      document.querySelector("#previous_container").appendChild(clone);
+    }
+  };
+  request.withCredentials = true;
+  request.send();
+}
 function send_solution(el) {
   information = el.parentNode;
   let type = information.getElementsByClassName("content_type")[0].innerText;
@@ -286,8 +335,8 @@ function send_solution(el) {
   formData.append("text", program);
   formData.append("language", language);
   formData.append("exercise", exercise);
-  formData.append("file",file);
-  console.log(formData.get('type'));
+  formData.append("file", file);
+  document.querySelector("#send_button").style.display = "none";
   let request = new XMLHttpRequest();
   request.open("PUT", "http://localhost:5000/exercise", true);
   request.onreadystatechange = function () {
@@ -295,28 +344,42 @@ function send_solution(el) {
       obj = JSON.parse(request.responseText);
       console.log(obj);
       document.querySelectorAll(".results").forEach((el) => el.remove());
-      if(obj.results != null && obj.results.length == 1){
+      if (obj.results != null && obj.results.length == 1) {
         result_div = document.querySelector("#results_template");
         let clone = result_div.cloneNode(true);
         clone.classList.remove("results_template");
         clone.classList.add("results");
         final = clone.getElementsByClassName("final_template");
-        final[0].getElementsByClassName("final_template_subscription")[0].innerText = obj.results[0].subscription;
-        final[0].getElementsByClassName("final_template_comment")[0].innerText = obj.results[0].comment;
-        final[0].getElementsByClassName("final_template_result")[0].innerText = obj.results[0].result;
+        final[0].getElementsByClassName(
+          "final_template_subscription"
+        )[0].innerText = obj.results[0].subscription;
+        final[0].getElementsByClassName("final_template_comment")[0].innerText =
+          obj.results[0].comment;
+        final[0].getElementsByClassName("final_template_result")[0].innerText =
+          obj.results[0].result;
         let actual = clone.getElementsByClassName("this_template");
-        actual[0].getElementsByClassName("this_template_error")[0].innerText = obj.error;
-        actual[0].getElementsByClassName("this_template_similar")[0].innerText = obj.similar_responses;
+        actual[0].getElementsByClassName("this_template_error")[0].innerText =
+          obj.error;
+        actual[0].getElementsByClassName("this_template_similar")[0].innerText =
+          obj.similar_responses;
         tests_container = actual[0].querySelector("#this_template_container");
         //actual[0].getElementsByClassName("this_template_correct")[0].innerText = obj.results[0].result;
-        for(let i = 0; i < obj.tests.length; i++){
+        for (let i = 0; i < obj.tests.length; i++) {
           let test = obj.tests[i];
-          let test_view = tests_container.getElementsByClassName("this_template_test");
+          let test_view =
+            tests_container.getElementsByClassName("this_template_test");
           let clone2 = test_view[0].cloneNode(true);
-          clone2.getElementsByClassName("this_template_test_quest")[0].innerText =test[3];
-          clone2.getElementsByClassName("this_template_test_result")[0].innerText = test[0];
-          clone2.getElementsByClassName("this_template_test_expected")[0].innerText = test[2];
-          clone2.getElementsByClassName("this_template_given")[0].innerText = test[1];
+          clone2.getElementsByClassName(
+            "this_template_test_quest"
+          )[0].innerText = test[3];
+          clone2.getElementsByClassName(
+            "this_template_test_result"
+          )[0].innerText = test[0];
+          clone2.getElementsByClassName(
+            "this_template_test_expected"
+          )[0].innerText = test[2];
+          clone2.getElementsByClassName("this_template_given")[0].innerText =
+            test[1];
           tests_container.appendChild(clone2);
         }
         clone.style.display = "inline";

@@ -18,7 +18,6 @@
                 <div class="email"></div>
                 <div class="role"></div>
                 <div class="creation"></div>
-                </div>
             </div>
         </div>
         <div id="channel_container">
@@ -49,7 +48,7 @@
             <hr/>
             <div id="assignments_done_container">
                 <h3>Assignments Done</h3>
-                <div class="assignments_done_template" id="assignments_done_template" style="visibility: hidden;">
+                <div class="assignments_done_template" id="assignments_done_template" style="visibility: hidden;" onclick="seePrevious(this)">
                     <div class="name">
                     </div>
                     <div class="id" style="display: none;">
@@ -86,7 +85,7 @@
                     <input type="file" class="content_file" name="selectedFile" />
                     <textarea class="text_program" rows="4" cols="50">    
                     </textarea>
-                    <button type="button" onclick="send_solution(this)">Send</button>
+                    <button type="button" onclick="send_solution(this)" id="send_button">Send</button>
                 </form>
                 
             </div>
@@ -113,7 +112,14 @@
                     </div>
             </div>
         </div>
-
+        <div id="previous_container">
+            <div class="final_template2" id="final_template2" style="display: none;">
+                <h3>Final results:</h3>
+                <p class="final_template_subscription2"></p>
+                <p class="final_template_comment2"></p>
+                <p class="final_template_result2"></p>
+            </div>
+        </div>
         <script>
             (function() {
                 get_channels();
