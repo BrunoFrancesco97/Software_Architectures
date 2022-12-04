@@ -75,3 +75,7 @@ $> docker compose build
 According to docker-compose declaration, there are only two exposed endpoints:
 - [api server](http://localhost:5000) - port 5000
 - [web app](http://localhost:8080) - port 8080
+
+## Notes
+
+We have noticed that for no reason CORS can cause problem on Linux like OS, meanwhile Windows browsers don't cause any sort of problem.
