@@ -73,9 +73,9 @@ def get_assignments_by_course(course: str):
     session.close()
     return assignments
 
-def get_assignments_by_course_done(course: str):
+def get_assignments_by_course_done(course: str, name : str):
     session = database.Session()
-    assignments = session.query(Assignment).join(result.Result).filter(Assignment.course == course).all()
+    assignments = session.query(Assignment).join(result.Result).filter(result.Result.user == name and Assignment.course == course).all()
     session.close()
     return assignments
 

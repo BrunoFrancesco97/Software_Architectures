@@ -354,7 +354,8 @@ def get_course_stuff(name):
     name_user = username["user"]
     if len(course_sub.select_course_subs(name_user, name)) == 1:
         ass_list = assignment.get_assignments_by_course(name)
-        ass_done = assignment.get_assignments_by_course_done(name)
+        ass_done = assignment.get_assignments_by_course_done(name,username['user'])
+        print(ass_done)
         file_list = files.select_files_by_course(name)
         ass_ret = []
         file_ret = []
