@@ -13,14 +13,15 @@
     />
     <link href="css/index.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+    <link href="css/home.css" rel="stylesheet" />
     <script
       src="https://kit.fontawesome.com/dce3b3a630.js"
       crossorigin="anonymous"
     ></script>
   </head>
   <body>
-    <div class="container-fluid" style="background-color: #f9f6f7; min-height: 100vh">
-      <div class="header-bar w-100 py-3 px-2" style="position: fixed;top: 0;left: 0px;max-height: 180px;background-color: white;">
+    <div class="container-fluid" style="background-color: #f9f6f7; min-height: 100vh;  max-height: fit-content !important;">
+      <div class="header-bar w-100 py-3 px-2" style="position: fixed;top: 0;left: 0px;max-height: 180px;z-index:1000000;background-color: white;">
         <div class="col-12 text-end px-4">
           <i
             class="fa fa-solid fa-user fa-2x pointer"
@@ -29,27 +30,12 @@
           ></i>
         </div>
       </div>
-      <div
-        class="d-none"
-        id="menu_dialog_container"
-        style="
-          background-color: #5a565a;
-          z-index: 100;
-          position: fixed;
-          right: 0px;
-          top: 64px;
-          width: 240px;
-        "
-      >
+      <div class="d-none" id="menu_dialog_container" style="background-color: #5a565a;z-index: 100;position: fixed;right: 0px;top: 64px;width: 240px;">
         <div class="container-fluid" style="padding-left: 0px; padding-right: 0px">
-          <div class="col-12 py-3 pointer px-3"title="User profile"id="go-user-button"onclick="goUser()">
+          <div class="col-12 py-3 pointer px-3 text-center text-break"title="User profile"id="go-user-button"onclick="goUser()">
             <p class="text-white">User profile</p>
           </div>
-          <div
-            class="col-12 py-3 px-3 bg-danger pointer"
-            title="Logout"
-            onclick="logout()"
-          >
+          <div class="col-12 py-3 px-3 bg-danger pointer text-center text-break" id="go-logout-button" title="Logout" onclick="logout()" >
             <p class="text-white">Logout</p>
           </div>
         </div>
@@ -63,106 +49,189 @@
             onclick="goBack()"
           ></i>
         </div>
-        <div class="row py-3 " id="channel_container">
-          <div class="channel_template col-4 py-4 border bg-light d-none" id="channel_template">
-            <div class="title_name text-center">
-              <p class="fw-bold"></p>
-              Channel
+        <div class="row py-3 px-4" id="channel_container">
+            <div class="fw-bold fs-2">
+                Channels
             </div>
-            <div class="name text-center" onclick="get_courses(this.innerText)">
-            </div>
-            <div class="id d-none"></div>
+          <div class="channel_template col-3 py-4  d-none" id="channel_template">
+                <div class="border bg-light px-5 py-5 pointer rounded shadow boxx" onclick="get_courses(this)" style="min-height: 250px;max-height: fit-content;">
+                    <div class="title_name text-center">
+                        Channel
+                      </div>
+                      <div class="name text-center fw-bold text-break fs-3">
+                      </div>
+                      <div class="id d-none"></div>
+                      <hr/>
+                </div>
           </div>
         </div>
-        <div class="row py-3 gx-5" id="user_container">
-          <div class="user_template d-none" id="user_template">
-            <div class="name"></div>
-            <div class="surname"></div>
-            <div class="email"></div>
-            <div class="role"></div>
-            <div class="creation"></div>
-          </div>
+        <div class="row py-3" id="user_container">
+            <div class="fw-bold fs-2">
+                User information
+            </div>
+            <div class="col py-4 user_template d-none" id="user_template">
+                <div class="border bg-light px-5 py-5 rounded shadow">
+                    <div class="py-2">
+                        <div class="fw-bold">Name</div>
+                        <div class="name"></div>
+                    </div>
+                    <div class="py-2">
+                        <div class="fw-bold">Surname</div>
+                        <div class="surname"></div>
+                    </div>
+                    <div class="py-2">
+                        <div class="fw-bold">Email</div>
+                        <div class="email"></div>
+                    </div>
+                    <div class="py-2">
+                        <div class="fw-bold">Role</div>
+                        <div class="role"></div>
+                    </div>
+                    <div class="py-2">
+                        <div class="fw-bold">Creation</div>
+                        <div class="creation"></div>
+                    </div> 
+                </div> 
+            </div>
         </div>
-        <div class="row py-3 gx-5" id="course_container">
-          <div class="col course_template py-4 border bg-light d-none" id="course_template">
-            <div class="name" onclick="get_materials(this.innerText)"></div>
-            <div class="id d-none"></div>
+        <div class="row py-3 px-4" id="course_container">
+            <div class="fw-bold fs-2">
+                Courses
+            </div>
+          <div class="course_template col-4 py-4 d-none" id="course_template">
+            <div class="border bg-light pointer rounded shadow px-5 py-5 boxx" onclick="get_materials(this)" style="min-height: 300px;max-height: fit-content;">
+                <div class="title_name text-center">
+                    Course
+                  </div>
+                <div class="name text-center fw-bold text-break fs-3"></div>
+                <div class="id d-none"></div>
+                <hr/>
+            </div>
           </div>
         </div>
         <div class="row py-3 gx-5" id="materials_container">
-            <h2 class="col-12" id="course_name"></h2>
-            <h3 class="col-12">Course Material</h3>
-            <div class="row gx-5" id="files_container">
-              <div class="col file_template d-none" id="file_template">
-                <div class="name text-primary pointer"></div>
-              </div>
+            <div class="col-12 fw-bold fs-2" id="course_name"></div>
+            <div class="border bg-light px-5 py-5 rounded shadow">
+                <div class="row" id="files_container">
+                    <h3 class="col-12">Course Material</h3>
+                    <div class="col-12 file_template d-none" id="file_template">
+                      <div class="name text-primary pointer fs-5 textt"></div>
+                    </div>
+                  </div>
+                  <div class="row" id="assignments_done_container">
+                    <h3 class="col-12 mt-4">Assignments Done</h3>
+                    <div class="assignments_done_template col d-none py-2" id="assignments_done_template" onclick="seePrevious(this)">
+                        <div class="textt">
+                            <i class="fa fa-solid fa-check" style="float: left;margin-top: 6px;margin-right: 15px;color: green;"></i> <div class="name pointer fs-5"></div>
+                        </div>
+                        
+                      <div class="id d-none"></div>
+                    </div>
+                  </div>
+                  <div class="row" id="assignments_remaining_container">
+                    <h3 class="col-12 mt-4">Remaining Assignments</h3>
+                    <div class="assignments_remaimning_template col-12 d-none py-2 textt pointer" id="assignments_remaimning_template" onclick="compute(this)">
+                        <div>
+                            <i class="fa fa-solid fa-clock"  style="float: left;margin-top: 6px;margin-right: 15px;color: #F6CB49;"></i><div class="name pointer fs-5" title=""></div>
+                        </div>
+                        <div>
+                            <div class="text-decoration-underline">Deadline: </div><div class="deadline"></div>
+                        </div>
+                        
+                        <div id="id"></div>
+                    </div>
+                  </div>
             </div>
-            <hr />
-            <div class="row" id="assignments_done_container">
-              <h3 class="col-12">Assignments Done</h3>
-              <div class="assignments_done_template col d-none" id="assignments_done_template" onclick="seePrevious(this)">
-                <div class="name pointer"></div>
-                <div class="id d-none"></div>
-              </div>
-            </div>
-            <hr />
-            <div class="row" id="assignments_remaining_container">
-              <h3 class="col-12">Remaining Assignments</h3>
-              <div class="assignments_remaimning_template col d-none" id="assignments_remaimning_template" onclick="compute(this)">
-                <div class="name pointer" title=""></div>
-                <div class="deadline"></div>
-                <div id="id"></div>
-              </div>
-            </div>
+            
         </div>
-        <div class="row py-3" id="previous_container">
+        <div class="row py-3 px-4" id="previous_container">
             <div class=" col-12 final_template2 d-none" id="final_template2">
-              <h3>Final results:</h3>
-              <p class="final_template_subscription2"></p>
-              <p class="final_template_comment2"></p>
-              <p class="final_template_result2"></p>
+            <div class="fw-bold fs-2 pb-4">
+                Results obtained
+            </div>
+            <div class="border bg-light px-5 py-5 rounded shadow">
+                <p class="fw-bold">Name of the assignment:</p>
+                <p class="final_template_name2"></p>
+                <p class="fw-bold">Score:</p>
+                <p class="final_template_result2"></p>
+                <p class="fw-bold">Date:</p>
+                <p class="final_template_subscription2"></p>
+                <p class="fw-bold">Comment:</p>
+                <p class="final_template_comment2"></p>
+                
+            </div>   
             </div>
         </div>
-        <div class="row" id="exercise_container">
-            <h3 class="content_title"></h3>
-            <div class="exercise_template d-none" id="exercise_template">
-              <form>
-                <p class="content_quest"></p>
-                <p class="content_type"></p>
-                <p class="content_id d-none"></p>
-                <select class="content_language">
-                  <option value="java" selected>Java</option>
-                  <option value="python">Python</option>
-                  <option value="c++">C++</option>
-                  <option value="c">C</option>
-                </select>
-                <p class="content_assignment d-none"></p>
-                <input type="file" class="content_file" name="selectedFile" />
-                <textarea class="text_program" rows="4" cols="50"> </textarea>
-                <button type="button" onclick="send_solution(this)" id="send_button">
-                  Send
-                </button>
-              </form>
+        <div class="row py-3 px-4" id="exercise_container">
+            <div class="content_title fw-bold fs-2"></div>
+            <div class="col-12 py-4 exercise_template d-none" id="exercise_template">
+                <div class="border bg-light rounded shadow px-5 py-5">
+                    <form>
+                        <p class="fw-bold fs-5">Question: </p>
+                        <p class="content_quest"></p>
+                        <p class="fw-bold fs-5">Type of the question: </p>
+                        <p class="content_type"></p>
+                        <p class="content_id d-none"></p>
+                        <p class="fw-bold fs-5">Language used: </p>
+                        <select class="content_language">
+                            <option value="java" selected>Java</option>
+                            <option value="python">Python</option>
+                            <option value="c++">C++</option>
+                            <option value="c">C</option>
+                          </select>
+                        <p class="fw-bold fs-5 pt-4">Answer: </p>
+                        <div class="col py-3">
+                            <textarea class="text_program" rows="4" cols="50"> </textarea>
+                        </div>
+                        <div class="col">
+                            <p>or</p>
+                        </div>
+                        <div class="col">
+                            <input type="file" class="content_file " name="selectedFile" />
+                        </div>
+                        <p class="content_assignment d-none"></p>
+                        <div class="col">
+                            <hr/>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-lg  btn-primary" onclick="send_solution(this)" id="send_button">
+                                Send
+                              </button>
+                        </div>
+                      </form>
+                </div>
             </div>
             <div class="results_template d-none" id="results_template" >
               <div class="this_template">
-                <h3>Exercise results:</h3>
+                <div class="fw-bold fs-2">Exercise results</div>
+                <p class="fw-bold fs-5">Error: </p>
                 <p class="this_template_error"></p>
+                <p class="fw-bold fs-5">Similar responses found: </p>
                 <p class="this_template_similar"></p>
+                <p class="fw-bold fs-5"></p>
                 <p class="this_template_correct"></p>
+                <p class="fw-bold fs-2">Tests done</p>
                 <div id="this_template_container">
-                  <div class="this_template_test">
-                    <div class="this_template_test_quest"></div>
-                    <div class="this_template_test_result"></div>
-                    <div class="this_template_test_expected"></div>
-                    <div class="this_template_given"></div>
+                  <div class="this_template_test d-none">
+                    <p class="fw-bold fs-5">Test title: </p>
+                    <div class="this_template_test_quest">None</div>
+                    <p class="fw-bold fs-5">Test result: </p>
+                    <div class="this_template_test_result">None</div>
+                    <p class="fw-bold fs-5">Answer expected: </p>
+                    <div class="this_template_test_expected">None</div>
+                    <p class="fw-bold fs-5">Answer obtained: </p>
+                    <div class="this_template_given">None</div>
+                    <hr/>
                   </div>
                 </div>
               </div>
               <div class="final_template">
-                <h3>Final results:</h3>
+                <div class="fw-bold fs-2">Final results:</div>
+                <p class="fw-bold fs-5">Date:</p>
                 <p class="final_template_subscription"></p>
+                <p class="fw-bold fs-5">Comment: </p>
                 <p class="final_template_comment"></p>
+                <p class="fw-bold fs-5">Score: </p>
                 <p class="final_template_result"></p>
               </div>
             </div>

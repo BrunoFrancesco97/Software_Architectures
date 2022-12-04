@@ -1,0 +1,26 @@
+#go-user-button{
+    transition: 0.3s;
+}
+
+#go-user-button:hover{
+    background-color: hsl(208, 80%, 54%);
+}
+
+#go-logout-button{
+    transition: 0.3s;
+}
+
+#go-logout-button:hover{
+    background-color: #C51F17 !important;
+}
+
+.boxx{
+    transition: transform .2s; 
+}
+.boxx:hover{
+    transform: scale(1.1);
+}
+
+.textt:hover{
+    text-decoration:underline;
+}

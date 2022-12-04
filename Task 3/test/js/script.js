@@ -93,8 +93,9 @@ function goUser() {
   request.send();
 }
 
-function get_courses(name) {
+function get_courses(el) {
   var request = new XMLHttpRequest();
+  let name = el.getElementsByClassName('name')[0].innerText;
   request.open("GET", "http://localhost:5000/channel/" + name, true);
   request.onreadystatechange = function () {
     if (request.status == 200 && request.readyState == 4) {
@@ -110,6 +111,7 @@ function get_courses(name) {
         clone.classList.add("courses");
         clone.classList.remove("course_template");
         clone.classList.remove("d-none");
+        clone.setAttribute('title',  obj[i].name);
         let name = clone.getElementsByClassName("name");
         let id = clone.getElementsByClassName("id");
         clone.setAttribute("id", obj[i].name);
@@ -123,8 +125,9 @@ function get_courses(name) {
   request.send();
 }
 
-function get_materials(name) {
+function get_materials(el) {
   var request = new XMLHttpRequest();
+  let name = el.getElementsByClassName('name')[0].innerText;
   request.open("GET", "http://localhost:5000/course/" + name, true);
   request.onreadystatechange = function () {
     if (request.status == 200 && request.readyState == 4) {
@@ -144,6 +147,7 @@ function get_materials(name) {
         clone.classList.remove("file_template");
         clone.classList.remove("d-none");
         let name = clone.getElementsByClassName("name");
+        name[0].setAttribute("title", files[i].name);
         clone.setAttribute("id", files[i].name);
         name[0].innerText = files[i].name;
         document.querySelector("#files_container").appendChild(clone);
@@ -158,6 +162,7 @@ function get_materials(name) {
         clone.classList.remove("assignments_done_template");
         clone.classList.remove("d-none");
         let name = clone.getElementsByClassName("name");
+        name[0].setAttribute("title", assignments_done[i].name);
         clone.setAttribute("id", assignments_done[i].id);
         name[0].innerText = assignments_done[i].name;
         document
@@ -177,6 +182,7 @@ function get_materials(name) {
         let name = clone.getElementsByClassName("name");
         let deadline = clone.getElementsByClassName("deadline");
         clone.setAttribute("id", assignments_remaining[i].id);
+        name[0].setAttribute("title", assignments_remaining[i].name);
         name[0].innerText = assignments_remaining[i].name;
         deadline[0].innerText = assignments_remaining[i].deadline;
         document
@@ -209,6 +215,7 @@ function get_channels() {
         clone.classList.add("channels");
         clone.classList.remove("channel_template");
         clone.classList.remove("d-none");
+        clone.setAttribute('title',  obj.channels[i].name);
         let name = clone.getElementsByClassName("name");
         let id = clone.getElementsByClassName("id");
         clone.setAttribute("id", obj.channels[i].id);
@@ -304,12 +311,18 @@ function seePrevious(el) {
       clone.classList.add("results_prev");
       clone.classList.remove("final_template2");
       clone.classList.remove("d-none");
+      let nameD = clone.getElementsByClassName("final_template_name2");
       let sub = clone.getElementsByClassName("final_template_subscription2");
       let comment = clone.getElementsByClassName("final_template_comment2");
       let score = clone.getElementsByClassName("final_template_result2");
+      nameD[0].innerText = nameDiv;
       sub[0].innerText = obj.result[0].subscription;
-      comment[0].innerText = obj.result[0].comment;
-      score[0].innerText = obj.result[0].result;
+      if(obj.result[0].comment == null){
+        comment[0].innerText = "No comment";
+      }else{
+        score[0].innerText = obj.result[0].comment;
+      }
+      score[0].innerText = obj.result[0].result+"/100";    
       document.querySelector("#previous_container").appendChild(clone);
     }
   };
@@ -317,7 +330,8 @@ function seePrevious(el) {
   request.send();
 }
 function send_solution(el) {
-  information = el.parentNode;
+  information = el.parentNode.parentNode;
+  console.log(information)
   let type = information.getElementsByClassName("content_type")[0].innerText;
   let select = information.getElementsByClassName("content_language")[0];
   let language = select.options[select.selectedIndex].value;
@@ -347,13 +361,23 @@ function send_solution(el) {
         final[0].getElementsByClassName(
           "final_template_subscription"
         )[0].innerText = obj.results[0].subscription;
-        final[0].getElementsByClassName("final_template_comment")[0].innerText =
+        if(obj.results[0].comment == null){
+          final[0].getElementsByClassName("final_template_comment")[0].innerText = "No comment";
+        }else{
+          final[0].getElementsByClassName("final_template_comment")[0].innerText =
           obj.results[0].comment;
+        }
+        
         final[0].getElementsByClassName("final_template_result")[0].innerText =
-          obj.results[0].result;
+          obj.results[0].result+"/100";
         let actual = clone.getElementsByClassName("this_template");
-        actual[0].getElementsByClassName("this_template_error")[0].innerText =
+        if(obj.error == null || obj.error == ""){
+          actual[0].getElementsByClassName("this_template_error")[0].innerText = "No error";
+        }else{
+          actual[0].getElementsByClassName("this_template_error")[0].innerText =
           obj.error;
+        }
+        
         actual[0].getElementsByClassName("this_template_similar")[0].innerText =
           obj.similar_responses;
         tests_container = actual[0].querySelector("#this_template_container");
@@ -363,6 +387,7 @@ function send_solution(el) {
           let test_view =
             tests_container.getElementsByClassName("this_template_test");
           let clone2 = test_view[0].cloneNode(true);
+          clone2.classList.remove("d-none");
           clone2.getElementsByClassName(
             "this_template_test_quest"
           )[0].innerText = test[3];
