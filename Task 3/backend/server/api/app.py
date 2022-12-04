@@ -817,8 +817,8 @@ def send_exercise_develop():
                                 else:
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("python3 " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT, 
-                                                              shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
+                                                              shell=True).decode('UTF-8')
+                                        if utils.similar(resu.replace('\r','').strip(), test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
@@ -888,7 +888,7 @@ def send_exercise_develop():
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("./ " + path + "/app "+test.given_value, stderr=subprocess.STDOUT,
                                                               shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
+                                        if utils.similar(resu.replace('\r','').strip(), test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
@@ -956,7 +956,7 @@ def send_exercise_develop():
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("java " + path + "/app.java "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
                                                               shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
+                                        if utils.similar(resu.replace('\r','').strip(), test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
@@ -1027,7 +1027,7 @@ def send_exercise_develop():
                                     for test in tests_to_perform:
                                         resu = subprocess.check_output("./" + path + "/app "+test.given_value, stderr=subprocess.STDOUT, #TODO: CAMBIARE IN PYTHON3
                                                               shell=True).decode('UTF-8') 
-                                        if utils.similar(resu, test.expected) > SIMILARITY_CONSTRAINT:
+                                        if utils.similar(resu.replace('\r','').strip(), test.expected) > SIMILARITY_CONSTRAINT:
                                             res_list.append((True,resu.replace('\r','').strip(),test.expected, test.name))
                                         else:
                                             res_list.append((False,resu.replace('\r','').strip(),test.expected, test.name))
@@ -1181,6 +1181,18 @@ def add_test():
                 return jsonify({'added': False}), 403 
     else:
         return jsonify({'added': False}), 403
+
+
+
+
+@app.get('/result/<id>')
+@cross_origin(supports_credentials=True)
+@jwt_required()
+def get_results(id):
+    username = get_jwt_identity()
+    result_assignments = result.get_results_by_assignment_user(id,username['user'])
+    result_json = [result.obj_to_dict(item) for item in result_assignments]
+    return jsonify({'result': result_json}), 200
 
 
 if __name__ == '__main__':
