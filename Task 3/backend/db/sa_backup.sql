@@ -236,7 +236,6 @@ CREATE TABLE `results` (
 
 LOCK TABLES `results` WRITE;
 /*!40000 ALTER TABLE `results` DISABLE KEYS */;
-INSERT INTO `results` VALUES (14,'francym4@gmail.com','2022-12-04 20:32:24',0,NULL,164);
 /*!40000 ALTER TABLE `results` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +266,6 @@ CREATE TABLE `solution` (
 
 LOCK TABLES `solution` WRITE;
 /*!40000 ALTER TABLE `solution` DISABLE KEYS */;
-INSERT INTO `solution` VALUES (34,'class Test{\r\n    public static void main(String[] args){\r\n        try{\r\n            if(Integer.parseInt(args[0]) % 2 == 0){\r\n                System.out.println(\"12\");\r\n            }else{\r\n                System.out.println(\"0\");\r\n            }\r\n        }c','francym4@gmail.com',0,'fa5fe30c098c60d0e2e24bca4587cd41b1544c5f447f48ad1e7fa690256fc59e',1);
 /*!40000 ALTER TABLE `solution` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -369,4 +367,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-04 21:48:20
+-- Dump completed on 2022-12-04 22:26:52
