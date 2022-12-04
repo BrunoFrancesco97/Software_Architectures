@@ -34,7 +34,7 @@ services:
   app:
     image: hackerrank/app-web:latest
     container_name: hackerrank_app
-    build: test
+    build: app
     restart: always
     ports:
       - 127.0.0.1:8080:80
