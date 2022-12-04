@@ -69,7 +69,7 @@ hackerrank/app-web      latest
 
 Now you can start the system with:
 ```
-$> docker compose build
+$> docker compose up
 ```
 
 According to docker-compose declaration, there are only two exposed endpoints:
