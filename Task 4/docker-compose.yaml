@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  db:
+    #TODO: import a test at first startup
+    image: hackerrank/db:latest
+    build: backend/db
+    container_name: hackerrank_db
+    restart: always
+    #volumes:
+    #  - db:/var/lib/postgresql/data
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+
+  api:
+    image: hackerrank/api:latest
+    build: backend/server
+    container_name: hackerrank_api
+    restart: always
+    ports:
+      - 127.0.0.1:5000:5000
+    environment:
+      - DB_URL=db
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db
+
+  app:
+    image: hackerrank/app-web:latest
+    container_name: hackerrank_app
+    build: app
+    restart: always
+    ports:
+      - 127.0.0.1:8080:80
+      #TODO add a proxy container for deployment, or use an existent one
+
+    depends_on:
+      - db
+      - api
+
+#volumes:
+  #db:
