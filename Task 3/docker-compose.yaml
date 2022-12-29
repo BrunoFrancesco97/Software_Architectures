@@ -21,7 +21,7 @@ services:
     container_name: hackerrank_api
     restart: always
     ports:
-      - 127.0.0.1:5000:5000
+      - 5000:5000
     environment:
       - DB_URL=db
       - DB_PORT=3306
@@ -37,7 +37,7 @@ services:
     build: app
     restart: always
     ports:
-      - 127.0.0.1:8080:80
+      - 8080:80
       #TODO add a proxy container for deployment, or use an existent one
 
     depends_on:
