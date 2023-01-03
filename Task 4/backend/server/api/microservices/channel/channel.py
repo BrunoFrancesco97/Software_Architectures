@@ -1,7 +1,5 @@
 import sqlalchemy
 import database
-import requests
-from url_sec import * 
 
 class Channel(database.Base):
     __tablename__ = 'channels'
@@ -23,7 +21,6 @@ def add_channel(name: str):
         channel_got = get_channels_by_name(name)
         if channel_got is not None and len(channel_got) == 0:
             session.add(new_channel)
-            response = requests.put(URL_CHANNEL+'/'+name)
     except:
         session.rollback()
     else:
@@ -35,7 +32,6 @@ def remove_channel(name: str):
     session = database.Session()
     session.query(Channel).filter_by(name=name).delete(synchronize_session="evaluate")
     session.commit()
-    response = requests.delete(URL_CHANNEL+'/'+name)
 
 
 def selectAll():

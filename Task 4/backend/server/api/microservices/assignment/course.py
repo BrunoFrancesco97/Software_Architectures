@@ -1,8 +1,6 @@
 import sqlalchemy
 import database
 import channel
-import requests
-from url_sec import * 
 
 class Course(database.Base):
     __tablename__ = 'courses'
@@ -23,7 +21,6 @@ def add_course(name: str, channel_ID):
         if existent is not None and len(existent) == 1:
             new_course = Course(name=name, channel=channel_ID)
             session.add(new_course)
-            response = requests.put(URL_COURSE+'/'+existent[0].name+"/"+name)
     except Exception as e:
         print(e)
         session.rollback()
@@ -35,7 +32,6 @@ def remove_course(name: str, channel_ID, channel_name: str):
     session = database.Session()
     session.query(Course).filter_by(name=name, channel=channel_ID).delete(synchronize_session="evaluate")
     session.close()
-    response = requests.delete(URL_COURSE+'/'+channel_name+"/"+name)
 
 
 def select_all():
