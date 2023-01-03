@@ -160,11 +160,11 @@ def __python(program, user, exercise_id, correct):
 			tests_to_perform = tests.get_tests_by_exercise(exercise_id)
 			if len(tests_to_perform) == 0:
 				res = subprocess.check_output(
-					"python " + path + "/app.py", stderr=subprocess.STDOUT, shell=True).decode('UTF-8')  # TODO: Cambiarei n Python3
+					"python3 " + path + "/app.py", stderr=subprocess.STDOUT, shell=True).decode('UTF-8')  # TODO: Cambiarei n Python3
 			else:
 				for test in tests_to_perform:
 					print(test)
-					resu = subprocess.check_output("python " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT,  # TODO: Cambiarei n Python3
+					resu = subprocess.check_output("python3 " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT,  # TODO: Cambiarei n Python3
 												   shell=True).decode('UTF-8')
 
 					if utils.similar(resu.replace('\r', '').strip(), test.expected) > SIMILARITY_CONSTRAINT:
