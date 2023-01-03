@@ -105,8 +105,7 @@ CREATE TABLE `channel_subscriptions` (
   `subscription` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`channel`,`user`),
   KEY `user` (`user`),
-  CONSTRAINT `channel_subscriptions_ibfk_1` FOREIGN KEY (`channel`) REFERENCES `channels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `channel_subscriptions_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `channel_subscriptions_ibfk_1` FOREIGN KEY (`channel`) REFERENCES `channels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
