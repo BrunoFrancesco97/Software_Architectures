@@ -278,6 +278,13 @@ services:
       - DB_PASSWORD=test
     depends_on:
       - db_user
+  api_filesystem:
+    image: hackerrank/api_filesystem:latest
+    build: backend/server/api/microservices/filesystem
+    container_name: api_filesystem
+    restart: always
+    depends_on:
+      - db_user
 
 
   api:
@@ -320,6 +327,7 @@ services:
       - api_subscription
       - api_test
       - api_user
+      - api_filesystem
 
   app:
     image: hackerrank/app-web:latest
