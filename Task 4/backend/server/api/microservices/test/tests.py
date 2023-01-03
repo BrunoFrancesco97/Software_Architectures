@@ -9,7 +9,7 @@ class Test(database.Base):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     name = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)
     comment = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)
-    exercise = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("exercises.id"), nullable=False)
+    exercise = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     given_value = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=False)
     expected = sqlalchemy.Column(sqlalchemy.String(length=255),nullable=False)
 

@@ -12,7 +12,7 @@ class Assignment(database.Base):
     name = sqlalchemy.Column(sqlalchemy.String(length=40), nullable=True)
     creation = sqlalchemy.Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     deadline = sqlalchemy.Column(DateTime(timezone=True), nullable=False)
-    course = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("courses.name"), nullable=False)
+    course = sqlalchemy.Column(sqlalchemy.String(length=40), nullable=False)
 
 
 def add_assignment(name: str, year : int, month : int, day : int, hour : int, minutes : int, course_el: str):

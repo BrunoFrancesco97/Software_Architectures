@@ -7,7 +7,7 @@ import channel
 class Channel_Sub(database.Base):
     __tablename__ = 'channel_subscriptions'
     channel = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("channels.id"), primary_key=True)
-    user = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("user.email"), primary_key=True)
+    user = sqlalchemy.Column(sqlalchemy.String(length=40), primary_key=True)
     subscription = sqlalchemy.Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
 

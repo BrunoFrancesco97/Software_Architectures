@@ -14,7 +14,7 @@ class Exercise(database.Base):
     wrong1 = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)
     wrong2 = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)
     wrong3 = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)
-    assignment = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("assignments.id"), nullable=False)
+    assignment = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     type = sqlalchemy.Column(roles_enum, nullable=False)
 
 def obj_to_dict(obj: Exercise):  # for build json format

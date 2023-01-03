@@ -7,7 +7,7 @@ from url_sec import *
 class File(database.Base):
     __tablename__ = 'files'
     name = sqlalchemy.Column(sqlalchemy.String(length=255), primary_key=True)
-    course = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("courses.name"), primary_key=True)
+    course = sqlalchemy.Column(sqlalchemy.String(length=40), primary_key=True)
 
 
 def add_file(name: str, course: str, channel_name: str, file):

@@ -6,8 +6,8 @@ from sqlalchemy import DateTime
 
 class Result(database.Base):
     __tablename__ = 'results'
-    assignment = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("assignments.id"), nullable=False)
-    user = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("user.email"), nullable=False)
+    assignment = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    user = sqlalchemy.Column(sqlalchemy.String(length=40), nullable=False)
     subscription = sqlalchemy.Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     result = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     comment = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)

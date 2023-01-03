@@ -7,7 +7,7 @@ from sqlalchemy.sql import func
 class Course_Sub(database.Base):
     __tablename__ = 'course_subscriptions'
     course = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("courses.name"), primary_key=True)
-    user = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("user.email"), primary_key=True)
+    user = sqlalchemy.Column(sqlalchemy.String(length=40), primary_key=True)
     subscription = sqlalchemy.Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
 

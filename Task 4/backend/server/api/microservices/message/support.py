@@ -4,8 +4,8 @@ import database
 
 class Support(database.Base):
     __tablename__ = 'supports'
-    sender = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("user.email"), nullable=False)
-    receiver = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("user.email"), nullable=False)
+    sender = sqlalchemy.Column(sqlalchemy.String(length=40), nullable=False)
+    receiver = sqlalchemy.Column(sqlalchemy.String(length=40), nullable=False)
     object = sqlalchemy.Column(sqlalchemy.String(length=40), nullable=True)
     message = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=True)
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)

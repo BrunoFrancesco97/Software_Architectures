@@ -8,7 +8,7 @@ class Solution(database.Base):
     __tablename__ = 'solution'
     exercise = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("exercises.id"), primary_key=True)
     answer = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=False)
-    user = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("user.email"), primary_key=True)
+    user = sqlalchemy.Column(sqlalchemy.String(length=40), primary_key=True)
     correct = sqlalchemy.Column(sqlalchemy.BOOLEAN, nullable=True)
     hash = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=False)
     review = sqlalchemy.Column(sqlalchemy.BOOLEAN, nullable=False)
