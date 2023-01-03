@@ -304,9 +304,9 @@ services:
       - DB_PASSWORD=test
       - URL_ASSIGNMENT=api_assignment
       - URL_CHANNEL=api_channel
-      - URL_CHANNEL_SUB=api_subscription/channel_subscription
+      - URL_CHANNEL_SUB=api_subscription
       - URL_COURSE=api_course
-      - URL_COURSE_SUB=api_subscription/course_subscription
+      - URL_COURSE_SUB=api_subscription
       - URL_EXERCISE=api_exercise
       - URL_FILE=api_file
       - URL_LOGIN=api_login
