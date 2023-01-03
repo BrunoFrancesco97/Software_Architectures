@@ -153,9 +153,9 @@ def registration():
             response = requests.post((URL_LOGIN).strip(),json={"email":email,"password":password,"name":name,"surname":surname,"role":role},headers={'Content-type':'application/json'})
             return response.content,response.status_code
     except Exception as e:
-        return jsonify({'registered': False}),403
-    else:
         return jsonify({'registered': False}),500
+    else:
+        return jsonify({'registered': False}),403
 
 
 """
