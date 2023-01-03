@@ -1,19 +1,284 @@
 version: '3'
 
 services:
-  db:
-    #TODO: import a test at first startup
-    image: hackerrank/db:latest
-    build: backend/db
-    container_name: hackerrank_db
+  db_assignment:
+    image: hackerrank/db_assignment:latest
+    build: backend/db/microservices/assignment
+    container_name: db_assignment
     restart: always
-    #volumes:
-    #  - db:/var/lib/postgresql/data
     environment:
       - MARIADB_USER=test
       - MARIADB_PASSWORD=test
       - MARIADB_DATABASE=sa
       - MARIADB_ROOT_PASSWORD=root
+  db_channel:
+    image: hackerrank/db_channel:latest
+    build: backend/db/microservices/channel
+    container_name: db_channel
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_course:
+    image: hackerrank/db_course:latest
+    build: backend/db/microservices/course
+    container_name: db_course
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_exercise:
+    image: hackerrank/db_exercise:latest
+    build: backend/db/microservices/exercise
+    container_name: db_exercise
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_file:
+    image: hackerrank/db_file:latest
+    build: backend/db/microservices/file
+    container_name: db_file
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_login:
+    image: hackerrank/db_login:latest
+    build: backend/db/microservices/login
+    container_name: db_login
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_message:
+    image: hackerrank/db_message:latest
+    build: backend/db/microservices/message
+    container_name: db_message
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_result:
+    image: hackerrank/db_result:latest
+    build: backend/db/microservices/result
+    container_name: db_result
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_solution:
+    image: hackerrank/db_solution:latest
+    build: backend/db/microservices/solution
+    container_name: db_solution
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_subscription:
+    image: hackerrank/db_subscription:latest
+    build: backend/db/microservices/subscription
+    container_name: db_subscription
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_test:
+    image: hackerrank/db_test:latest
+    build: backend/db/microservices/test
+    container_name: db_test
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+  db_user:
+    image: hackerrank/db_user:latest
+    build: backend/db/microservices/user
+    container_name: db_user
+    restart: always
+    environment:
+      - MARIADB_USER=test
+      - MARIADB_PASSWORD=test
+      - MARIADB_DATABASE=sa
+      - MARIADB_ROOT_PASSWORD=root
+
+  api_assignment:
+    image: hackerrank/api_assignment:latest
+    build: backend/server/api/microservices/assignment
+    container_name: api_assignment
+    restart: always
+    environment:
+      - DB_URL=db_assignment
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_assignment
+  api_channel:
+    image: hackerrank/api_channel:latest
+    build: backend/server/api/microservices/channel
+    container_name: api_channel
+    restart: always
+    environment:
+      - DB_URL=db_channel
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_channel
+  api_course:
+    image: hackerrank/api_course:latest
+    build: backend/server/api/microservices/course
+    container_name: api_course
+    restart: always
+    environment:
+      - DB_URL=db_course
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_course
+  api_exercise:
+    image: hackerrank/api_exercise:latest
+    build: backend/server/api/microservices/exercise
+    container_name: api_exercise
+    restart: always
+    environment:
+      - DB_URL=db_exercise
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_exercise
+  api_file:
+    image: hackerrank/api_file:latest
+    build: backend/server/api/microservices/file
+    container_name: api_file
+    restart: always
+    environment:
+      - DB_URL=db_file
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_file
+  api_login:
+    image: hackerrank/api_login:latest
+    build: backend/server/api/microservices/loginreg
+    container_name: api_login
+    restart: always
+    environment:
+      - DB_URL=db_login
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_login
+  api_message:
+    image: hackerrank/api_message:latest
+    build: backend/server/api/microservices/message
+    container_name: api_message
+    restart: always
+    environment:
+      - DB_URL=db_message
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_message
+  api_result:
+    image: hackerrank/api_result:latest
+    build: backend/server/api/microservices/result
+    container_name: api_result
+    restart: always
+    environment:
+      - DB_URL=db_result
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_result
+  api_solution:
+    image: hackerrank/api_solution:latest
+    build: backend/server/api/microservices/solution
+    container_name: api_solution
+    restart: always
+    environment:
+      - DB_URL=db_solution
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_solution
+  api_subscription:
+    image: hackerrank/api_subscription:latest
+    build: backend/server/api/microservices/subscription
+    container_name: api_subscription
+    restart: always
+    environment:
+      - DB_URL=db_subscription
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_subscription
+  api_test:
+    image: hackerrank/api_test:latest
+    build: backend/server/api/microservices/test
+    container_name: api_test
+    restart: always
+    environment:
+      - DB_URL=db_test
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_test
+  api_user:
+    image: hackerrank/api_user:latest
+    build: backend/server/api/microservices/user
+    container_name: api_user
+    restart: always
+    environment:
+      - DB_URL=db_user
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+    depends_on:
+      - db_user
+
 
   api:
     image: hackerrank/api:latest
@@ -21,15 +286,40 @@ services:
     container_name: hackerrank_api
     restart: always
     ports:
-      - 127.0.0.1:5000:5000
+      - 5000:5000
     environment:
       - DB_URL=db
       - DB_PORT=3306
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_ASSIGNMENT=api_assignment
+      - URL_CHANNEL=api_channel
+      - URL_CHANNEL_SUB=api_subscription/channel_subscription
+      - URL_COURSE=api_course
+      - URL_COURSE_SUB=api_subscription/course_subscription
+      - URL_EXERCISE=api_exercise
+      - URL_FILE=api_file
+      - URL_LOGIN=api_login
+      - URL_MESSAGE=api_message
+      - URL_RESULT=api_result
+      - URL_SOLUTION=api_solution
+      #- api_subscription
+      - URL_TEST=api_test
+      - URL_USER=api_user
     depends_on:
-      - db
+      - api_assignment
+      - api_channel
+      - api_course
+      - api_exercise
+      - api_file
+      - api_login
+      - api_message
+      - api_result
+      - api_solution
+      - api_subscription
+      - api_test
+      - api_user
 
   app:
     image: hackerrank/app-web:latest
@@ -37,11 +327,11 @@ services:
     build: app
     restart: always
     ports:
-      - 127.0.0.1:8080:80
+      - 8080:80
       #TODO add a proxy container for deployment, or use an existent one
 
     depends_on:
-      - db
+      #- db
       - api
 
 #volumes:
