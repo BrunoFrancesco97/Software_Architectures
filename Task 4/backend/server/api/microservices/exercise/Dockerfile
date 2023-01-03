@@ -1,8 +1,12 @@
 # syntax=docker/dockerfile:1
+FROM ubuntu:latest
 
-FROM python:3.9-slim-bullseye
+WORKDIR /home
 
-WORKDIR /python-docker
+RUN apt-get update
+RUN apt-get install python3.9 -y
+RUN apt-get install python3-pip -y
+RUN apt-get install default-jre -y
 
 ENV DB_URL=db_channel
 ENV DB_PORT=3306
@@ -10,11 +14,11 @@ ENV DB_NAME=sa
 ENV DB_USER=root
 ENV DB_PASSWORD=root
 
-COPY ./requirements.txt requirements.txt
+COPY ./requirements.txt /home/requirements.txt
 RUN pip3 install --no-cache-dir --upgrade -r ./requirements.txt
 
 #RUN mkdir assignment
-ADD . /python-docker
+ADD . /home
 
 ENTRYPOINT ["python3","app.py"]
 #ENTRYPOINT ["python3","assignment/app.py"]

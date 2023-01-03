@@ -159,6 +159,7 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - FS_URL=api_filesystem
     depends_on:
       - db_course
   api_exercise:
@@ -185,6 +186,7 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - FS_URL=api_filesystem
     depends_on:
       - db_file
   api_login:
