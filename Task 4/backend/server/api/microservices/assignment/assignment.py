@@ -5,6 +5,7 @@ import database
 from sqlalchemy.sql import func
 from sqlalchemy import DateTime
 import result
+import pika 
 
 class Assignment(database.Base):
     __tablename__ = 'assignments'
@@ -20,12 +21,17 @@ def add_assignment(name: str, year : int, month : int, day : int, hour : int, mi
     try:
         x = datetime.datetime(int(year), int(month), int(day), int(hour), int(minutes), 00)
         new_assignments = Assignment(name=name, deadline=x, course=course_el)
-        session.add(new_assignments)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channell = connection.channel()
+        channell.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_assignments)
+        dictObj["mode"] = "add"
+        channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+        print("Message sent")
+        connection.close()
     except Exception as e:
-        session.rollback()
         return (False,None)
     else:
-        session.commit()
         channels = session.query(Assignment).filter_by(name=name, course=course_el).all()
         session.close()
         return (True,channels[0])
@@ -38,6 +44,16 @@ def obj_to_dict(obj: Assignment):  # for build json format
         "creation": obj.creation,
         "deadline" : obj.deadline,
         "course" : obj.course,
+    }
+
+def obj_to_dict2(obj: Assignment):  # for build json format
+    return {
+        "id" : obj.id,
+        "name": obj.name,
+        "creation": obj.creation,
+        "deadline" : obj.deadline,
+        "course" : obj.course,
+        "event" : "assignment"
     }
 
 def remove_assignment(id_el):
