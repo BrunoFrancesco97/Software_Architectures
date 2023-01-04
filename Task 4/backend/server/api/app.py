@@ -610,7 +610,7 @@ ENDPOINT USED IN ORDER TO UPLOAD AS USER AN ASSIGNMENT GIVEN
 def send_exercise_develop():
     username = get_jwt_identity()
     response = jsonify({'ok': 'no'}), 400
-    if username['role'] == 'admin': #TODO: USER 
+    if username['role'] == 'user': 
         form : dict = request.form.to_dict()
         if request.form['type'] == 'develop':
             file = request.files
