@@ -3,6 +3,7 @@ from sqlalchemy.sql import func
 from sqlalchemy import Enum, DateTime
 import database
 import crypto
+import pika
 
 roles = ('user', 'staff', 'admin')
 roles_enum = Enum(*roles, name="roles")
@@ -27,19 +28,33 @@ def obj_to_dict(obj: User):  # for build json format
         "creation":obj.creation
     }
 
+def obj_to_dict2(obj: User):  # for build json format
+    return {
+        "name": obj.name,
+        "surname":obj.surname,
+        "email":obj.email,
+        "role":obj.role,
+        "password":obj.password,
+        "salt":obj.salt,
+        "event":"user"
+    }
 
 
 def add_user_complete(username, password, salt, name, surname, role):
-    session = database.Session()
     if role == 'user' or role == 'admin' or role == 'staff':
         try:
             newUser = User(email=username, password=password, salt=salt, name=name, surname=surname, role=role)
-            session.add(newUser)
-        except:
-            session.rollback()
-        else:
-            session.commit()
-
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+            channel = connection.channel()
+            channel.queue_declare(queue='channel_info')
+            dictObj : dict = obj_to_dict2(newUser)
+            dictObj["mode"] = "add"
+            channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+                )
+            print("Message sent")
+            connection.close()
+        except Exception as e:
+            print(e)
 
 def add_user_uncomplete(username, password, salt, role):
     session = database.Session()
@@ -86,6 +101,6 @@ def get_password_salt(email: str):
 def select_user_by_email_password(email: str, password: str, salt: str):
     hash = crypto.sha256_encode_salt(password, salt)
     session = database.Session()
-    user = session.query(User).filter_by(email=email).all()
+    user = session.query(User).filter_by(email=email,password=hash).all()
     session.close()
     return user
