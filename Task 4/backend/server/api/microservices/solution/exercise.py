@@ -1,6 +1,7 @@
 import sqlalchemy
 import database
 from sqlalchemy import Enum
+import pika 
 
 roles = ('multiple', 'open', 'develop', 'quiz')
 roles_enum = Enum(*roles, name="roles")
@@ -25,33 +26,67 @@ def obj_to_dict(obj: Exercise):  # for build json format
         "type":obj.type
     }
 
+def obj_to_dict2(obj: Exercise):  # for build json format
+    return {
+        "id":obj.id,
+        "quest": obj.quest,
+        "correct":obj.correct,
+        "assignment":obj.assignment,
+        "type":obj.type,
+        "event":"exercise"
+    }
+
+def obj_to_dict3(obj: Exercise):  # for build json format
+    return {
+        "id":obj.id,
+        "quest": obj.quest,
+        "correct":obj.correct,
+        "wrong1":obj.wrong1,
+        "wrong2":obj.wrong2,
+        "wrong3":obj.wrong3,
+        "assignment":obj.assignment,
+        "type":obj.type,
+        "event":"exercise"
+    }
 
 
 def add_exercise_uncomplete(quest: str, correct: str, assignment, type: str):
     session = database.Session()
     try:
         new_exercise = Exercise(quest=quest, correct=correct, assignment=assignment, type=type)
-        session.add(new_exercise)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channell = connection.channel()
+        channell.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_exercise)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "1"
+        channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+        print("Message sent")
+        connection.close()
     except:
-        session.rollback()
         return (False,None)
     else:
-        session.commit()
         exercise = session.query(Exercise).filter_by(quest=quest, assignment=assignment).all()
         session.close()
         return (True,exercise[0])
 
 
 def add_exercise_complete(quest: str, correct: str, wrong1: str, wrong2: str, wrong3: str, assignment, type: str):
-    session = database.Session()
     try:
         new_exercise = Exercise(quest=quest, correct=correct, wrong1=wrong1, wrong2=wrong2, wrong3=wrong3,
                                 assignment=assignment, type=type)
-        session.add(new_exercise)
-    except:
-        session.rollback()
-    else:
-        session.commit()
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channell = connection.channel()
+        channell.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict3(new_exercise)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "2"
+        channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+        print("Message sent")
+        connection.close()
+    except Exception as e:
+        print(e)
+
 
 
 def remove_exercise(id_el):

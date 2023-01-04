@@ -1,8 +1,8 @@
 import sqlalchemy
 import database
 import crypto
-from exercise import Exercise
-
+import pika 
+import utils
 
 class Solution(database.Base):
     __tablename__ = 'solution'
@@ -24,6 +24,16 @@ def obj_to_dict(obj: Solution):  # for build json format
         "review": obj.review,
     }
 
+def obj_to_dict2(obj: Solution):  # for build json format
+    return {
+        "exercise": obj.exercise,
+        "answer": obj.answer,
+        "user": obj.user,
+        "correct": obj.correct,
+        "hash": obj.hash,
+        "review": obj.review,
+        "event":"solution"
+    }
 
 def obj_to_dict_quest(obj: Solution, quest):  # for build json format
     return {
@@ -46,29 +56,38 @@ def compute_hash(answer: str):
 
 
 def add_solution(exercise: int, answer: str, user: str, correct, review):
-    session = database.Session()
     try:
-        new_solution = Solution(exercise=exercise, answer=answer, user=user, correct=correct, hash=compute_hash(answer),
-                                review=review)
-        session.add(new_solution)
+        answer_b64 = utils.encode(answer)
+        new_solution = Solution(exercise=exercise, answer=answer_b64, user=user, correct=correct, hash=compute_hash(answer),review=review)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_solution)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "1"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
     except Exception as e:
         print(e)
-        session.rollback()
-    else:
-        session.commit()
-
 
 def add_solution_open(exercise: int, answer: str, user: str, review):
-    session = database.Session()
     try:
-        new_solution = Solution(exercise=exercise, answer=answer, user=user, hash=compute_hash(answer),
-                                review=review)
-        session.add(new_solution)
+        answer_b64 = utils.encode(answer)
+        new_solution = Solution(exercise=exercise, answer=answer_b64, user=user, hash=compute_hash(answer),review=review)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_solution)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "2"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
     except Exception as e:
         print(e)
-        session.rollback()
-    else:
-        session.commit()
 
 
 def get_solutions_by_name(user: str):
