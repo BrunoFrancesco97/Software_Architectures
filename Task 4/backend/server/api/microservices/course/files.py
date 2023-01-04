@@ -2,29 +2,35 @@ import sqlalchemy
 import database
 import json 
 import requests 
-from url_sec import *
+from url_sec import * 
+import pika 
 
 class File(database.Base):
     __tablename__ = 'files'
     name = sqlalchemy.Column(sqlalchemy.String(length=255), primary_key=True)
-    course = sqlalchemy.Column(sqlalchemy.String(length=40), primary_key=True)
+    course = sqlalchemy.Column(sqlalchemy.String(length=40), sqlalchemy.ForeignKey("courses.name"), primary_key=True)
 
 
 def add_file(name: str, course: str, channel_name: str, file):
-    session = database.Session()
     try:
-            response = requests.put(URL_FILE+'/'+channel_name+"/"+course+"/"+name)
-            js = json.loads(response.content)
-            if js['added'] == True:
-                new_file = File(name=name, course=course)
-                session.add(new_file)
-            else:
-                session.rollback()
-                return False
+        response = requests.put(URL_FILE+'/'+channel_name+"/"+course+"/"+name)
+        js = json.loads(response.content)
+        if js['added'] == True:
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+            channel = connection.channel()
+            channel.queue_declare(queue='channel_info')
+            new_file = File(name=name, course=course)
+            dictObj : dict = obj_to_dict2(new_file)
+            dictObj["mode"] = "add"
+            channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+            )
+            print("Message sent")
+            connection.close()
+        else:
+            return False
     except:
-        session.rollback()
+        return False 
     else:
-        session.commit()
         return True 
 
 
@@ -32,6 +38,13 @@ def obj_to_dict(obj: File):  # for build json format
     return {
         "name": obj.name,
         "course" : obj.course,
+    }
+
+def obj_to_dict2(obj: File):  # for build json format
+    return {
+        "name": obj.name,
+        "course" : obj.course,
+        "event": "file"
     }
 
 def remove_file(name: str, course: str, channel_name: str):

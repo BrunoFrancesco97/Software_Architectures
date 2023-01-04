@@ -2,7 +2,7 @@ import sqlalchemy
 import database
 from sqlalchemy.sql import func
 from sqlalchemy import DateTime
-
+import pika
 
 class Result(database.Base):
     __tablename__ = 'results'
@@ -23,40 +23,65 @@ def obj_to_dict(obj: Result):  # for build json format
         "id":obj.id
     }
 
+def obj_to_dict2(obj: Result):  # for build json format
+    return {
+        "assignment": obj.assignment,
+        "user": obj.user,
+        "subscription":obj.subscription,
+        "result":obj.result,
+        "comment":obj.comment,
+        "id":obj.id,
+        "event":"result"
+    }
 
 def add_result_without_comment(assignment_el: int, user_el: str, result_el: int):
-    session = database.Session()
     try:
         new_result = Result(assignment=assignment_el, user=user_el, result=result_el)
-        session.add(new_result)
-    except:
-        session.rollback()
-    else:
-        session.commit()
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_result)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "1"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
+    except Exception as e:
+        print(e)
 
 
 def add_result_with_comment(assignment_el: int, user_el: str, result_el: int, comment_el: str):
-    session = database.Session()
     try:
         new_result = Result(assignment=assignment_el, user=user_el, result=result_el, comment=comment_el)
-        session.add(new_result)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_result)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "2"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
     except Exception as e:
         print(e)
-        session.rollback()
-    else:
-        session.commit()
-
 
 def add_result_without_vote(assignment_el: int, user_el: str, comment_el: str):
-    session = database.Session()
     try:
         new_result = Result(assignment=assignment_el, user=user_el, comment=comment_el)
-        session.add(new_result)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_result)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "3"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
     except Exception as e:
         print(e)
-        session.rollback()
-    else:
-        session.commit()
 
 
 def remove_result(id_el):
