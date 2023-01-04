@@ -1,6 +1,7 @@
 import sqlalchemy
 import database
 import channel
+import pika 
 
 class Course(database.Base):
     __tablename__ = 'courses'
@@ -14,19 +15,29 @@ def obj_to_dict(obj: Course):  # for build json format
         "channel": obj.channel,
     }
 
+def obj_to_dict2(obj: Course):  # for build json format
+    return {
+        "name": obj.name,
+        "channel": obj.channel,
+        "event":"course"
+    }
+
 def add_course(name: str, channel_ID):
-    session = database.Session()
     try:
         existent = channel.get_channels_by_id(channel_ID)
         if existent is not None and len(existent) == 1:
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+            channell = connection.channel()
+            channell.queue_declare(queue='channel_info')
             new_course = Course(name=name, channel=channel_ID)
-            session.add(new_course)
+            dictObj : dict = obj_to_dict2(new_course)
+            dictObj["mode"] = "add"
+            channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+            )
+            print("Message sent")
+            connection.close()
     except Exception as e:
         print(e)
-        session.rollback()
-    else:
-        session.commit()
-
 
 def remove_course(name: str, channel_ID, channel_name: str):
     session = database.Session()

@@ -1,5 +1,6 @@
 import sqlalchemy
 import database
+import pika 
 
 class Channel(database.Base):
     __tablename__ = 'channels'
@@ -11,20 +12,30 @@ class Channel(database.Base):
 def obj_to_dict(obj: Channel):  
     return {
         "id": obj.id,
-        "name": obj.name,
+        "name": obj.name
     }
 
+def obj_to_dict2(obj: Channel):  
+    return {
+        "id": obj.id,
+        "name": obj.name,
+        "event":"channel"
+    }
+
+
 def add_channel(name: str):
-    session = database.Session()
-    try:
-        new_channel = Channel(name=name)
-        channel_got = get_channels_by_name(name)
-        if channel_got is not None and len(channel_got) == 0:
-            session.add(new_channel)
-    except:
-        session.rollback()
-    else:
-        session.commit()
+    new_channel = Channel(name=name)
+    channel_got = get_channels_by_name(name)
+    if channel_got is not None and len(channel_got) == 0:
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_channel)
+        dictObj["mode"] = "add"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+            )
+        print("Message sent")
+        connection.close()
 
 
 
