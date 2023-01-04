@@ -1,6 +1,6 @@
 import sqlalchemy
 import database
-
+import pika 
 
 class Support(database.Base):
     __tablename__ = 'supports'
@@ -19,19 +19,31 @@ def obj_to_dict(obj: Support):  # for build json format
         "message": obj.message,
     }
 
+def obj_to_dict2(obj: Support):  # for build json format
+    return {
+        "sender": obj.sender,
+        "receiver": obj.receiver,
+        "object": obj.object,
+        "message": obj.message,
+        "event": "message"
+    }
 
 
 
 def send_message(sender: str, receiver: str, object_message: str, message: str):
-    session = database.Session()
     try:
         new_message = Support(sender=sender, receiver=receiver, object=object_message, message=message)
-        session.add(new_message)
-    except:
-        session.rollback()
-    else:
-        session.commit()
-
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_message)
+        dictObj["mode"] = "add"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
+    except Exception as e:
+        print(e)
 
 def select_messages_by_receiver(receiver: str):
     session = database.Session()
