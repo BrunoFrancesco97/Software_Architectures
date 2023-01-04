@@ -3,6 +3,7 @@ import database
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
 import channel
+import pika 
 
 class Channel_Sub(database.Base):
     __tablename__ = 'channel_subscriptions'
@@ -18,6 +19,12 @@ def obj_to_dict(obj: Channel_Sub):  # for build json format
         "subscription": obj.subscription,
     }
 
+def obj_to_dict2(obj: Channel_Sub):  # for build json format
+    return {
+        "user": obj.user,
+        "channel": obj.channel,
+        "event":"channel_sub"
+    }
 
 def obj_to_dict_complete(obj):  # for build json format
     return {
@@ -26,16 +33,21 @@ def obj_to_dict_complete(obj):  # for build json format
 
 
 def add_subscription(channel, user: str):
-    session = database.Session()
     try:
         sub = select_channel_subs(user, channel)
         if sub is not None and len(sub) == 0:
             new_channel_sub = Channel_Sub(channel=channel, user=user)
-            session.add(new_channel_sub)
-    except:
-        session.rollback()
-    else:
-        session.commit()
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+            channell = connection.channel()
+            channell.queue_declare(queue='channel_info')
+            dictObj : dict = obj_to_dict2(new_channel_sub)
+            dictObj["mode"] = "add"
+            channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+            )
+            print("Message sent")
+            connection.close()
+    except Exception as e:
+        print(e)
 
 
 def remove_subscription(name: str, channel: id):
