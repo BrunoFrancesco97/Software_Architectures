@@ -10,6 +10,7 @@ import utils
 import result
 import shutil
 import subprocess
+import time 
 
 app = Flask(__name__)
 SIMILARITY_CONSTRAINT = 0.82
@@ -160,11 +161,10 @@ def __python(program, user, exercise_id, correct):
 			tests_to_perform = tests.get_tests_by_exercise(exercise_id)
 			if len(tests_to_perform) == 0:
 				res = subprocess.check_output(
-					"python3 " + path + "/app.py", stderr=subprocess.STDOUT, shell=True).decode('UTF-8')  # TODO: Cambiarei n Python3
+					"python " + path + "/app.py", stderr=subprocess.STDOUT, shell=True).decode('UTF-8')  # TODO: Cambiarei n Python3
 			else:
 				for test in tests_to_perform:
-					print(test)
-					resu = subprocess.check_output("python3 " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT,  # TODO: Cambiarei n Python3
+					resu = subprocess.check_output("python " + path + "/app.py "+test.given_value, stderr=subprocess.STDOUT,  # TODO: Cambiarei n Python3
 												   shell=True).decode('UTF-8')
 
 					if utils.similar(resu.replace('\r', '').strip(), test.expected) > SIMILARITY_CONSTRAINT:
@@ -187,7 +187,7 @@ def __python(program, user, exercise_id, correct):
 						exercise_id, program, user, True, True)
 				else:
 					solution.add_solution(
-						exercise_id, program, user, False, True)
+						exercise_id, program, user, False, True) 
 			else:
 				if error == "":
 					flag_passed = True
@@ -198,6 +198,7 @@ def __python(program, user, exercise_id, correct):
 					flag_passed = False
 				solution.add_solution(
 					exercise_id, program, user, flag_passed, True)
+			time.sleep(10) 
 			similar = __check_integrity_solution(
 				exercise_id, user)
 			n_exe = exercise.get_exercises_by_assignment(correct.assignment)
@@ -208,12 +209,14 @@ def __python(program, user, exercise_id, correct):
 					user, item.id, True)
 				if len(db_sol) == 1:
 					count_sol += 1
-					if db_sol[0].correct is True:
+					if db_sol[0].correct == True:
 						count_correct += 1
-			if len(n_exe) == count_sol:
+			result_json = []
+			if len(n_exe) == count_sol: #I've completed all the exercises
 				if count_correct == 0:
 					result.add_result_without_comment(
 						correct.assignment, user, 0)
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct.assignment)
 					result_json = [result.obj_to_dict(
@@ -221,6 +224,7 @@ def __python(program, user, exercise_id, correct):
 				else:
 					result.add_result_without_comment(correct.assignment, user,
 													  int((count_correct / len(n_exe)) * 100))
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct.assignment)
 					result_json = [result.obj_to_dict(
@@ -288,6 +292,7 @@ def __java(program, user, exercise_id, correct):
 					flag_passed = False
 				solution.add_solution(
 					exercise_id, program, user, flag_passed, True)
+			time.sleep(10)
 			similar = __check_integrity_solution(exercise_id, user)
 			n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
 			count_sol = 0
@@ -303,6 +308,7 @@ def __java(program, user, exercise_id, correct):
 				if count_correct == 0:
 					result.add_result_without_comment(
 						correct[0].assignment, user, 0)
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct[0].assignment)
 					result_json = [result.obj_to_dict(
@@ -310,6 +316,7 @@ def __java(program, user, exercise_id, correct):
 				else:
 					result.add_result_without_comment(correct[0].assignment, user,
 													  int((count_correct / len(n_exe)) * 100))
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct[0].assignment)
 					result_json = [result.obj_to_dict(
@@ -380,6 +387,7 @@ def __c(program, user, exercise_id, correct):
 					flag_passed = False
 				solution.add_solution(
 					exercise_id, program, user, flag_passed, True)
+			time.sleep(10)
 			similar = __check_integrity_solution(
 				exercise_id, user)
 			n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
@@ -396,6 +404,7 @@ def __c(program, user, exercise_id, correct):
 				if count_correct == 0:
 					result.add_result_without_comment(
 						correct[0].assignment, user, 0)
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct[0].assignment)
 					result_json = [result.obj_to_dict(
@@ -403,6 +412,7 @@ def __c(program, user, exercise_id, correct):
 				else:
 					result.add_result_without_comment(correct[0].assignment, user,
 													  int((count_correct / len(n_exe)) * 100))
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct[0].assignment)
 					result_json = [result.obj_to_dict(
@@ -472,6 +482,7 @@ def __cpp(program, user, exercise_id, correct):
 					flag_passed = False
 				solution.add_solution(
 					exercise_id, program, user, flag_passed, True)
+			time.sleep(10)
 			similar = __check_integrity_solution(
 				exercise_id, user)
 			n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
@@ -488,6 +499,7 @@ def __cpp(program, user, exercise_id, correct):
 				if count_correct == 0:
 					result.add_result_without_comment(
 						correct[0].assignment, user, 0)
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct[0].assignment)
 					result_json = [result.obj_to_dict(
@@ -495,6 +507,7 @@ def __cpp(program, user, exercise_id, correct):
 				else:
 					result.add_result_without_comment(correct[0].assignment, user,
 													  int((count_correct / len(n_exe)) * 100))
+					time.sleep(10)
 					result_list = __get_result_assignment(
 						user, correct[0].assignment)
 					result_json = [result.obj_to_dict(

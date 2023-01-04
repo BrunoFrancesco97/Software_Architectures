@@ -2,7 +2,7 @@ import sqlalchemy
 import database
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
-
+import pika 
 
 class Course_Sub(database.Base):
     __tablename__ = 'course_subscriptions'
@@ -18,19 +18,31 @@ def obj_to_dict(obj: Course_Sub):  # for build json format
         "subscription": obj.subscription,
     }
 
+def obj_to_dict2(obj: Course_Sub):  # for build json format
+    return {
+        "user": obj.user,
+        "course": obj.course,
+        "event":"course_sub"
+    }
+
+
 
 def add_subscription(course: str, user: str):
-    session = database.Session()
     try:
         sub = select_course_subs(user, course)
         if sub is not None and len(sub) == 0:
             new_course_sub = Course_Sub(course=course, user=user)
-            session.add(new_course_sub)
-    except:
-        session.rollback()
-    else:
-        session.commit()
-
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+            channel = connection.channel()
+            channel.queue_declare(queue='channel_info')
+            dictObj : dict = obj_to_dict2(new_course_sub)
+            dictObj["mode"] = "add"
+            channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+                )
+            print("Message sent")
+            connection.close()
+    except Exception as e:
+        print(e)
 
 def remove_subscription(name: str, course: str):
     session = database.Session()

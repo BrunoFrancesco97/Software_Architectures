@@ -1,5 +1,6 @@
 import sqlalchemy
 import database
+import pika 
 
 
 class Test(database.Base):
@@ -21,30 +22,52 @@ def obj_to_dict(obj: Test):  # for build json format
         "expected":obj.expected
     }
 
+def obj_to_dict2(obj: Test):  # for build json format
+    return {
+        "id":obj.id,
+        "name": obj.name,
+        "comment":obj.comment,
+        "exercise":obj.exercise,
+        "parameter":obj.given_value,
+        "expected":obj.expected,
+        "event":"test"
+    }
 
 
 def add_test_uncomplete(name: str, exercise: int, given_value : str, expected : str):
-    session = database.Session()
     try:
         new_test = Test(name=name, exercise=exercise, given_value=given_value, expected= expected)
-        session.add(new_test)
-    except:
-        session.rollback()
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_test)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "1"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
+    except Exception as e:
         return False
     else:
-        session.commit()
         return True 
 
 def add_test_complete(name: str, comment: str, exercise: int, given_value : str, expected : str):
-    session = database.Session()
     try:
         new_test = Test(name=name, exercise=exercise, comment=comment, given_value=given_value, expected=expected)
-        session.add(new_test)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='channel_info')
+        dictObj : dict = obj_to_dict2(new_test)
+        dictObj["mode"] = "add"
+        dictObj["type"] = "2"
+        channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+        )
+        print("Message sent")
+        connection.close()
     except:
-        session.rollback()
         return False
     else:
-        session.commit()
         return True 
 
 
