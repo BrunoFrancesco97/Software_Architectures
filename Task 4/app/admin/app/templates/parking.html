@@ -1,0 +1,411 @@
+{% include 'include/header.html' %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">{{ parkings[parking_id]["parking_name"] }}</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+              <li class="breadcrumb-item active">Manage Parkings</li>
+              <li class="breadcrumb-item active">{{ parkings[parking_id]["parking_name"] }}</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <!-- LOADING -->
+              <div id="occupation_loading" class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+              </div>
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Parkings Occupation</span>
+                <span id="occupation" class="info-box-number"></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <!-- LOADING -->
+              <div id="occupied_loading" class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+              </div>
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-lock"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Occupied</span>
+                <span id="occupied" class="info-box-number"></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <!-- LOADING -->
+              <div id="free_loading" class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+              </div>
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-lock-open"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Free</span>
+                <span id="free" class="info-box-number"></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <!-- LOADING -->
+              <div id="total_loading" class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+              </div>
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-parking"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total</span>
+                <span id="total" class="info-box-number"></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h3 class="m-0 text-dark">Parking info</h3>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-6">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Specifications</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form role="form" method="post">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="parking_name">Parking Name</label>
+                    <input name="parking_name" type="text" class="form-control" id="parking_name" placeholder="Enter parking name" value="{{ parkings[parking_id]["parking_name"] }}" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input name="latitude" type="text" class="form-control" id="latitude" placeholder="45.4791046" value="{{ parkings[parking_id]["location"].latitude }}" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input name="longitude" type="text" class="form-control" id="longitude" placeholder="12.252762" value="{{ parkings[parking_id]["location"].longitude }}" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="capacity">Capacity</label>
+                    <input name="capacity" type="number" class="form-control" id="capacity" placeholder="150" value="{{ parkings[parking_id]["capacity"] }}" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="price_per_hour">Price per hour</label>
+                    <input name="price_per_hour" type="decimal" class="form-control" id="price_per_hour" placeholder="5" value="{{ parkings[parking_id]["price_per_hour"] }}" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="type">Parking Type</label>
+                    <select name="type" id="type" class="form-control" id="type" disabled>
+                      <option value="0"{% if parkings[parking_id]["features"].type==0 %} selected{% endif %}>Indoor</option>
+                      <option value="1"{% if parkings[parking_id]["features"].type==1 %} selected{% endif %}>Undergound</option>
+                      <option value="2"{% if parkings[parking_id]["features"].type==2 %} selected{% endif %}>Outdoor</option>
+                      <option value="3"{% if parkings[parking_id]["features"].type==3 %} selected{% endif %}>Roadside</option>
+                    </select>
+                  </div>
+                  <div class="form-check">
+                    <input name="ElectricVehicleChargingStation" type="checkbox" class="form-check-input" id="ElectricVehicleChargingStation"{% if parkings[parking_id]["features"].ElectricVehicleChargingStation==True %} checked{% endif %} disabled>
+                    <label class="form-check-label" for="ElectricVehicleChargingStation">Electric vehicle charging stations</label>
+                  </div>
+                  <div class="form-check">
+                    <input name="GuardedByCameras" type="checkbox" class="form-check-input" id="GuardedByCameras"{% if parkings[parking_id]["features"].GuardedByCameras==True %} checked{% endif %} disabled>
+                    <label class="form-check-label" for="GuardedByCameras">Guarded by cameras</label>
+                  </div>
+                  <div class="form-check">
+                    <input name="GuardedByHuman" type="checkbox" class="form-check-input" id="GuardedByHuman"{% if parkings[parking_id]["features"].GuardedByHuman==True %} checked{% endif %} disabled>
+                    <label class="form-check-label" for="GuardedByHuman">Guarded by human</label>
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button id="edit" type="button" class="btn btn-success">Edit</button>
+                  <button id="cancel" type="button" class="btn btn-secondary">Cancel</button>
+                  <button id="save" type="submit" class="btn btn-primary float-right">Save</button>
+                  <button id="delete" type="button" class="btn btn-danger float-right">Delete</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card card-primary">
+              <div id="map" style="height: 735px; width: 100%;"></div><div id="popup"></div>
+            </div>
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% include 'include/footer.html' %}
+{% include 'include/scripts.html' %}
+
+<script>
+  //------Firestore realtime ui update setup------
+  //dom object references
+  var edit=$("#edit")
+  var cancel=$("#cancel")
+  var save=$("#save")
+  var del=$("#delete")
+
+  var parking_name=$("#parking_name")
+  var latitude=$("#latitude")
+  var longitude=$("#longitude")
+  var capacity=$("#capacity")
+  var price_per_hour=$("#price_per_hour")
+  var type=$("#type")
+  var ElectricVehicleChargingStation=$("#ElectricVehicleChargingStation")
+  var GuardedByCameras=$("#GuardedByCameras")
+  var GuardedByHuman=$("#GuardedByHuman")
+
+  //page elements setup
+  cancel.hide()
+  save.hide()
+
+  //disable all form inputs
+  var disableAll = function() {
+    parking_name.prop("disabled", true); latitude.prop("disabled", true); longitude.prop("disabled", true); capacity.prop("disabled", true); price_per_hour.prop("disabled", true); type.prop("disabled", true); ElectricVehicleChargingStation.prop("disabled", true); GuardedByCameras.prop("disabled", true); GuardedByHuman.prop("disabled", true);
+  }
+
+  //enable all form inputs
+  var enableAll = function() {
+    parking_name.prop("disabled", false); /*latitude.prop("disabled", false); longitude.prop("disabled", false);*/ capacity.prop("disabled", false); price_per_hour.prop("disabled", false); type.prop("disabled", false); ElectricVehicleChargingStation.prop("disabled", false); GuardedByCameras.prop("disabled", false); GuardedByHuman.prop("disabled", false);
+  }
+
+  disableAll()
+
+  //click listener on "edit" button
+  edit.on("click", function() {
+    del.hide(); edit.hide(); cancel.show(); save.show(); enableAll();
+  })
+
+  //click listener on "cancel" button
+  cancel.on("click", function() {
+    cancel.hide();save.hide();edit.show(); del.show(); disableAll();
+  })
+
+  //click listener on "delete" button
+  del.on("click", function() {
+    location.href='/delete_parking/'+window.location.pathname.split("/")[2];
+  })
+
+  //form submit function override, example of inputs check
+  $('form').submit(function () {
+    function isLatitude(lat) {
+      return isFinite(lat) && Math.abs(lat) <= 90;
+    }
+    function isLongitude(lng) {
+      return isFinite(lng) && Math.abs(lng) <= 180;
+    }
+
+    //function return, if return true submit
+    var result = true
+
+    // Check if empty
+    if(parking_name.val()  === '') {
+      toastr.error('Parking name can\'t be empty!')
+      result = false
+    }
+    if(latitude.val()  === '') {
+      toastr.error('Latitude can\'t be empty!')
+      result = false
+    }
+    if(longitude.val()  === '') {
+      toastr.error('Longitude can\'t be empty!')
+      result = false
+    }
+    if(capacity.val()  === '') {
+      toastr.error('Capacity can\'t be empty!')
+      result = false
+    }
+    if(price_per_hour.val()  === '') {
+      toastr.error('Price per hour can\'t be empty!')
+      result = false
+    }
+
+    if(!isLatitude(latitude.val())) {
+      toastr.error('This latitude is not valid!')
+      result = false
+    }
+    if(!isLongitude(longitude.val())) {
+      toastr.error('This longitude is not valid!')
+      result = false
+    }
+
+    if(result){
+      $("#latitude").prop("disabled", false);
+      $("#longitude").prop("disabled", false);
+    }
+
+    return result;
+ });
+
+  //create parkings state
+  var updateParkingsStatistics = function(){
+    db.collection("Parkings").doc("{{region}}").collection("{{province}}").doc("{{parking_id}}").get()
+      .then((querySnapshot) => {
+        db.collection("Parkings").doc("{{region}}").collection("{{province}}").doc("{{parking_id}}").collection("realtime_data").doc("disponibility").get()
+          .then((realtime_doc) => {
+            updateHtlm(parseInt(realtime_doc.data().free), parseInt(querySnapshot.data().capacity));
+          });
+        })
+  }
+
+  //update parking statistics
+  var updateHtlm = function(free, total){
+    var occupied=total-free;
+
+    updateTotalHtml(total);
+    updateFreeHtml(free);
+    updateOccupiedHtml(total-free);
+    updateOccupationHtml(((total-free)/total)*100);
+  }
+
+  //firestore listner
+  var setListener = function(){
+    console.log("setting listener..");
+    db.collection("Parkings").doc("{{region}}").collection("{{province}}").doc("{{parking_id}}").collection("realtime_data").doc("disponibility")
+      .onSnapshot(function(){
+        updateParkingsStatistics();
+        console.log("update!");
+      });
+  }
+
+  var updateOccupationHtml = function(occupation) {
+    $("#occupation").text(parseInt(occupation)+"%");
+    $("#occupation_loading").hide();
+  };
+  var updateOccupiedHtml = function(occupied) {
+    $("#occupied").text(occupied);
+    $("#occupied_loading").hide();
+  };
+  var updateFreeHtml = function(free) {
+    $("#free").text(free);
+    $("#free_loading").hide();
+  };
+  var updateTotalHtml = function(total) {
+    $("#total").text(total);
+    $("#total_loading").hide();
+  };
+
+  setListener();//set firestore listener to realtime update parking data
+
+
+
+  //------OpenLayers map setup------
+  var map = new ol.Map({
+    interactions: ol.interaction.defaults({
+      doubleClickZoom: false,
+      dragAndDrop: false,
+      dragPan: false,
+      keyboardPan: false,
+      keyboardZoom: false,
+      mouseWheelZoom: false,
+      pointer: false,
+      select: false
+    }),
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      })
+    ],
+    view: new ol.View({
+      center: ol.proj.fromLonLat([{{ parkings[parking_id]["location"].longitude }}, {{ parkings[parking_id]["location"].latitude }}]),
+      zoom: 15
+    })
+  });
+
+  var getCircle = function(longitude, latitude){
+    var circle = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [
+          new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([longitude, latitude]))
+          })
+        ]
+      })
+    });
+    return circle;
+  }
+  map.addLayer(getCircle({{ parkings[parking_id]["location"].longitude }}, {{ parkings[parking_id]["location"].latitude }}));
+
+  var getPointer = function(longitude, latitude){
+    var iconFeature = new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.fromLonLat([longitude, latitude])),
+      name: '{{ parkings[parking_id]["parking_name"] }}'
+    });
+    var iconStyle = new ol.style.Style({
+      image: new ol.style.Icon(/** @type {module:ol/style/Icon~Options} */ ({
+        anchor: [0.5, 46],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        src: 'https://openlayers.org/en/v5.3.0/examples/data/icon.png',
+        scale: 0.5
+      }))
+    });
+    iconFeature.setStyle(iconStyle);
+    var vectorSource = new ol.source.Vector({ // VectorSource({
+      features: [iconFeature]
+    });
+    var vectorLayer = new ol.layer.Vector({ // VectorLayer({
+      source: vectorSource
+    });
+    return vectorLayer;
+  }
+
+  map.addLayer(getPointer({{ parkings[parking_id]["location"].longitude }}, {{ parkings[parking_id]["location"].latitude }}));
+  //https://stackoverflow.com/questions/54208460/add-simple-markers-points-with-openlayers
+
+</script>
+
+{% include 'include/trailer.html' %}

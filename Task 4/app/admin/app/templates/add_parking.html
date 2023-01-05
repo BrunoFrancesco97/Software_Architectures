@@ -1,0 +1,231 @@
+{% include 'include/header.html' %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Add Parking</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+              <li class="breadcrumb-item active">Add Parking</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-6">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Specifications</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form role="form" method="post">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="parking_name">Parking Name</label>
+                    <input name="parking_name" name="parking_name" type="text" class="form-control" id="parking_name" placeholder="Enter parking name">
+                  </div>
+                  <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input name="latitude" type="text" class="form-control" id="latitude" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input name="longitude" type="text" class="form-control" id="longitude" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="capacity">Capacity</label>
+                    <input name="capacity" type="number" class="form-control" id="capacity" placeholder="150">
+                  </div>
+                  <div class="form-group">
+                    <label for="price_per_hour">Price per hour</label>
+                    <input name="price_per_hour" type="decimal" class="form-control" id="price_per_hour" placeholder="5">
+                  </div>
+                  <div class="form-group">
+                    <label for="type">Parking Type</label>
+                    <select name="type" class="form-control" id="type">
+                      <option value="0">Indoor</option>
+                      <option value="1">Undergound</option>
+                      <option value="2">Outdoor</option>
+                      <option value="3">Roadside</option>
+                    </select>
+                  </div>
+                  <div class="form-check">
+                    <input name="ElectricVehicleChargingStation" type="checkbox" class="form-check-input" id="ElectricVehicleChargingStation">
+                    <label class="form-check-label" for="ElectricVehicleChargingStation">Electric vehicle charging stations</label>
+                  </div>
+                  <div class="form-check">
+                    <input name="GuardedByCameras" type="checkbox" class="form-check-input" id="GuardedByCameras">
+                    <label class="form-check-label" for="GuardedByCameras">Guarded by cameras</label>
+                  </div>
+                  <div class="form-check">
+                    <input name="GuardedByHuman" type="checkbox" class="form-check-input" id="GuardedByHuman">
+                    <label class="form-check-label" for="GuardedByHuman">Guarded by human</label>
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="reset" class="btn btn-secondary">Clear</button>
+                  <button type="submit" class="btn btn-primary float-right">Add</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card card-primary">
+              <div id="map" style="height: 735px; width: 100%;"></div><div id="popup"></div>
+            </div>
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% include 'include/footer.html' %}
+{% include 'include/scripts.html' %}
+<script>
+  //------Firestore realtime ui update setup------
+  //dom object references
+  var parking_name=$("#parking_name")
+  var latitude=$("#latitude")
+  var longitude=$("#longitude")
+  var capacity=$("#capacity")
+  var price_per_hour=$("#price_per_hour")
+  var type=$("#type")
+  var ElectricVehicleChargingStation=$("#ElectricVehicleChargingStation")
+  var GuardedByCameras=$("#GuardedByCameras")
+  var GuardedByHuman=$("#GuardedByHuman")
+
+  //form submit function override, example of inputs check
+  $('form').submit(function () {
+    function isLatitude(lat) {
+      return isFinite(lat) && Math.abs(lat) <= 90;
+    }
+
+    function isLongitude(lng) {
+      return isFinite(lng) && Math.abs(lng) <= 180;
+    }
+
+    var result = true
+    // Get the Login Name value and trim it
+    //var parking_name = $.trim($('#parking_name').val());
+
+    // Check if empty
+    if(parking_name.val()  === '') {
+      toastr.error('Parking name can\'t be empty!')
+      result = false
+    }
+    if(latitude.val()  === '') {
+      toastr.error('Latitude can\'t be empty!')
+      result = false
+    }
+    if(longitude.val()  === '') {
+      toastr.error('Longitude can\'t be empty!')
+      result = false
+    }
+    if(capacity.val()  === '') {
+      toastr.error('Capacity can\'t be empty!')
+      result = false
+    }
+    if(price_per_hour.val()  === '') {
+      toastr.error('Price per hour can\'t be empty!')
+      result = false
+    }
+
+    if(!isLatitude(latitude.val())) {
+      toastr.error('This latitude is not valid!')
+      result = false
+    }
+    if(!isLongitude(longitude.val())) {
+      toastr.error('This longitude is not valid!')
+      result = false
+    }
+
+    if(result){
+      $("#latitude").prop("disabled", false);
+      $("#longitude").prop("disabled", false);
+    }
+
+    return result;
+ });
+
+ //------OpenLayers map setup------
+ var map = new ol.Map({
+   target: 'map',
+   layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      })
+    ],
+   view: new ol.View({
+     center: ol.proj.fromLonLat([13,42]),
+     zoom: 6
+   })
+ });
+
+  var getPointer = function(longitude, latitude){
+    var iconFeature = new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.fromLonLat([longitude, latitude])),
+      name: 'name'
+    });
+    var iconStyle = new ol.style.Style({
+      image: new ol.style.Icon(/** @type {module:ol/style/Icon~Options} */ ({
+        anchor: [0.5, 46],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        src: 'https://openlayers.org/en/v5.3.0/examples/data/icon.png',
+        scale: 0.5
+      }))
+    });
+    iconFeature.setStyle(iconStyle);
+    var vectorSource = new ol.source.Vector({ // VectorSource({
+      features: [iconFeature]
+    });
+    var vectorLayer = new ol.layer.Vector({ // VectorLayer({
+      source: vectorSource
+    });
+    return vectorLayer;
+  }
+  //https://stackoverflow.com/questions/54208460/add-simple-markers-points-with-openlayers
+
+  map.on('click', function (evt) {
+    var coordinate = ol.proj.toLonLat(evt.coordinate);
+    var hdms = ol.coordinate.toStringHDMS(coordinate);
+
+    removeAddPointer(coordinate[0], coordinate[1]);
+    $("#latitude").val(coordinate[1]);
+    $("#longitude").val(coordinate[0]);
+  });
+
+  var pointer;
+
+  function removeAddPointer(longitude, latitude) {
+    if (pointer) {
+       map.removeLayer(pointer);
+    }
+    pointer = getPointer(longitude, latitude)// note: no 'var' in front of graphic
+    map.addLayer(pointer);
+  }
+
+</script>
+
+{% include 'include/trailer.html' %}

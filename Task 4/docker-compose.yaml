@@ -124,7 +124,7 @@ services:
 
   api_assignment:
     image: hackerrank/api_assignment:latest
-    build: backend/server/api/microservices/assignment
+    build: backend/server/microservices/assignment
     container_name: api_assignment
     restart: always
     environment:
@@ -133,11 +133,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_assignment
+      - rabbit_consumer
   api_channel:
     image: hackerrank/api_channel:latest
-    build: backend/server/api/microservices/channel
+    build: backend/server/microservices/channel
     container_name: api_channel
     restart: always
     environment:
@@ -146,11 +148,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_channel
+      - rabbit_consumer
   api_course:
     image: hackerrank/api_course:latest
-    build: backend/server/api/microservices/course
+    build: backend/server/microservices/course
     container_name: api_course
     restart: always
     environment:
@@ -160,11 +164,13 @@ services:
       - DB_USER=test
       - DB_PASSWORD=test
       - FS_URL=api_filesystem
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_course
+      - rabbit_consumer
   api_exercise:
     image: hackerrank/api_exercise:latest
-    build: backend/server/api/microservices/exercise
+    build: backend/server/microservices/exercise
     container_name: api_exercise
     restart: always
     environment:
@@ -173,11 +179,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_exercise
+      - rabbit_consumer
   api_file:
     image: hackerrank/api_file:latest
-    build: backend/server/api/microservices/file
+    build: backend/server/microservices/file
     container_name: api_file
     restart: always
     environment:
@@ -187,11 +195,13 @@ services:
       - DB_USER=test
       - DB_PASSWORD=test
       - FS_URL=api_filesystem
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_file
+      - rabbit_consumer
   api_login:
     image: hackerrank/api_login:latest
-    build: backend/server/api/microservices/loginreg
+    build: backend/server/microservices/loginreg
     container_name: api_login
     restart: always
     environment:
@@ -200,11 +210,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_login
+      - rabbit_consumer
   api_message:
     image: hackerrank/api_message:latest
-    build: backend/server/api/microservices/message
+    build: backend/server/microservices/message
     container_name: api_message
     restart: always
     environment:
@@ -213,11 +225,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_message
+      - rabbit_consumer
   api_result:
     image: hackerrank/api_result:latest
-    build: backend/server/api/microservices/result
+    build: backend/server/microservices/result
     container_name: api_result
     restart: always
     environment:
@@ -226,11 +240,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_result
+      - rabbit_consumer
   api_solution:
     image: hackerrank/api_solution:latest
-    build: backend/server/api/microservices/solution
+    build: backend/server/microservices/solution
     container_name: api_solution
     restart: always
     environment:
@@ -239,11 +255,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_solution
+      - rabbit_consumer
   api_subscription:
     image: hackerrank/api_subscription:latest
-    build: backend/server/api/microservices/subscription
+    build: backend/server/microservices/subscription
     container_name: api_subscription
     restart: always
     environment:
@@ -252,11 +270,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_subscription
+      - rabbit_consumer
   api_test:
     image: hackerrank/api_test:latest
-    build: backend/server/api/microservices/test
+    build: backend/server/microservices/test
     container_name: api_test
     restart: always
     environment:
@@ -265,11 +285,13 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_test
+      - rabbit_consumer
   api_user:
     image: hackerrank/api_user:latest
-    build: backend/server/api/microservices/user
+    build: backend/server/microservices/user
     container_name: api_user
     restart: always
     environment:
@@ -278,21 +300,52 @@ services:
       - DB_NAME=sa
       - DB_USER=test
       - DB_PASSWORD=test
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_user
+      - rabbit_consumer
   api_filesystem:
     image: hackerrank/api_filesystem:latest
-    build: backend/server/api/microservices/filesystem
+    build: backend/server/microservices/filesystem
     container_name: api_filesystem
     restart: always
+    environment:
+      - URL_RABBIT:rabbitmq
     depends_on:
       - db_user
+      - rabbit_consumer
 
-
+  rabbitmq:
+    image: rabbitmq:3.11
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+  rabbit_consumer:
+    image: hackerrank/rabbit_consumer:latest
+    build: backend/server/rabbit_consumer
+    container_name: rabbit_consumer
+    restart: always
+    environment:
+      - URL_DB_ASSIGNMENT=db_assignment
+      - URL_DB_CHANNEL=db_channel
+      - URL_DB_COURSE=db_course
+      - URL_DB_EXERCISE=db_exercise
+      - URL_DB_FILE=db_file
+      - URL_DB_LOGIN=db_login
+      - URL_DB_MESSAGE=db_message
+      - URL_DB_RESULT=db_result
+      - URL_DB_SOLUTION=db_solution
+      - URL_DB_SUBSCRIPTION=db_subscription
+      - URL_DB_TEST=db_test
+      - URL_DB_USER=db_user
+      - URL_RABBIT=rabbitmq
+    depends_on:
+      - rabbitmq
   api:
     image: hackerrank/api:latest
-    build: backend/server
-    container_name: hackerrank_api
+    build: backend/server/api
+    container_name: api_wrapper
     restart: always
     ports:
       - 5000:5000
