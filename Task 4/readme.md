@@ -1,6 +1,6 @@
 # Task 4 Documentation
 
-## Overview 
+## Overview of the architecture
 
 ## Front End
 ## Backend
