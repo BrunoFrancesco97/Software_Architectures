@@ -387,6 +387,10 @@ function send_solution(el) {
   formData.append("exercise", exercise);
   formData.append("file", file);
   document.querySelector("#send_button").classList.add("d-none");
+  let body_loader =  document.querySelector("#body-content");
+  let loader =  document.querySelector("#loader");
+  body_loader.style.opacity = "0";
+  loader.classList.remove("d-none");
   let request = new XMLHttpRequest();
   request.open("PUT", "http://localhost:5000/exercise", true);
   request.onreadystatechange = function () {
@@ -394,6 +398,8 @@ function send_solution(el) {
       obj = JSON.parse(request.responseText);
       document.querySelectorAll(".results").forEach((el) => el.remove());
       if (obj.results != null && obj.results.length == 1) {
+        body_loader.style.opacity = "1";
+        loader.classList.add("d-none");
         result_div = document.querySelector("#results_template");
         let clone = result_div.cloneNode(true);
         clone.classList.remove("results_template");
@@ -449,6 +455,9 @@ function send_solution(el) {
         }
         document.querySelector("#exercise_container").appendChild(clone);
       }
+    }else{
+      body_loader.style.opacity = "1";
+      loader.classList.add("d-none");
     }
   };
   request.withCredentials = true;
