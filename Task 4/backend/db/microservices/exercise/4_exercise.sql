@@ -142,7 +142,7 @@ DROP TABLE IF EXISTS `solution`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `solution` (
   `exercise` int(11) NOT NULL,
-  `answer` varchar(255) NOT NULL,
+  `answer` text NOT NULL,
   `user` varchar(40) NOT NULL,
   `correct` tinyint(1) DEFAULT 0,
   `hash` varchar(255) NOT NULL,
