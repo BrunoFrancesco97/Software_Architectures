@@ -680,7 +680,7 @@ def add_test():
 @jwt_required()
 def get_results(id):
     username = get_jwt_identity()
-    response = requests.post((URL_RESULT+"/"+id+"/"+username['user']).strip())
+    response = requests.get((URL_RESULT+"/"+id+"/"+username['user']).strip())
     return response.content, response.status_code
 
 
