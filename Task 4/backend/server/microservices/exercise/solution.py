@@ -4,11 +4,12 @@ import crypto
 import pika 
 import utils
 import os
+import sys 
 
 class Solution(database.Base):
     __tablename__ = 'solution'
     exercise = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("exercises.id"), primary_key=True)
-    answer = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=False)
+    answer = sqlalchemy.Column(sqlalchemy.Text, nullable=False)
     user = sqlalchemy.Column(sqlalchemy.String(length=40), primary_key=True)
     correct = sqlalchemy.Column(sqlalchemy.BOOLEAN, nullable=True)
     hash = sqlalchemy.Column(sqlalchemy.String(length=255), nullable=False)
@@ -68,7 +69,6 @@ def add_solution(exercise: int, answer: str, user: str, correct, review):
         dictObj["type"] = "1"
         channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
         )
-        print("Message sent")
         connection.close()
     except Exception as e:
         print(e)
@@ -85,7 +85,6 @@ def add_solution_open(exercise: int, answer: str, user: str, review):
         dictObj["type"] = "2"
         channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
         )
-        print("Message sent")
         connection.close()
     except Exception as e:
         print(e)
