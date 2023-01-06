@@ -466,22 +466,17 @@ function send_solution(el) {
 
 $(document).mouseup(function (e) {
   var div = $("#menuicon");
-  console.log("sto cliccando fuori dal menu: "+!div.is(e.target))
   if(!div.is(e.target) /*&& !document.getElementById('menu_dialog_container').classList.contains('d-none')*/) 
   {
     document.getElementById('menu_dialog_container').classList.add('d-none');
-    console.log("chiudo menù")
   }
   });
 
 function toggleMenu(){
-  //console.log(document.getElementById('menu_dialog_container').classList.contains('d-none'))
   if(document.getElementById('menu_dialog_container').classList.contains('d-none')){
     document.getElementById('menu_dialog_container').classList.remove('d-none');
-    console.log("rimosso d-none")
   }else{
     document.getElementById('menu_dialog_container').classList.add('d-none');
-    console.log("aggiunto d-none")
   }
 }
 
