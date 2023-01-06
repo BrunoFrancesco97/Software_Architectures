@@ -350,7 +350,7 @@ services:
 
   api_wrapper:
     image: hackerrank/api_wrapper:latest
-    build: backend/server/api
+    build: backend/server/api_wrapper
     container_name: api_wrapper
     restart: always
     ports:
@@ -401,7 +401,7 @@ services:
 
     depends_on:
       #- db
-      - api
+      - api_wrapper
 
 #volumes:
   #db:
