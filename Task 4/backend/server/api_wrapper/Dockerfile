@@ -10,7 +10,7 @@ ENV DB_NAME=sa
 ENV DB_USER=root
 ENV DB_PASSWORD=root
 
-COPY ./src/requirements.txt /home/requirements.txt
+COPY ./requirements.txt /home/requirements.txt
 RUN pip3 install --no-cache-dir --upgrade -r ./requirements.txt
 
 RUN mkdir api
