@@ -464,6 +464,13 @@ function send_solution(el) {
   request.send(formData);
 }
 
+$(document).mouseup(function (e) {
+  var div = $("menuicon");
+  if(/*!div.is(e.target) && */!document.getElementById('menu_dialog_container').classList.contains('d-none')) 
+  {
+    document.getElementById('menu_dialog_container').classList.add('d-none');
+  }
+  });
 
 function toggleMenu(){
   if(document.getElementById('menu_dialog_container').classList.contains('d-none')){
