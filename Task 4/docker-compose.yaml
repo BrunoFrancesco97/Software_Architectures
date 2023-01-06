@@ -347,8 +347,9 @@ services:
       - DB_PASSWORD=test
     depends_on:
       - rabbitmq
-  api:
-    image: hackerrank/api:latest
+
+  api_wrapper:
+    image: hackerrank/api_wrapper:latest
     build: backend/server/api
     container_name: api_wrapper
     restart: always
