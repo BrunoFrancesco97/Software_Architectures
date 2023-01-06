@@ -466,7 +466,7 @@ function send_solution(el) {
 
 $(document).mouseup(function (e) {
   var div = $("#menuicon");
-  if(!div.is(e.target) /*&& !document.getElementById('menu_dialog_container').classList.contains('d-none')*/) 
+  if(!div.is(e.target)) 
   {
     document.getElementById('menu_dialog_container').classList.add('d-none');
   }
