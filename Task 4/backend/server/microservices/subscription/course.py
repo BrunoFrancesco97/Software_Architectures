@@ -27,7 +27,7 @@ def add_course(name: str, channel_ID):
     try:
         existent = channel.get_channels_by_id(channel_ID)
         if existent is not None and len(existent) == 1:
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
             channell = connection.channel()
             channell.queue_declare(queue='channel_info')
             new_course = Course(name=name, channel=channel_ID)

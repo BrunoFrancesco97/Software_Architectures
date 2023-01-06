@@ -17,7 +17,7 @@ def add_file(name: str, course: str, channel_name: str, file):
         response = requests.put(URL_FILE+'/'+channel_name+"/"+course+"/"+name)
         js = json.loads(response.content)
         if js['added'] == True:
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
             channel = connection.channel()
             channel.queue_declare(queue='channel_info')
             new_file = File(name=name, course=course)

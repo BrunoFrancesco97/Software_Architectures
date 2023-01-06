@@ -33,7 +33,7 @@ def add_subscription(course: str, user: str):
         sub = select_course_subs(user, course)
         if sub is not None and len(sub) == 0:
             new_course_sub = Course_Sub(course=course, user=user)
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
             channel = connection.channel()
             channel.queue_declare(queue='channel_info')
             dictObj : dict = obj_to_dict2(new_course_sub)

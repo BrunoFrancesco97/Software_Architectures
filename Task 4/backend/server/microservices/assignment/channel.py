@@ -28,7 +28,7 @@ def add_channel(name: str):
     new_channel = Channel(name=name)
     channel_got = get_channels_by_name(name)
     if channel_got is not None and len(channel_got) == 0:
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_channel)

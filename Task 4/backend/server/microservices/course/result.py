@@ -38,7 +38,7 @@ def obj_to_dict2(obj: Result):  # for build json format
 def add_result_without_comment(assignment_el: int, user_el: str, result_el: int):
     try:
         new_result = Result(assignment=assignment_el, user=user_el, result=result_el)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_result)
@@ -55,7 +55,7 @@ def add_result_without_comment(assignment_el: int, user_el: str, result_el: int)
 def add_result_with_comment(assignment_el: int, user_el: str, result_el: int, comment_el: str):
     try:
         new_result = Result(assignment=assignment_el, user=user_el, result=result_el, comment=comment_el)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_result)
@@ -71,7 +71,7 @@ def add_result_with_comment(assignment_el: int, user_el: str, result_el: int, co
 def add_result_without_vote(assignment_el: int, user_el: str, comment_el: str):
     try:
         new_result = Result(assignment=assignment_el, user=user_el, comment=comment_el)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_result)

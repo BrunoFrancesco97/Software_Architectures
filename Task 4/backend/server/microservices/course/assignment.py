@@ -21,7 +21,7 @@ def add_assignment(name: str, year : int, month : int, day : int, hour : int, mi
     try:
         x = datetime.datetime(int(year), int(month), int(day), int(hour), int(minutes), 00)
         new_assignments = Assignment(name=name, deadline=x, course=course_el)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channell = connection.channel()
         channell.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_assignments)

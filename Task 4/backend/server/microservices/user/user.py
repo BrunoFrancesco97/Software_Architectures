@@ -45,7 +45,7 @@ def add_user_complete(username, password, salt, name, surname, role):
     if role == 'user' or role == 'admin' or role == 'staff':
         try:
             newUser = User(email=username, password=password, salt=salt, name=name, surname=surname, role=role)
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
             channel = connection.channel()
             channel.queue_declare(queue='channel_info')
             dictObj : dict = obj_to_dict2(newUser)

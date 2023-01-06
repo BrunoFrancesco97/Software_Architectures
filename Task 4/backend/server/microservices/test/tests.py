@@ -37,7 +37,7 @@ def obj_to_dict2(obj: Test):  # for build json format
 def add_test_uncomplete(name: str, exercise: int, given_value : str, expected : str):
     try:
         new_test = Test(name=name, exercise=exercise, given_value=given_value, expected= expected)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_test)
@@ -55,7 +55,7 @@ def add_test_uncomplete(name: str, exercise: int, given_value : str, expected : 
 def add_test_complete(name: str, comment: str, exercise: int, given_value : str, expected : str):
     try:
         new_test = Test(name=name, exercise=exercise, comment=comment, given_value=given_value, expected=expected)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_test)

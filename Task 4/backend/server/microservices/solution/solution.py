@@ -60,7 +60,7 @@ def add_solution(exercise: int, answer: str, user: str, correct, review):
     try:
         answer_b64 = utils.encode(answer)
         new_solution = Solution(exercise=exercise, answer=answer_b64, user=user, correct=correct, hash=compute_hash(answer),review=review)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_solution)
@@ -77,7 +77,7 @@ def add_solution_open(exercise: int, answer: str, user: str, review):
     try:
         answer_b64 = utils.encode(answer)
         new_solution = Solution(exercise=exercise, answer=answer_b64, user=user, hash=compute_hash(answer),review=review)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_solution)

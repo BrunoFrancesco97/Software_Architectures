@@ -34,7 +34,7 @@ def obj_to_dict2(obj: Support):  # for build json format
 def send_message(sender: str, receiver: str, object_message: str, message: str):
     try:
         new_message = Support(sender=sender, receiver=receiver, object=object_message, message=message)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channel = connection.channel()
         channel.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_message)

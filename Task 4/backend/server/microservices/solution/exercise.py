@@ -55,7 +55,7 @@ def add_exercise_uncomplete(quest: str, correct: str, assignment, type: str):
     session = database.Session()
     try:
         new_exercise = Exercise(quest=quest, correct=correct, assignment=assignment, type=type)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channell = connection.channel()
         channell.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict2(new_exercise)
@@ -76,7 +76,7 @@ def add_exercise_complete(quest: str, correct: str, wrong1: str, wrong2: str, wr
     try:
         new_exercise = Exercise(quest=quest, correct=correct, wrong1=wrong1, wrong2=wrong2, wrong3=wrong3,
                                 assignment=assignment, type=type)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
         channell = connection.channel()
         channell.queue_declare(queue='channel_info')
         dictObj : dict = obj_to_dict3(new_exercise)

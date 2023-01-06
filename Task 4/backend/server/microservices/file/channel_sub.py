@@ -38,7 +38,7 @@ def add_subscription(channel, user: str):
         sub = select_channel_subs(user, channel)
         if sub is not None and len(sub) == 0:
             new_channel_sub = Channel_Sub(channel=channel, user=user)
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT']))
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
             channell = connection.channel()
             channell.queue_declare(queue='channel_info')
             dictObj : dict = obj_to_dict2(new_channel_sub)
