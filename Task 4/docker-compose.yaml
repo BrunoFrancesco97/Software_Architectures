@@ -321,6 +321,7 @@ services:
     restart: always
     ports:
       - 5672:5672
+      - 15672:15672
   rabbit_consumer:
     image: hackerrank/rabbit_consumer:latest
     build: backend/server/rabbit_consumer
@@ -340,8 +341,10 @@ services:
       - URL_DB_TEST=db_test
       - URL_DB_USER=db_user
       - URL_RABBIT=rabbitmq
-    ports:
-      - 15672:15672
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
     depends_on:
       - rabbitmq
   api:
