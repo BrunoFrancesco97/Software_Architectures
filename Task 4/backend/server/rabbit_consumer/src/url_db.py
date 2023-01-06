@@ -1,14 +1,14 @@
 import os
-URL_USER = "mysql+pymysql://root:root@"+os.environ['URL_DB_USER']+":3306/4_user"
-URL_SOLUTION = "mysql+pymysql://root:root@"+os.environ['URL_DB_SOLUTION']+":3306/4_solution"
-URL_CHANNEL = "mysql+pymysql://root:root@"+os.environ['URL_DB_CHANNEL']+":3306/4_channel"
-URL_COURSE = "mysql+pymysql://root:root@"+os.environ['URL_DB_COURSE']+":3306/4_course"
-URL_CHANNEL_SUB = "mysql+pymysql://root:root@"+os.environ['URL_DB_SUBSCRIPTION']+":3306/4_subscription"
-URL_COURSE_SUB = "mysql+pymysql://root:root@"+os.environ['URL_DB_SUBSCRIPTION']+":3306/4_subscription"
-URL_MESSAGE = "mysql+pymysql://root:root@"+os.environ['URL_DB_MESSAGE']+":3306/4_message"
-URL_ASSIGNMENT = "mysql+pymysql://root:root@"+os.environ['URL_DB_ASSIGNMENT']+":3306/4_assignment"
-URL_EXERCISE = "mysql+pymysql://root:root@"+os.environ['URL_DB_EXERCISE']+":3306/4_exercise"
-URL_TEST = "mysql+pymysql://root:root@"+os.environ['URL_DB_TEST']+":3306/4_test"
-URL_RESULT = "mysql+pymysql://root:root@"+os.environ['URL_DB_RESULT']+":3306/4_result"
-URL_LOGIN = "mysql+pymysql://root:root@"+os.environ['URL_DB_LOGIN']+":3306/4_login"
-URL_FILE = "mysql+pymysql://root:root@"+os.environ['URL_DB_FILE']+":3306/4_file"
+URL_USER = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_USER']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_SOLUTION = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_SOLUTION']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_CHANNEL = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_CHANNEL']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_COURSE = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_COURSE']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_CHANNEL_SUB = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_SUBSCRIPTION']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_COURSE_SUB = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_SUBSCRIPTION']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_MESSAGE = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_MESSAGE']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_ASSIGNMENT = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_ASSIGNMENT']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_EXERCISE = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_EXERCISE']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_TEST = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_TEST']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_RESULT = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_RESULT']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_LOGIN = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_LOGIN']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
+URL_FILE = "mysql+pymysql://"+os.environ['DB_USER']+":"+os.environ['DB_PASSWORD']+"@"+os.environ['URL_DB_FILE']+":"+os.environ['DB_PORT']+"/"+os.environ['DB_NAME']
