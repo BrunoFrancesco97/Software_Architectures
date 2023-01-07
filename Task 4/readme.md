@@ -40,6 +40,8 @@ Each microservice except filesystem has its own database that is built in order 
 
 Obviously, this approach requires a data consistency between microservices databases and this is achieved through **RabbitMQ**.
 
+Other than databases, each microservice contains an API interface that allows external entities to use it and also it contains a persistence level developed using _SQLAlchemy_ library (see Task 3 for more information about it).
+
 ### RabbitMQ
 Each time an INSERT, UPDATE or DELETE query is made by a microservice, this one doesnt' directly communicate with the database but instead it sends a message to an exchanger that insert it into a queue handled by a RabbitMQ server, so we can see each microservice as a **producer** of the message. 
 
