@@ -15,6 +15,8 @@ This gateway is very important since is a proxy to the right microservice but al
 
 So, when the gateway has choosen the right microservice to send the request, it starts a synchronous communication and wait for a response, when this one is received then is sent back to the user.
 
+Image above shows how the architecture is built, arrows from the api gateway to the microservices are missing since if they were present, image would be very messy but as I said above, gateway to microservices communication is handled by a synchronous stream.
+
 ## Backend
 ### Microservices
 #### API Layer 
