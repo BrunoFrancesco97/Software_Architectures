@@ -22,7 +22,7 @@
 
   <div id="login" class="login-box d-none">
     <div class="login-logo">
-      <a href="#"><b>Hacker</b>Rank</a>
+      <a href="#"><b>HR |</b> Admin</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
@@ -56,7 +56,8 @@
             </div>
           </div>
           <div class="row">
-              <button class="btn btn-primary btn-block" onclick="login()">Sign In</button>
+            <div class="col-6"><button class="btn btn-primary btn-block" onclick="login()">Sign In</button></div>
+            <div class="col-6"><button class="btn btn-primary btn-block" onclick="register()">Signup</button></div>
           </div>
           <div id="invalid_credentials" class="needs-validation font-italic text-danger d-none text-center">
             Invalid credentials
@@ -93,7 +94,7 @@
       <a href="#" class="brand-link">
         <img src="AdminLogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">Hackerrank</span>
+        <span class="brand-text font-weight-light"><b>HR |</b> Admin</span>
       </a>
   
       <!-- Sidebar -->
@@ -102,8 +103,8 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
-            <li class="nav-item has-treeview menu-open">
-              <a href="#" class="nav-link active">
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   Channels
@@ -120,22 +121,100 @@
                 <li class="nav-item">
                   <a href="/add_parking" class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Add Parking</p>
+                    <p>Add Channel</p>
                   </a>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                   <a href="#" class="nav-link">
-                    <p>Manage Parkings<i class="right fas fa-angle-left"></i></p>
+                    <p>Manage Channels<i class="right fas fa-angle-left"></i></p>
                   </a>
                   <ul class="nav nav-treeview">
-                    {% for parking in parkings.items() %}
+
                     <li class="nav-item">
-                      <a href="/manage_parking/{{ parking[0] }}" class="nav-link{% if parking_id is defined %}{% if parking_id == parking[0] %} active{% endif %}{% endif %}">
+                      <a href="/manage_parking/{{ parking[0] }}" class="nav-link active">
                          <i class="far fa-dot-circle nav-icon"></i>
-                        <p>{{ parking[1]["parking_name"] }}</p>
+                        <p>C-1</p>
                       </a>
                     </li>
-                    {% endfor %}
+
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Courses
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Courses</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/add_parking" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Add Course</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <p>Manage Courses<i class="right fas fa-angle-left"></i></p>
+                  </a>
+                  <ul class="nav nav-treeview">
+
+                    <li class="nav-item">
+                      <a href="/manage_parking/{{ parking[0] }}" class="nav-link active">
+                         <i class="far fa-dot-circle nav-icon"></i>
+                        <p>C-1</p>
+                      </a>
+                    </li>
+
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Assignments
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Assignments</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/add_parking" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Add Assignments</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <p>Manage Assignments<i class="right fas fa-angle-left"></i></p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    
+                    <li class="nav-item">
+                      <a href="/manage_parking/{{ parking[0] }}" class="nav-link active">
+                         <i class="far fa-dot-circle nav-icon"></i>
+                        <p>A-1</p>
+                      </a>
+                    </li>
+                    
                   </ul>
                 </li>
               </ul>
@@ -181,8 +260,8 @@
                 <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
   
                 <div class="info-box-content">
-                  <span class="info-box-text">Parkings Occupation</span>
-                  <span id="occupation" class="info-box-number"></span>
+                  <span class="info-box-text">Online users</span>
+                  <span id="online_users" class="info-box-number"></span>
                 </div>
                 <!-- /.info-box-content -->
               </div>
@@ -198,8 +277,8 @@
                 <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-lock"></i></span>
   
                 <div class="info-box-content">
-                  <span class="info-box-text">Occupied</span>
-                  <span id="occupied" class="info-box-number"></span>
+                  <span class="info-box-text">Closed challenges</span>
+                  <span id="closed_challenges" class="info-box-number"></span>
                 </div>
                 <!-- /.info-box-content -->
               </div>
@@ -219,8 +298,8 @@
                 <span class="info-box-icon bg-success elevation-1"><i class="fas fa-lock-open"></i></span>
   
                 <div class="info-box-content">
-                  <span class="info-box-text">Free</span>
-                  <span id="free" class="info-box-number"></span>
+                  <span class="info-box-text">Open assignments</span>
+                  <span id="open_assignments" class="info-box-number"></span>
                 </div>
                 <!-- /.info-box-content -->
               </div>
@@ -237,8 +316,8 @@
                 <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-parking"></i></span>
   
                 <div class="info-box-content">
-                  <span class="info-box-text">Total</span>
-                  <span id="total" class="info-box-number"></span>
+                  <span class="info-box-text">Total assignments</span>
+                  <span id="total_assignments" class="info-box-number"></span>
                 </div>
                 <!-- /.info-box-content -->
               </div>
@@ -250,7 +329,7 @@
   
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h3 class="m-0 text-dark">Parkings</h3>
+              <h3 class="m-0 text-dark">Channels</h3>
             </div><!-- /.col -->
           </div><!-- /.row -->
           {% for parking in parkings.items() %}
@@ -263,13 +342,9 @@
                   <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                 </div>
                 <div class="card-header">
-                  <h3 class="card-title">{{ parking[1]["parking_name"] }}</h3>
+                  <h3 class="card-title">Channel_name - Courses</h3>
   
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                  </div>
+
                 </div>
                 <div class="card-body" style="height: 300px;">
                   <canvas id="chart_{{parking[0]}}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -282,7 +357,7 @@
             <div class="col-lg-6">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">{{ parking[1]["parking_name"] }} Current Bookings</h3>
+                  <h3 class="card-title">Channel_name - Assignments</h3>
   
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -334,12 +409,8 @@
   <script src="https://adminlte.io/docs/3.0/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script  src="js/api.js"></script>
+  <script  src="js/router.js"></script>
   <script>
-    logged=false;
-    if(!logged){
-      display('login');
-    }
-
     function validateEmail(email){
       if(String(email)
       .toLowerCase()
@@ -373,48 +444,6 @@
         return true;
       }
       return false;
-    }
-
-    function display(page){
-      console.log(page);
-      switch(page){
-        case 'login':
-          hide_home();
-          show_login();
-          break;
-        case 'home':
-          hide_login();
-          show_home();
-          break;
-        default:
-          console.log("Display page ${page} error!")
-          hide_login();
-          hide_home();
-      }
-    }
-
-    function show_login(){
-      $(document).prop('title','HR Admin | Log in');
-      $('body').removeClass();
-      $('body').addClass('login-page');
-      $('body').addClass('hold-transition');
-      $('#login').removeClass();
-      $('#login').addClass('login-box');
-    }
-
-    function hide_login(){
-      $('#login').addClass('d-none');
-    }
-
-    function show_home(){
-      $(document).prop('title','HR Admin | Home');
-      $('body').removeClass();
-      $('body').addClass('sidebar-mini');
-      $('#home').removeClass('d-none');
-    }
-
-    function hide_home(){
-      $('#home').addClass('d-none');
     }
   </script>
 </body>
