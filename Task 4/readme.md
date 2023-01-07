@@ -38,9 +38,10 @@ As shown above, there are several microservices used on our application, the gra
 
 Each microservice except filesystem has its own database that is built in order to be independent from other microservices so it has only the necessary to properly work, this allow microservices to operate only on their databases (like microservice architecture asks).
 
-Obviously, this approach requires a data consistency between microservices databases and this is achieved through _RabbitMQ_.
+Obviously, this approach requires a data consistency between microservices databases and this is achieved through **RabbitMQ**.
 
 ### RabbitMQ
+Each time an INSERT, UPDATE or DELETE query is made by a microservice, this one doesnt' directly communicate with database but instead sends a message to an exchanger that insert it into a queue handled by a RabbitMQ server, so we can see each microservice as a **producer** of the message. When messaage is queued, a **consumer** of the message will take the it, it reads the content and it performs the operation required inside multiple databases
 ### Databases
 
 ## How to run 
