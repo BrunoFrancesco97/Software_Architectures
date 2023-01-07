@@ -11,7 +11,9 @@ Since requirements ask for a distributed architecture, the original application 
 
 Application is still layered (frontend and backend), so there is a monolithic frontend where all HTTP requests are made. These requests are sent to the API gateway/layer, the first part of the backend a user encounter.
 
-This gateway is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see Task 3 for a better explaination of this technology)
+This gateway is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see Task 3 for a better explaination of this technology).
+
+So, when the gateway has choosen the right microservice to send the request, it starts a synchronous communication and wait for a response, when this one is received then is sent back to the user.
 
 ## Backend
 ### Microservices
