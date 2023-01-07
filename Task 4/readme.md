@@ -25,7 +25,7 @@ As shown above, there are several microservices used on our application, the gra
 - _course_: microservice used to get, add and remove a course;
 - _exercise_: microservice used to get, create and answer to an exercise;
 - _file_: microservice used to add and remove a file inside a course;
-- _filesystem:
+- _filesystem_: special microservice used as storing point for other microservices, this is the only microservice the api gateway doesn't communicate with but other microsevices directly do it in order to create/remove folders or upload/remove files;
 - _loginreg_: microservice used to registrate or login a user;
 - _message_; microservice used to get or send messages; 
 - _result_: microservice used to get assignments results;
