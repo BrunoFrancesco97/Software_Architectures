@@ -52,6 +52,6 @@ Above is shown an example image of a microservice sending a critical request to 
 
 ### Databases
 
-## How to run 
+## How to run the project
 
 ## Test it
