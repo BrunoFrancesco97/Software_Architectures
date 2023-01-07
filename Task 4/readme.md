@@ -46,6 +46,7 @@ Each time an INSERT, UPDATE or DELETE query is made by a microservice, this one 
 ![Alt Image text](/Task%204/img/rabbit.png "Representation of the architecture chosen with RabbitMQ")
 
 Thanks to this technology data consistency is now achieved and at the same time microservice architecture philosophy is maintained. 
+Above is shown an example image of a microservice sending a critical request to the queue and a consumer handling it by performing the request inside multiple databases.
 
 ### Databases
 
