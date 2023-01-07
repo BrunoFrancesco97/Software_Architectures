@@ -50,6 +50,8 @@ When messaage is queued, a **consumer** of the message will handle it, it reads 
 Thanks to this technology data consistency is now achieved and at the same time microservice architecture philosophy is maintained. 
 Above is shown an example image of a microservice sending a critical request to the queue and a consumer handling it by performing the request inside multiple databases.
 
+Notice that in our case we have just one consumer but RabbitMQ is so powerful that we can easily scale it by adding many of them so to improve performances of the system.
+
 ### Databases
 
 ## How to run the project
