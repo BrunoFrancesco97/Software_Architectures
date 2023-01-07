@@ -18,6 +18,21 @@ So, when the gateway has choosen the right microservice to send the request, it 
 Image above shows how the architecture is built, arrows from the api gateway to the microservices are missing since if they were present, image would be very messy but as I said above, gateway to microservices communication is handled by a synchronous stream.
 
 ## Backend
+As shown above, there are several microservices used on our application, they are:
+- _assignment_:
+- _channel_:
+- _course_:
+- _exercise_:
+- _file_:
+- _filesystem:
+- _loginreg_:
+- _message_;
+- _result_:
+- _solution_:
+- _subscription_:
+- _test_:
+- _user_:
+
 ### Microservices
 #### API Layer 
 ### RabbitMQ
