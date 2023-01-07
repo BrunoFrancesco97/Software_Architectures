@@ -9,8 +9,10 @@ Since requirements ask for a distributed architecture, the original application 
 
 ![Alt Image text](/Task%204/img/distributed.png "Application structure")
 
-Application is still layered
-## Front End
+Application is still layered (frontend and backend), so there is a monolithic frontend where all HTTP requests are made. These requests are sent to the API gateway/layer, the first part of the backend a user encounter.
+
+This gateway is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see Task 3 for a better explaination of this technology)
+
 ## Backend
 ### Microservices
 #### API Layer 
