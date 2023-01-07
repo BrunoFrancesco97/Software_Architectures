@@ -33,6 +33,11 @@ As shown above, there are several microservices used on our application, the gra
 - _subscription_: microservice used to get or add a subscription to a channel or course;
 - _test_: microservice used to get or add tests related to an exercise;
 - _user_: microservice used to get user information;
+
+Each microservice except filesystem has its own database that is built in order to be independent from other microservices so it has only the necessary to properly work, this allow microservices to operate only on their databases (like microservice architecture asks).
+
+Obviously, this approach requires a data consistency between microservices databases and this is achieved through _RabbitMQ_.
+
 #### API Layer 
 ### RabbitMQ
 ### Databases
