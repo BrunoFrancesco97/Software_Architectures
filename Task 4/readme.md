@@ -9,17 +9,19 @@ Since requirements ask for a distributed architecture, the original application 
 
 ![Alt Image text](/Task%204/img/distributed.png "Application structure")
 
-Application is still layered (frontend and backend), so there is a monolithic frontend where all HTTP requests are made. These requests are sent to the API gateway/layer, the first part of the backend a user encounter.
+Application is still layered so there is a monolithic frontend where all HTTP requests are made and a backend. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
 
-This gateway is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see Task 3 for a better explaination of this technology).
+## Backend
+#### API Layer 
+API layer is the first component met by a user inside backend and is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see Task 3 for a better explaination of this technology).
 
-So, when the gateway has choosen the right microservice to send the request, it starts a synchronous communication and wait for a response, when this one is received then is sent back to the user.
+When the gateway has choosen the right microservice to send the request, it starts a synchronous communication and wait for a response, when this one is received then is sent back to the user.
 
 Image above shows how the architecture is built, arrows from the api gateway to the microservices are missing since if they were present, image would be very messy but as I said above, gateway to microservices communication is handled by a synchronous stream.
 
-## Backend
 ### Microservices
 As shown above, there are several microservices used on our application, the granularity used for splitting them was chosen by considering the resources each microservice would have operated with, so microservices implemented are:
+
 - _assignment_: microservice used to add and remove an assignment;
 - _channel_: microservice used to get, add and remove a channel;
 - _course_: microservice used to get, add and remove a course;
@@ -38,7 +40,6 @@ Each microservice except filesystem has its own database that is built in order 
 
 Obviously, this approach requires a data consistency between microservices databases and this is achieved through _RabbitMQ_.
 
-#### API Layer 
 ### RabbitMQ
 ### Databases
 
