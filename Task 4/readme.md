@@ -3,7 +3,7 @@
 ## Requirements
 For this task is asked to build up an Hackerrank-like application over a distributed architecture, Task 3 monolithic application is used as starting point.
 
-## Overview of the architecture
+## Overview of the architecture used
 
 Since requirements ask for a distributed architecture, the original application is now splitted into different services that can be placed inside different communicating machines (in order to simplify life professor, we build a simulation of a distributed architecture so a unique docker compose is used as final artifact), in detail our application is based on *microservices*.
 
