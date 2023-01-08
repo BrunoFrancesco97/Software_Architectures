@@ -56,7 +56,7 @@ Notice that in our case we have just one consumer but RabbitMQ is so powerful th
 
 ### Databases
 
-As said many times before, each microservice has its own independent database, here is a list of all schema databases:
+As said many times before, each microservice has its own independent database, here is a list of all schema for each microservice database:
 #### Assignment 
 #### Channel
 #### Course
