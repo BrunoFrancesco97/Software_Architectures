@@ -9,7 +9,7 @@ Since requirements ask for a distributed architecture, the original application 
 
 ![Alt Image text](/Task%204/img/distributed.png "Application structure")
 
-Application is still layered so there is a monolithic frontend where all HTTP requests are made and a backend. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
+Application is still layered so there is a monolithic frontend where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
 
 ## Backend
 #### API Layer 
