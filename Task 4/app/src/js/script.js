@@ -391,6 +391,10 @@ function send_solution(el) {
   let loader =  document.querySelector("#loader");
   body_loader.style.opacity = "0";
   loader.classList.remove("d-none");
+  pp = document.querySelectorAll(".exercises");
+  for(let z = 0; z < pp.length; z++){
+    pp[z].classList.add("d-none");
+  }
   let request = new XMLHttpRequest();
   request.open("PUT", "http://localhost:5000/exercise", true);
   request.onreadystatechange = function () {
@@ -458,6 +462,10 @@ function send_solution(el) {
     }else{
       body_loader.style.opacity = "1";
       loader.classList.add("d-none");
+      pp = document.querySelectorAll(".exercises");
+      for(let z = 0; z < pp.length; z++){
+        pp[z].classList.remove("d-none");
+      }
     }
   };
   request.withCredentials = true;
