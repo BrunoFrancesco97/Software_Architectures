@@ -60,36 +60,28 @@
           </div>
         </div>
         <div
-          class="d-none"
+          class="d-none rounded"
           id="menu_dialog_container"
-          style="
-            background-color: #5a565a;
-            z-index: 100;
-            position: fixed;
-            right: 0px;
-            top: 64px;
-            width: 240px;
-          "
         >
           <div
             class="container-fluid"
-            style="padding-left: 0px; padding-right: 0px"
+            style="padding-left: 10px; padding-right: 10px; padding-top:10px; padding-bottom: 10px;"
           >
             <div
-              class="col-12 py-3 pointer px-3 text-center text-break"
+              class="col-12 py-3 pointer px-3 text-break rounded"
               title="User profile"
               id="go-user-button"
               onclick="goUser()"
             >
-              <p class="text-white">User profile</p>
+              <p class="text-white"><i class="fa fa-solid fa-user"></i> User profile</p>
             </div>
             <div
-              class="col-12 py-3 px-3 bg-danger pointer text-center text-break"
+              class="col-12 py-3 px-3 pointer text-break rounded"
               id="go-logout-button"
               title="Logout"
               onclick="logout()"
             >
-              <p class="text-white">Logout</p>
+              <p class="text-white"><i class="fas fa-sign-out-alt"></i> Logout</p>
             </div>
           </div>
         </div>
