@@ -68,7 +68,7 @@ As said many times before, each microservice has its own independent database, h
 #### File
 ![Alt Image text](/Task%204/img/file.png "File schema")
 #### Login
-![Alt Image text](/Task%204/img/login.png "Login schema")
+![Alt Image text](/Task%204/img/user.png "Login schema")
 #### Message
 ![Alt Image text](/Task%204/img/message.png "Message schema")
 #### Result
