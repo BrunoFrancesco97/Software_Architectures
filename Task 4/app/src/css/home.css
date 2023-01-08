@@ -3,13 +3,20 @@
 }
 
 #go-user-button:hover{
-    background-color: hsl(208, 80%, 54%);
+    background-color: #5a565a;
 }
 
 #go-logout-button{
     transition: 0.3s;
 }
-
+#menu_dialog_container{
+    background-color: #3a3b3c;  
+    z-index: 100;
+    position: fixed;
+    right: 25px;
+    top: 64px;
+    width: 240px;
+}
 #go-logout-button:hover{
     background-color: #C51F17 !important;
 }
