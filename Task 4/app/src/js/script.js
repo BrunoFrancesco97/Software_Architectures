@@ -1,7 +1,6 @@
 var position = 0;
 
 function router() {
-  console.log(position);
   switch (position) {
     case 0: //Channel list
       document.querySelector("#go-back-button").classList.add("d-none");
@@ -172,7 +171,6 @@ function get_materials(name) {
       files = obj.files;
       assignments_done = obj.assignment_done;
       assignments_remaining = obj.assignments_remaining;
-      console.log(assignments_remaining);
       document.querySelectorAll(".files").forEach((el) => el.remove());
       for (let i = 0; i < files.length; i++) {
         parent_div = document.querySelector("#file_template");
@@ -266,7 +264,6 @@ function get_channels() {
         document.querySelector("#channel_container").appendChild(clone);
       }
     } else {
-      console.log(request.status);
       if (request.status == 0) {
         window.location.replace("index.html");
       }
@@ -305,7 +302,6 @@ function compute(el) {
       position = 3;
       router();
       obj = JSON.parse(request.responseText);
-      console.log(obj);
       //Remove all previous loaded exercises
       document.querySelectorAll(".exercises").forEach((el) => el.remove());
       document.querySelectorAll(".results").forEach((el) => el.remove());
@@ -345,7 +341,6 @@ function seePrevious(el) {
       position = 5;
       router();
       obj = JSON.parse(request.responseText);
-      console.log(obj);
       //Remove all previous loaded exercises
       document.querySelectorAll(".results_prev").forEach((el) => el.remove());
       parent_div = document.querySelector("#final_template2");
@@ -490,7 +485,6 @@ function toggleMenu(){
 
 function toggleToast(text) {
   el = document.querySelector('#toast_made');
-  console.log(el);
   el.classList.remove('d-none');
   el2 =  document.querySelector('#toast_made_message');  
   el2.innerText = text;
