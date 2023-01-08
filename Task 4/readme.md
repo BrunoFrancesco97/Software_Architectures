@@ -60,7 +60,8 @@ Notice that in our case we have just one consumer but RabbitMQ is so powerful th
 
 ### Databases
 
-As said many times before, each microservice has its own independent database, here is a list of all schema for each microservice database:
+As said many times before, each microservice has its own independent database, below there is a list of all schema for each microservice database, notice that as for Task 3 _MariaDB_ DBMS is used.
+
 #### Assignment 
 ![Alt Image text](/Task%204/img/assignment.png "Assignment schema")
 #### Channel
