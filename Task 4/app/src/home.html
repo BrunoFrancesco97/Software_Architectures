@@ -26,7 +26,8 @@
         class="container-fluid"
         style="
           background-color: #f9f6f7;
-          min-height: 100vh;
+          min-height: fit-content;
+          height: 100vh !important;
           max-height: fit-content !important;
         "
       >
@@ -73,7 +74,15 @@
               id="go-user-button"
               onclick="goUser()"
             >
-              <p class="text-white"><i class="fa fa-solid fa-user"></i> User profile</p>
+              <p class="text-white"><i class="fa fa-solid fa-user"></i> Profile</p>
+            </div>
+            <div
+              class="col-12 py-3 pointer px-3 text-break rounded"
+              title="Homepage"
+              id="go-user-button"
+              onclick="goHome()"
+            >
+              <p class="text-white"><i class="fas fa-home"></i> Home</p>
             </div>
             <div
               class="col-12 py-3 px-3 pointer text-break rounded"
