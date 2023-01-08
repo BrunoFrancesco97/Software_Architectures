@@ -58,17 +58,28 @@ Notice that in our case we have just one consumer but RabbitMQ is so powerful th
 
 As said many times before, each microservice has its own independent database, here is a list of all schema for each microservice database:
 #### Assignment 
+![Alt Image text](/Task%204/img/assignment.png "Assignment schema")
 #### Channel
+![Alt Image text](/Task%204/img/channel.png "Channel schema")
 #### Course
+![Alt Image text](/Task%204/img/course.png "Course schema")
 #### Exercise
+![Alt Image text](/Task%204/img/exercise.png "Exercise schema")
 #### File
+![Alt Image text](/Task%204/img/file.png "File schema")
 #### Login
+![Alt Image text](/Task%204/img/login.png "Login schema")
 #### Message
+![Alt Image text](/Task%204/img/message.png "Message schema")
 #### Result
+![Alt Image text](/Task%204/img/result.png "Result schema")
 #### Solution
+![Alt Image text](/Task%204/img/solution.png "Solution schema")
 #### Subscription
 #### Test
+![Alt Image text](/Task%204/img/test.png "Test schema")
 #### User 
+![Alt Image text](/Task%204/img/user.png "User schema")
 
 ## How to run the project
 
