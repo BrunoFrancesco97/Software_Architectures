@@ -2,7 +2,9 @@
 Repository used to store various tasks about Software Architecture course.
 
 # Task 1
-Submit a katas about a possible hackerrank-style information system.
+Submit a katas* about a possible hackerrank-style information system.
+
+*https://nealford.com/katas/
 # Task 2
 Submit a pdf file where you define what architecture characteristics are of interest to your IT system, relating each architecture characteristics to the points of the kata that led you to identify that caracteristic. 
 
