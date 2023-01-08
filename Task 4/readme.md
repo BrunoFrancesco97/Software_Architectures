@@ -76,6 +76,7 @@ As said many times before, each microservice has its own independent database, h
 #### Solution
 ![Alt Image text](/Task%204/img/solution.png "Solution schema")
 #### Subscription
+![Alt Image text](/Task%204/img/subscription.png "Subscription schema")
 #### Test
 ![Alt Image text](/Task%204/img/test.png "Test schema")
 #### User 
