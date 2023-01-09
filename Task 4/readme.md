@@ -46,7 +46,7 @@ Other than databases, each microservice contains an API interface that allows ex
 
 ![Alt Image text](/Task%204/img/microservice.png "Microservice structure")
 
-Above an illustraation of a generic microservice.
+Above an illustration of a generic microservice.
 
 ### RabbitMQ
 Each time an INSERT, UPDATE or DELETE query is made by a microservice, this one doesnt' directly communicate with the database but instead it sends a message to an exchanger that insert it into a queue handled by a RabbitMQ server, so we can see each microservice as a **producer** of the message. 
