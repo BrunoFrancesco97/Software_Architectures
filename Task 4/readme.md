@@ -91,4 +91,39 @@ As said many times before, each microservice has its own independent database, b
 
 ## How to run the project
 
+In order to build this system there are 2 requirements:
+- Docker
+- Compose
+
+If you have an updated version of Docker/Docker Desktop, Compose was installed with it.
+
+First of all you have to clone this repo with:
+```
+$> git clone git@github.com:BrunoFrancesco97/Software_Architectures.git
+```
+Or you can simply use GitHub Desktop, open a terminal and cd in the root folder of this project.
+
+You can build the system with this command:
+
+```
+$> docker-compose build
+```
+
+It will create these three docker images:
+```
+$> docker image ls
+REPOSITORY              TAG
+hackerrank/api          latest
+hackerrank/db           latest
+hackerrank/app-web      latest
+```
+
+Now you can start the system with:
+```
+$> docker-compose up
+```
+
+According to docker-compose declaration, there are only two exposed endpoints:
+- [api server](http://localhost:5000) - port 5000
+- [web app](http://localhost:8080) - port 8080
 ## Test it
