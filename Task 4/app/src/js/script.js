@@ -98,11 +98,14 @@ function get_courses(el) {
   request.open("GET", "http://localhost:5000/channel/" + name, true);
   request.onreadystatechange = function () {
     if (request.status == 200 && request.readyState == 4) {
+      localStorage.setItem('channel',name);
       position = 1;
       router();
       obj = JSON.parse(request.responseText);
       //Remove all previous loaded channels
       document.querySelectorAll(".courses").forEach((el) => el.remove());
+      channel_name = localStorage.getItem('channel');
+      document.getElementById('channel_name_course').innerText = channel_name;
       for (let i = 0; i < obj.length; i++) {
         parent_div = document.querySelector("#course_template");
         parent_div.getElementsByClassName('boxx')[0].setAttribute('name',obj[i].name)
@@ -467,14 +470,6 @@ function send_solution(el) {
   request.send(formData);
 }
 
-$(document).mouseup(function (e) {
-  var div = $("#menuicon");
-  if(!div.is(e.target)) 
-  {
-    document.getElementById('menu_dialog_container').classList.add('d-none');
-  }
-  });
-
 function toggleMenu(){
   if(document.getElementById('menu_dialog_container').classList.contains('d-none')){
     document.getElementById('menu_dialog_container').classList.remove('d-none');
@@ -508,3 +503,11 @@ function showModalCh2(name){
 function closeModalCh2(){
   document.getElementById('modal_made2').classList.add('d-none');
 }
+
+$(document).mouseup(function (e) {
+  var div = document.getElementById("menuicon");
+  if(!div.is(e.target)) 
+  {
+    document.getElementById('menu_dialog_container').classList.add('d-none');
+  }
+  });
