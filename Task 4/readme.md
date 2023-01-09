@@ -101,7 +101,7 @@ First of all you have to clone this repo with:
 ```
 $> git clone git@github.com:BrunoFrancesco97/Software_Architectures.git
 ```
-Or you can simply use GitHub Desktop, open a terminal and cd in the root folder of this project.
+Or you can simply use GitHub Desktop, open a terminal and cd in the root folder of this task.
 
 You can build the system with this command:
 
@@ -109,13 +109,39 @@ You can build the system with this command:
 $> docker-compose build
 ```
 
-It will create these three docker images:
+It will create these docker images:
 ```
-$> docker image ls
-REPOSITORY              TAG
-hackerrank/api          latest
-hackerrank/db           latest
-hackerrank/app-web      latest
+$> docker image 
+REPOSITORY                             TAG
+hackerrank/db_file                   latest
+hackerrank/db_user                   latest
+hackerrank/db_channel                latest
+hackerrank/db_course                 latest
+hackerrank/db_message                latest
+hackerrank/db_result                 latest
+hackerrank/db_solution               latest
+hackerrank/db_assignment             latest
+hackerrank/db_exercise               latest
+hackerrank/db_test                   latest
+hackerrank/db_login                  latest
+hackerrank/db_subscription           latest
+hackerrank/api_exercise              latest
+hackerrank/rabbit_consumer           latest
+hackerrank/api_wrapper               latest
+hackerrank/api_exercise              latest
+hackerrank/api_assignment            latest
+hackerrank/api_message               latest
+hackerrank/api_file                  latest
+hackerrank/api_test                  latest
+hackerrank/api_result                latest
+hackerrank/api_channel               latest
+hackerrank/api_course                latest
+hackerrank/api_user                  latest
+hackerrank/api_login                 latest
+hackerrank/api_subscription          latest
+hackerrank/api_solution              latest
+hackerrank/api_filesystem            latest
+hackerrank/app-web                   latest
 ```
 
 Now you can start the system with:
