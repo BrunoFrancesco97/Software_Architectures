@@ -158,4 +158,4 @@ Before logging into the application, create a new account (user role if you want
 
 After being subscribed to the channel, click another time on it, you are now entered to the channel and you should see a list of courses related to the channel you entered (currently only a default course), same as channels by clicking on the single course you can subscribe and enter on it.
 
-Now you are entered inside the course, you can check all contents related to this one such as files uploaded by admins or assignments given.
+Now you are entered inside the course, you can check all contents related to this one such as files uploaded by admins or assignments given (image below).
