@@ -148,5 +148,5 @@ Now you can start the system with:
 ```
 $> docker-compose up
 ```
-Wait until all containers aare properly started and enjoy the project by searching _localhost:8080_ on your browser
+Wait until all containers are properly started and enjoy the project by searching _localhost:8080_ on your browser
 ## Test it
