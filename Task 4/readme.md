@@ -148,8 +148,5 @@ Now you can start the system with:
 ```
 $> docker-compose up
 ```
-
-According to docker-compose declaration, there are only two exposed endpoints:
-- [api server](http://localhost:5000) - port 5000
-- [web app](http://localhost:8080) - port 8080
+Wait until all containers aare properly started and enjoy the project by searching _localhost:8080_ on your browser
 ## Test it
