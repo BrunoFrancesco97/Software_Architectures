@@ -150,3 +150,12 @@ $> docker-compose up
 ```
 Wait until all containers are properly started and enjoy the project by searching _localhost:8080_ on your browser
 ## Test it
+Not all functionalities of the application are implemented or they are implemented partially (example, backend is implemented but not the frontend one), therefore the final artefact presented is just a demo of what a hackerrank like application should be.
+
+In order to ose the application, after having started every container following the guide above, search for _localhost:8080_ on your browser, at this point you should see the login page (below one).
+
+Before logging into the application, create a new account (user role if you want to check code compilation functionalities), then log in using the new information chosen. First thing you can see is a list of possible channels (here there is only a default one), by clicking on it you can subsribe to the channel (image below).
+
+After being subscribed to the channel, click another time on it, you are now entered to the channel and you should see a list of courses related to the channel you entered (currently only a default course), same as channels by clicking on the single course you can subscribe and enter on it.
+
+Now you are entered inside the course, you can check all contents related to this one such as files uploaded by admins or assignments given.
