@@ -99,7 +99,7 @@ If you have an updated version of Docker/Docker Desktop, Compose was installed w
 
 First of all you have to clone this repo with:
 ```
-$> git clone git@github.com:BrunoFrancesco97/Software_Architectures.git
+$> git clone https://github.com/BrunoFrancesco97/Software_Architectures.git
 ```
 Or you can simply use GitHub Desktop, open a terminal and cd in the root folder of this task.
 
@@ -153,6 +153,8 @@ Wait until all containers are properly started and enjoy the project by searchin
 Not all functionalities of the application are implemented or they are implemented partially (example, backend is implemented but not the frontend one), therefore the final artefact presented is just a demo of what a hackerrank like application should be.
 
 In order to ose the application, after having started every container following the guide above, search for _localhost:8080_ on your browser, at this point you should see the login page (below one).
+
+![Alt Image text](/Task%204/img/loginpage.png "Login page")
 
 Before logging into the application, create a new account (user role if you want to check code compilation functionalities), then log in using the new information chosen. First thing you can see is a list of possible channels (here there is only a default one), by clicking on it you can subsribe to the channel (image below).
 
