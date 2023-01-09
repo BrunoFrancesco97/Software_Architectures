@@ -41,6 +41,16 @@
      z-index: 1000000000000;
 }
 
+.name_channel{
+    transition: 0.3s;
+}
+.name_channel:hover{
+    color: #C51F17 !important;
+    text-decoration: underline !important;
+}
+#channel_name_course{
+    font-size: large !important;
+}
 .modal_made{
     position: absolute;
      width:500px;
