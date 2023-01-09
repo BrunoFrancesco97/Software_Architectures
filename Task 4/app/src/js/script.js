@@ -504,10 +504,9 @@ function closeModalCh2(){
   document.getElementById('modal_made2').classList.add('d-none');
 }
 
-$(document).mouseup(function (e) {
+document.addEventListener("click",function(event){
   var div = document.getElementById("menuicon");
-  if(!div.is(e.target)) 
-  {
+  if(div != event.target){
     document.getElementById('menu_dialog_container').classList.add('d-none');
   }
-  });
+});
