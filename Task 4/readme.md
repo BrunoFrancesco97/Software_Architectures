@@ -168,7 +168,7 @@ Now you are entered inside the course, you can check all contents related to thi
 
 As you can see there is a default assignment proposed, by clicking on it you enter on a solving page where there is a exercise that need to be solved (image below)
 
-<img src="/Task%204/img/exercises.png" width="200">
+<img src="/Task%204/img/exercises.png" width="300">
 
 
 ## Future improvements
