@@ -158,6 +158,8 @@ In order to ose the application, after having started every container following 
 
 Before logging into the application, create a new account (user role if you want to check code compilation functionalities), then log in using the new information chosen. First thing you can see is a list of possible channels (here there is only a default one), by clicking on it you can subsribe to the channel (image below).
 
+![Alt Image text](/Task%204/img/subscribe.png "Subscribe modal")
+
 After being subscribed to the channel, click another time on it, you are now entered to the channel and you should see a list of courses related to the channel you entered (currently only a default course), same as channels by clicking on the single course you can subscribe and enter on it.
 
 Now you are entered inside the course, you can check all contents related to this one such as files uploaded by admins or assignments given (image below).
