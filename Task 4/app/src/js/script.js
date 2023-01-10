@@ -169,6 +169,7 @@ function get_materials(name) {
     if (request.status == 200 && request.readyState == 4) {
       position = 2;
       router();
+      document.querySelector("#go-back-button").classList.add('d-none');
       document.getElementById("course_name").innerText = name;
       obj = JSON.parse(request.responseText);
       files = obj.files;
@@ -291,7 +292,7 @@ function goBack() {
     position = 0;
   }
   router();
-}
+} 
 
 function compute(el) {
   let nameDiv = el.getElementsByClassName("name")[0].innerText;
