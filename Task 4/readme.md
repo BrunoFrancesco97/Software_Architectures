@@ -75,7 +75,9 @@ As said many times before, each microservice has its own independent database, b
 #### File
 ![Alt Image text](/Task%204/img/file.png "File schema")
 #### Login
-![Alt Image text](/Task%204/img/user.png "Login schema")
+<p align="center">
+  <img src="/Task%204/img/user.png">
+</p>
 #### Message
 ![Alt Image text](/Task%204/img/message.png "Message schema")
 #### Result
@@ -85,9 +87,13 @@ As said many times before, each microservice has its own independent database, b
 #### Subscription
 ![Alt Image text](/Task%204/img/subscription.png "Subscription schema")
 #### Test
-![Alt Image text](/Task%204/img/test.png "Test schema")
+<p align="center">
+  <img src="/Task%204/img/test.png">
+</p>
 #### User 
-![Alt Image text](/Task%204/img/user.png "User schema")
+<p align="center">
+  <img src="/Task%204/img/user.png">
+</p>
 
 ## How to run the project
 
