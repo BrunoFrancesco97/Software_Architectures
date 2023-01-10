@@ -213,7 +213,7 @@ As you can see there is a default assignment proposed, by clicking on it you ent
 ## Future improvements
 In order to improve the demo proposed, some improvements are shown below:
 - Integration of missing features proposed in the previous tasks
-- Better graphic interface 
+- Better graphic interface (position and colours of some components, more moden design) 
 - Better responsive interface
 - Better user experience when an exercise is solved 
 - Better user experience when a result of an assignment is sent back to the user from the server
