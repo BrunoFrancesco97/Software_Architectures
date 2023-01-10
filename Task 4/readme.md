@@ -103,7 +103,7 @@ As said many times before, each microservice has its own independent database, b
 </p>
 #### Result
 <p align="center">
-  <img src="/Task%204/img/result.png" width="600">
+  <img src="/Task%204/img/result.png">
 </p>
 #### Solution
 <p align="center">
