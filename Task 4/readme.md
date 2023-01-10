@@ -165,3 +165,15 @@ After being subscribed to the channel, click another time on it, you are now ent
 Now you are entered inside the course, you can check all contents related to this one such as files uploaded by admins or assignments given (image below).
 
 ![Alt Image text](/Task%204/img/materials.png "Materials of a course")
+
+As you can see there is a default assignment proposed, by clicking on it you enter on a solving page where there is a exercise that need to be solved (image below)
+
+![Alt Image text](/Task%204/img/exercises.png "Example of assignment")
+
+## Future improvements
+In order to improve the demo proposed, some improvements are shown below:
+- Integration of missing features proposed in the previous tasks
+- Better graphic interface 
+- Better responsive interface
+- Better user experience when an exercise is solved 
+- Better user experience when a result of an assignment is sent back to the user from the server
