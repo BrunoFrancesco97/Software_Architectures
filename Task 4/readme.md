@@ -72,21 +72,21 @@ As said many times before, each microservice has its own independent database, b
 
 #### Assignment 
 <p align="center">
-  <img src="/Task%204/img/assignment.png" width="400">
+  <img src="/Task%204/img/assignment.png" width="600">
 </p>
 
 #### Channel
 <p align="center">
-  <img src="/Task%204/img/channel.png" width="400">
+  <img src="/Task%204/img/channel.png" width="600">
 </p>
 #### Course
 <p align="center">
-  <img src="/Task%204/img/course.png" width="400">
+  <img src="/Task%204/img/course.png" width="600">
 </p>
 
 #### Exercise
 <p align="center">
-  <img src="/Task%204/img/exercise.png" width="400">
+  <img src="/Task%204/img/exercise.png" width="600">
 </p>
 
 #### File
@@ -99,19 +99,19 @@ As said many times before, each microservice has its own independent database, b
 </p>
 #### Message
 <p align="center">
-  <img src="/Task%204/img/message.png" width="400">
+  <img src="/Task%204/img/message.png">
 </p>
 #### Result
 <p align="center">
-  <img src="/Task%204/img/result.png" width="400">
+  <img src="/Task%204/img/result.png" width="600">
 </p>
 #### Solution
 <p align="center">
-  <img src="/Task%204/img/solution.png" width="400">
+  <img src="/Task%204/img/solution.png" width="600">
 </p>
 #### Subscription
 <p align="center">
-  <img src="/Task%204/img/subscription.png" width="400">
+  <img src="/Task%204/img/subscription.png" width="600">
 </p>
 #### Test
 <p align="center">
