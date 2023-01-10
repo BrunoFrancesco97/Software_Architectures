@@ -57,7 +57,9 @@ Each time an INSERT, UPDATE or DELETE query is made by a microservice, this one 
 
 When messaage is queued, a **consumer** of the message will handle it, it reads the content and it performs the operation required inside multiple databases. Therefore each microservice knows only about its database but if a critical operation such as an insertion, an update or a delete inside the database is requested, it will let the consumer perform it without knowing which are the other databases interested on the operation.
 
-![Alt Image text](/Task%204/img/rabbit.png "Representation of the architecture chosen with RabbitMQ")
+<p align="center">
+  <img src="/Task%204/img/rabbit.png">
+</p>
 
 Thanks to this technology data consistency is now achieved and at the same time microservice architecture philosophy is maintained. 
 Above is shown an example image of a microservice sending a critical request to the queue and a consumer handling it by performing the request inside multiple databases.
@@ -69,27 +71,48 @@ Notice that in our case we have just one consumer but RabbitMQ is so powerful th
 As said many times before, each microservice has its own independent database, below there is a list of all schema for each microservice database, notice that as for Task 3 _MariaDB_ DBMS is used.
 
 #### Assignment 
-![Alt Image text](/Task%204/img/assignment.png "Assignment schema")
+<p align="center">
+  <img src="/Task%204/img/assignment.png" width="400">
+</p>
+
 #### Channel
-![Alt Image text](/Task%204/img/channel.png "Channel schema")
+<p align="center">
+  <img src="/Task%204/img/channel.png" width="400">
+</p>
 #### Course
-![Alt Image text](/Task%204/img/course.png "Course schema")
+<p align="center">
+  <img src="/Task%204/img/course.png" width="400">
+</p>
+
 #### Exercise
-![Alt Image text](/Task%204/img/exercise.png "Exercise schema")
+<p align="center">
+  <img src="/Task%204/img/exercise.png" width="400">
+</p>
+
 #### File
-![Alt Image text](/Task%204/img/file.png "File schema")
+<p align="center">
+  <img src="/Task%204/img/file.png" width="400">
+</p>
 #### Login
 <p align="center">
   <img src="/Task%204/img/user.png">
 </p>
 #### Message
-![Alt Image text](/Task%204/img/message.png "Message schema")
+<p align="center">
+  <img src="/Task%204/img/message.png" width="400">
+</p>
 #### Result
-![Alt Image text](/Task%204/img/result.png "Result schema")
+<p align="center">
+  <img src="/Task%204/img/result.png" width="400">
+</p>
 #### Solution
-![Alt Image text](/Task%204/img/solution.png "Solution schema")
+<p align="center">
+  <img src="/Task%204/img/solution.png" width="400">
+</p>
 #### Subscription
-![Alt Image text](/Task%204/img/subscription.png "Subscription schema")
+<p align="center">
+  <img src="/Task%204/img/subscription.png" width="400">
+</p>
 #### Test
 <p align="center">
   <img src="/Task%204/img/test.png">
