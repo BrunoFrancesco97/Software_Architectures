@@ -7,7 +7,9 @@ For this task is asked to build up an Hackerrank-like application over a distrib
 
 Since requirements ask for a distributed architecture, the original application is now splitted into different services that can be placed inside different communicating machines (in order to simplify life professor, we build a simulation of a distributed architecture so a unique docker compose is used as final artifact), in detail our application is based on *microservices*.
 
-![Alt Image text](/Task%204/img/distributed.png "Distributed architecture")
+<p align="center">
+  <img src="/Task%204/img/distributed.png">
+</p>
 
 Application is still layered so there is a monolithic frontend where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
 
@@ -44,7 +46,9 @@ Obviously, this approach requires a data consistency between microservices datab
 
 Other than databases, each microservice contains an API interface that allows external entities to use it and also it contains a persistence level developed using _SQLAlchemy_ library (see Task 3 for more information about it).
 
-![Alt Image text](/Task%204/img/microservice.png "Microservice structure")
+<p align="center">
+  <img src="/Task%204/img/microservice.png">
+</p>
 
 Above an illustration of a generic microservice.
 
