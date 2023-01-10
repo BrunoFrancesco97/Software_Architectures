@@ -164,7 +164,7 @@ After being subscribed to the channel, click another time on it, you are now ent
 
 Now you are entered inside the course, you can check all contents related to this one such as files uploaded by admins or assignments given (image below).
 
-![Alt Image text](/Task%204/img/materials.png "Materials of a course")
+<img src="/Task%204/img/materials.png" width="400">
 
 As you can see there is a default assignment proposed, by clicking on it you enter on a solving page where there is a exercise that need to be solved (image below)
 
