@@ -217,3 +217,4 @@ In order to improve the demo proposed, some improvements are shown below:
 - Better responsive interface
 - Better user experience when an exercise is solved 
 - Better user experience when a result of an assignment is sent back to the user from the server
+- Better handling of name files when an exercise is uploaded from the user, now all files have the same name for demo purpose, multiple user interaction to the website can cause name issues
