@@ -7,9 +7,7 @@ For this task is asked to build up an Hackerrank-like application over a distrib
 
 Since requirements ask for a distributed architecture, the original application is now splitted into different services that can be placed inside different communicating machines (in order to simplify life professor, we build a simulation of a distributed architecture so a unique docker compose is used as final artifact), in detail our application is based on *microservices*.
 
-<p align="center">
-  <img src="(https://github.com/BrunoFrancesco97/Software_Architectures/blob/main/Task%204/img/distributed.png)" />
-</p>
+![Alt Image text](/Task%204/img/distributed.png "Distributed architecture")
 
 Application is still layered so there is a monolithic frontend where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
 
