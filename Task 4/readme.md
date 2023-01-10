@@ -168,7 +168,8 @@ Now you are entered inside the course, you can check all contents related to thi
 
 As you can see there is a default assignment proposed, by clicking on it you enter on a solving page where there is a exercise that need to be solved (image below)
 
-![Alt Image text](/Task%204/img/exercises.png "Example of assignment")
+<img src="/Task%204/img/exercises.png" width="200">
+
 
 ## Future improvements
 In order to improve the demo proposed, some improvements are shown below:
