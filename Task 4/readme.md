@@ -210,6 +210,8 @@ As you can see there is a default assignment proposed, by clicking on it you ent
   <img src="/Task%204/img/exercises.png" width="400">
 </p>
 
+Now you can complete the exercise, some files are already written and they are in _tests_ folder in the main root of this task. When a file is given and solution is calculated, a result page will be showed (image below)
+
 ## Future improvements
 In order to improve the demo proposed, some improvements are shown below:
 - Integration of missing features proposed in the previous tasks
