@@ -4,7 +4,7 @@ import exercise
 import course_sub
 import assignment
 import solution
-import os
+import os, sys
 import tests
 import utils
 import result
@@ -213,7 +213,7 @@ def __python(program, user, exercise_id, correct):
 						count_correct += 1
 			result_json = []
 			if len(n_exe) == count_sol: #I've completed all the exercises
-				if count_correct == 0:
+				if count_correct == 0 or error != "":
 					result.add_result_without_comment(
 						correct.assignment, user, 0)
 					time.sleep(10)
@@ -276,7 +276,7 @@ def __java(program, user, exercise_id, correct):
 			shutil.rmtree(path)
 			res = res.replace('\r', '').strip()
 			if len(tests_to_perform) == 0:
-				if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+				if utils.similar(res, correct.correct) > SIMILARITY_CONSTRAINT:
 					solution.add_solution(
 						exercise_id, program, user, True, True)
 				else:
@@ -294,7 +294,7 @@ def __java(program, user, exercise_id, correct):
 					exercise_id, program, user, flag_passed, True)
 			time.sleep(10)
 			similar = __check_integrity_solution(exercise_id, user)
-			n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
+			n_exe = exercise.get_exercises_by_assignment(correct.assignment)
 			count_sol = 0
 			count_correct = 0
 			for item in n_exe:
@@ -305,25 +305,25 @@ def __java(program, user, exercise_id, correct):
 					if db_sol[0].correct is True:
 						count_correct += 1
 			if len(n_exe) == count_sol:
-				if count_correct == 0:
+				if count_correct == 0 or error != "":
 					result.add_result_without_comment(
-						correct[0].assignment, user, 0)
+						correct.assignment, user, 0)
 					time.sleep(10)
 					result_list = __get_result_assignment(
-						user, correct[0].assignment)
+						user, correct.assignment)
 					result_json = [result.obj_to_dict(
 						item) for item in result_list]
 				else:
-					result.add_result_without_comment(correct[0].assignment, user,
+					result.add_result_without_comment(correct.assignment, user,
 													  int((count_correct / len(n_exe)) * 100))
 					time.sleep(10)
 					result_list = __get_result_assignment(
-						user, correct[0].assignment)
+						user, correct.assignment)
 					result_json = [result.obj_to_dict(
 						item) for item in result_list]
 			if len(tests_to_perform) == 0:
 				response = jsonify({"results": result_json, "given": res,
-									"expected": correct[0].correct, "correct": db_sol[0].correct, "similar_responses": similar, "error": error}), 200
+									"expected": correct.correct, "correct": db_sol[0].correct, "similar_responses": similar, "error": error}), 200
 				' '.join(response.split())
 			else:
 				response = jsonify({"results": result_json, "tests": res_list,
@@ -355,7 +355,7 @@ def __c(program, user, exercise_id, correct):
 											  shell=True).decode('UTF-8')
 			else:
 				for test in tests_to_perform:
-					resu = subprocess.check_output("./ " + path + "/app "+test.given_value, stderr=subprocess.STDOUT,
+					resu = subprocess.check_output("./" + path + "/app "+test.given_value, stderr=subprocess.STDOUT,
 												   shell=True).decode('UTF-8')
 					if utils.similar(resu.replace('\r', '').strip(), test.expected) > SIMILARITY_CONSTRAINT:
 						res_list.append(
@@ -364,14 +364,13 @@ def __c(program, user, exercise_id, correct):
 						res_list.append((False, resu.replace(
 							'\r', '').strip(), test.expected, test.name))
 	except subprocess.CalledProcessError as e:
-		#response = jsonify({'return': e.output.decode('UTF-8'), 'correct': 'false'}), 200
 		error = str(e.output)
 	finally:
 		if flag == True:
-			shutil.rmtree(path)
+			shutil.rmtree(path) 
 			res = res.replace('\r', '').strip()
 			if len(tests_to_perform) == 0:
-				if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+				if utils.similar(res, correct.correct) > SIMILARITY_CONSTRAINT:
 					solution.add_solution(
 						exercise_id, program, user, True, True)
 				else:
@@ -386,11 +385,11 @@ def __c(program, user, exercise_id, correct):
 				else:
 					flag_passed = False
 				solution.add_solution(
-					exercise_id, program, user, flag_passed, True)
+					exercise_id, program, user, flag_passed, True) #Arriva False
 			time.sleep(10)
 			similar = __check_integrity_solution(
 				exercise_id, user)
-			n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
+			n_exe = exercise.get_exercises_by_assignment(correct.assignment)
 			count_sol = 0
 			count_correct = 0
 			for item in n_exe:
@@ -398,28 +397,28 @@ def __c(program, user, exercise_id, correct):
 					user, item.id, True)
 				if len(db_sol) == 1:
 					count_sol += 1
-					if db_sol[0].correct is True:
+					if db_sol[0].correct == True:
 						count_correct += 1
 			if len(n_exe) == count_sol:
-				if count_correct == 0:
+				if count_correct == 0 or error != "":
 					result.add_result_without_comment(
-						correct[0].assignment, user, 0)
+						correct.assignment, user, 0)
 					time.sleep(10)
 					result_list = __get_result_assignment(
-						user, correct[0].assignment)
+						user, correct.assignment)
 					result_json = [result.obj_to_dict(
 						item) for item in result_list]
 				else:
-					result.add_result_without_comment(correct[0].assignment, user,
+					result.add_result_without_comment(correct.assignment, user,
 													  int((count_correct / len(n_exe)) * 100))
 					time.sleep(10)
 					result_list = __get_result_assignment(
-						user, correct[0].assignment)
+						user, correct.assignment)
 					result_json = [result.obj_to_dict(
 						item) for item in result_list]
 			if len(tests_to_perform) == 0:
 				response = jsonify({"results": result_json, "given": res,
-									"expected": correct[0].correct, "correct": db_sol[0].correct, "similar_responses": similar, "error": error}), 200
+									"expected": correct.correct, "correct": db_sol[0].correct, "similar_responses": similar, "error": error}), 200
 			else:
 				response = jsonify({"results": result_json, "tests": res_list,
 									"similar_responses": similar, "error": error}), 200
@@ -466,7 +465,7 @@ def __cpp(program, user, exercise_id, correct):
 			shutil.rmtree(path)
 			res = res.replace('\r', '').strip()
 			if len(tests_to_perform) == 0:
-				if utils.similar(res, correct[0].correct) > SIMILARITY_CONSTRAINT:
+				if utils.similar(res, correct.correct) > SIMILARITY_CONSTRAINT:
 					solution.add_solution(
 						exercise_id, program, user, True, True)
 				else:
@@ -485,7 +484,7 @@ def __cpp(program, user, exercise_id, correct):
 			time.sleep(10)
 			similar = __check_integrity_solution(
 				exercise_id, user)
-			n_exe = exercise.get_exercises_by_assignment(correct[0].assignment)
+			n_exe = exercise.get_exercises_by_assignment(correct.assignment)
 			count_sol = 0
 			count_correct = 0
 			for item in n_exe:
@@ -495,26 +494,26 @@ def __cpp(program, user, exercise_id, correct):
 					count_sol += 1
 					if db_sol[0].correct is True:
 						count_correct += 1
-			if len(n_exe) == count_sol:
+			if len(n_exe) == count_sol or error != "":
 				if count_correct == 0:
 					result.add_result_without_comment(
-						correct[0].assignment, user, 0)
+						correct.assignment, user, 0)
 					time.sleep(10)
 					result_list = __get_result_assignment(
-						user, correct[0].assignment)
+						user, correct.assignment)
 					result_json = [result.obj_to_dict(
 						item) for item in result_list]
 				else:
-					result.add_result_without_comment(correct[0].assignment, user,
+					result.add_result_without_comment(correct.assignment, user,
 													  int((count_correct / len(n_exe)) * 100))
 					time.sleep(10)
 					result_list = __get_result_assignment(
-						user, correct[0].assignment)
+						user, correct.assignment)
 					result_json = [result.obj_to_dict(
 						item) for item in result_list]
 			if len(tests_to_perform) == 0:
 				response = jsonify({"results": result_json, "given": res,
-									"expected": correct[0].correct, "correct": db_sol[0].correct, "similar_responses": similar, "error": error}), 200
+									"expected": correct.correct, "correct": db_sol[0].correct, "similar_responses": similar, "error": error}), 200
 				' '.join(response.split())
 			else:
 				response = jsonify({"results": result_json, "tests": res_list,
