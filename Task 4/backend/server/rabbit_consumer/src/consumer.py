@@ -4,7 +4,7 @@ import json
 import url_db 
 import class_definitions
 import base64
-import os
+import os, sys
 
 URL_USERS = [url_db.URL_LOGIN, url_db.URL_USER] #OK
 URL_ASSIGNMENTS = [url_db.URL_ASSIGNMENT, url_db.URL_COURSE, url_db.URL_EXERCISE] #?
@@ -20,10 +20,8 @@ URL_COURSE_SUBS = [url_db.URL_COURSE, url_db.URL_EXERCISE, url_db.URL_FILE, url_
 URL_TESTS = [url_db.URL_EXERCISE, url_db.URL_TEST] #OK
 
 def write_db(ch, method, properties, body):
-    print(body)
     try:
         x : dict = json.loads(body.decode(encoding="UTF-8").replace("'",'\"').replace("False","\"False\"").replace("True","\"True\"").replace("None","\"None\""))
-        print(x.get('event'))
         if x.get('event') == "user":
             if x.get('mode') == 'add':
                 for link in URL_USERS:
@@ -119,10 +117,10 @@ def write_db(ch, method, properties, body):
                     database.set(link)
                     session = database.Session()
                     try:
-                        if x.get('type') == '1':  
-                            session.add(class_definitions.Solution(exercise=x.get('exercise'), answer=x.get('answer'), user=x.get('user'), correct=bool(x.get('correct')), hash=x.get('hash'),review=bool(x.get('review')))) 
+                        if x.get('type') == '1':
+                            session.add(class_definitions.Solution(exercise=x.get('exercise'), answer=x.get('answer'), user=x.get('user'), correct=eval(x.get('correct')), hash=x.get('hash'),review=eval(x.get('review')))) 
                         elif x.get('type') == '2':
-                            session.add(class_definitions.Solution(exercise=x.get('exercise'), answer=x.get('answer'), user=x.get('user'), hash=x.get('hash'),review=bool(x.get('review'))))
+                            session.add(class_definitions.Solution(exercise=x.get('exercise'), answer=x.get('answer'), user=x.get('user'), hash=x.get('hash'),review=eval(x.get('review'))))
                         else:
                             session.rollback()
                     except:
