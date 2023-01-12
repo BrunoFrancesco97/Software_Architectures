@@ -111,33 +111,18 @@
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="/" class="nav-link active">
+              <ul id="channel_menu" class="nav nav-treeview">
+                <li id="channel_template" class="nav-item d-none">
+                  <a onclick="" class="nav-link" style="cursor: pointer;">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Channels</p>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a href="/add_parking" class="nav-link active">
+                <li id="add_channel" class="nav-item">
+                  <a onclick="alert()" class="nav-link active" style="cursor: pointer;">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Add Channel</p>
                   </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <p>Manage Channels<i class="right fas fa-angle-left"></i></p>
-                  </a>
-                  <ul class="nav nav-treeview">
-
-                    <li class="nav-item">
-                      <a href="/manage_parking/{{ parking[0] }}" class="nav-link active">
-                         <i class="far fa-dot-circle nav-icon"></i>
-                        <p>C-1</p>
-                      </a>
-                    </li>
-
-                  </ul>
                 </li>
               </ul>
             </li>

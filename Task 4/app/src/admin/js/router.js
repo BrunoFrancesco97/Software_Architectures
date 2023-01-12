@@ -5,7 +5,7 @@ logged=false;
 
 
 function display(page){
-  console.log(page);
+  console.log("Routing to: "+page);
   switch(page){
     case 'login':
       hide_home();
@@ -16,7 +16,7 @@ function display(page){
       show_home();
       break;
     default:
-      console.log("Display page ${page} error!")
+      console.log("Display page "+page+" error!");
       hide_login();
       hide_home();
   }
@@ -40,6 +40,8 @@ function show_home(){
   $('body').removeClass();
   $('body').addClass('sidebar-mini');
   $('#home').removeClass('d-none');
+
+  getChannels();
 }
 
 function hide_home(){
