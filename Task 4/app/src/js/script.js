@@ -182,14 +182,15 @@ function subscribeCourse(el){
 }
 
 function deletesubscribeCourse(el){
-  let name = el.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
+  let name = document.getElementById('course_name').innerText;
   console.log(name);
   var request = new XMLHttpRequest();
   request.open("DELETE", "http://localhost:5000/course_subscription", true);
   request.setRequestHeader('Content-Type', 'application/json');
   request.onreadystatechange = function () {
     if (request.status == 200 && request.readyState == 4) {
-      closeModalCh2();
+      position = 1;
+      router();
     }
   };
   request.withCredentials = true;
