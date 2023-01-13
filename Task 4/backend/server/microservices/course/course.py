@@ -40,10 +40,17 @@ def add_course(name: str, channel_ID):
     except Exception as e:
         print(e)
 
+
 def remove_course(name: str, channel_ID, channel_name: str):
-    session = database.Session()
-    session.query(Course).filter_by(name=name, channel=channel_ID).delete(synchronize_session="evaluate")
-    session.close()
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channell = connection.channel()
+    channell.queue_declare(queue='channel_info')
+    new_course = Course(name=name, channel=channel_ID)
+    dictObj : dict = obj_to_dict2(new_course)
+    dictObj["mode"] = "delete"
+    channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    print("Message sent")
+    connection.close()
 
 
 def select_all():
