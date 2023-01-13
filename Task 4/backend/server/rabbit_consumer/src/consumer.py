@@ -138,6 +138,16 @@ def write_db(ch, method, properties, body):
                         session.rollback()
                     else:
                         session.commit()
+            if x.get('mode') == 'delete':
+                for link in URL_CHANNEL_SUBS:
+                    database.set(link)
+                    session = database.Session()
+                    try:
+                        session.query(class_definitions.Channel_Sub).filter_by(user=x.get('user'), channel=x.get('channel')).delete(synchronize_session="evaluate")
+                    except:
+                        session.rollback()
+                    else:
+                        session.commit()
         elif x.get('event') == 'course_sub':
             if x.get('mode') == 'add':
                 for link in URL_COURSE_SUBS:
@@ -145,6 +155,16 @@ def write_db(ch, method, properties, body):
                     session = database.Session()
                     try:
                         session.add(class_definitions.Course_Sub(course=x.get('course'), user=x.get('user'))) 
+                    except:
+                        session.rollback()
+                    else:
+                        session.commit()
+            if x.get('mode') == 'delete':
+                for link in URL_COURSE_SUBS:
+                    database.set(link)
+                    session = database.Session()
+                    try:
+                        session.query(class_definitions.Course_Sub).filter_by(user=x.get('user'), course=x.get('course')).delete(synchronize_session="evaluate")
                     except:
                         session.rollback()
                     else:
