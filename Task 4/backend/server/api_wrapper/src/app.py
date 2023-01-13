@@ -8,7 +8,6 @@ from flask_cors import CORS, cross_origin
 import requests
 from url import *
 
-
 app = Flask(__name__)
 cors = CORS(app, allow_headers=["Access-Control-Allow-Credentials"],supports_credentials=True, origins="localhost:8080") 
 
@@ -298,7 +297,7 @@ def add_course():
         channel_name = data.get('channel')
         course_name = data.get('course')
         if channel_name is not None and course_name is not None:
-            response = requests.post((URL_COURSE).strip(),data={"channel_name":channel_name, "course_name":course_name})
+            response = requests.post((URL_COURSE).strip(),json={"channel":channel_name, "course":course_name})
             return response.content,response.status_code
     return jsonify({'Add': 'no'}), 401
 
