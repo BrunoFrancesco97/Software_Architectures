@@ -39,11 +39,16 @@ def add_channel(name: str):
         connection.close()
 
 
-
 def remove_channel(name: str):
-    session = database.Session()
-    session.query(Channel).filter_by(name=name).delete(synchronize_session="evaluate")
-    session.commit()
+    new_channel = Channel(name=name)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channel = connection.channel()
+    channel.queue_declare(queue='channel_info')
+    dictObj : dict = obj_to_dict2(new_channel)
+    dictObj["mode"] = "delete"
+    channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    print("Message sent")
+    connection.close()
 
 
 def selectAll():
