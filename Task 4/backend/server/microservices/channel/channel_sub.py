@@ -52,9 +52,15 @@ def add_subscription(channel, user: str):
 
 
 def remove_subscription(name: str, channel: id):
-    session = database.Session()
-    session.query(Channel_Sub).filter_by(user=name, channel=channel).delete(synchronize_session="evaluate")
-    session.commit()
+    new_channel_sub = Channel_Sub(channel=channel, user=name)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channell = connection.channel()
+    channell.queue_declare(queue='channel_info')
+    dictObj : dict = obj_to_dict2(new_channel_sub)
+    dictObj["mode"] = "delete"
+    channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    print("Message sent")
+    connection.close()
 
 
 def select_all():
