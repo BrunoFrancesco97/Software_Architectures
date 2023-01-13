@@ -6,18 +6,18 @@ import class_definitions
 import base64
 import os, sys
 
-URL_USERS = [url_db.URL_LOGIN, url_db.URL_USER] #OK
-URL_ASSIGNMENTS = [url_db.URL_ASSIGNMENT, url_db.URL_COURSE, url_db.URL_EXERCISE] #?
-URL_CHANNELS = [url_db.URL_ASSIGNMENT, url_db.URL_CHANNEL, url_db.URL_COURSE, url_db.URL_FILE, url_db.URL_CHANNEL_SUB] #OK
-URL_COURSES = [url_db.URL_ASSIGNMENT, url_db.URL_CHANNEL, url_db.URL_COURSE,  url_db.URL_FILE, url_db.URL_CHANNEL_SUB] #OK
-URL_EXERCISES = [url_db.URL_EXERCISE, url_db.URL_SOLUTION]  #OK
-URL_FILES = [url_db.URL_COURSE, url_db.URL_FILE] #OK
-URL_MESSAGES = [url_db.URL_MESSAGE] #OK
-URL_RESULTS = [url_db.URL_ASSIGNMENT, url_db.URL_COURSE, url_db.URL_EXERCISE, url_db.URL_RESULT, url_db.URL_SOLUTION] #OK
-URL_SOLUTIONS = [url_db.URL_EXERCISE, url_db.URL_SOLUTION] #UPDATE
-URL_CHANNEL_SUBS = [url_db.URL_CHANNEL, url_db.URL_FILE, url_db.URL_CHANNEL_SUB] #OK
-URL_COURSE_SUBS = [url_db.URL_COURSE, url_db.URL_EXERCISE, url_db.URL_FILE, url_db.URL_COURSE_SUB] #OK
-URL_TESTS = [url_db.URL_EXERCISE, url_db.URL_TEST] #OK
+URL_USERS = [url_db.URL_LOGIN, url_db.URL_USER] 
+URL_ASSIGNMENTS = [url_db.URL_ASSIGNMENT, url_db.URL_COURSE, url_db.URL_EXERCISE] 
+URL_CHANNELS = [url_db.URL_ASSIGNMENT, url_db.URL_CHANNEL, url_db.URL_COURSE, url_db.URL_FILE, url_db.URL_CHANNEL_SUB] 
+URL_COURSES = [url_db.URL_ASSIGNMENT, url_db.URL_CHANNEL, url_db.URL_COURSE,  url_db.URL_FILE, url_db.URL_CHANNEL_SUB] 
+URL_EXERCISES = [url_db.URL_EXERCISE, url_db.URL_SOLUTION]  
+URL_FILES = [url_db.URL_COURSE, url_db.URL_FILE] 
+URL_MESSAGES = [url_db.URL_MESSAGE] 
+URL_RESULTS = [url_db.URL_ASSIGNMENT, url_db.URL_COURSE, url_db.URL_EXERCISE, url_db.URL_RESULT, url_db.URL_SOLUTION] 
+URL_SOLUTIONS = [url_db.URL_EXERCISE, url_db.URL_SOLUTION] 
+URL_CHANNEL_SUBS = [url_db.URL_CHANNEL, url_db.URL_FILE, url_db.URL_CHANNEL_SUB] 
+URL_COURSE_SUBS = [url_db.URL_COURSE, url_db.URL_EXERCISE, url_db.URL_FILE, url_db.URL_COURSE_SUB] 
+URL_TESTS = [url_db.URL_EXERCISE, url_db.URL_TEST] 
 
 def write_db(ch, method, properties, body):
     try:
@@ -50,10 +50,12 @@ def write_db(ch, method, properties, body):
                     session = database.Session()
                     try:
                         session.query(class_definitions.Channel).filter_by(name=x.get('name')).delete(synchronize_session="evaluate")
+                        session.query(class_definitions.Course).filter_by(channel=x.get('name')).delete(synchronize_session="evaluate")
                     except:
                         session.rollback()
                     else:
                         session.commit() 
+                #TODO: DELETE COURSE_SUB FROM URL_EXERCISE 
         elif x.get('event') == 'course':
             if x.get('mode') == 'add':
                 for link in URL_COURSES:
@@ -75,6 +77,7 @@ def write_db(ch, method, properties, body):
                         session.rollback()
                     else:
                         session.commit()
+                    #TODO: DELETE COURSE_SUB FROM URL_EXERCISE 
         elif x.get('event') == 'file':
             if x.get('mode') == 'add':
                     for link in URL_FILES:
