@@ -203,7 +203,7 @@ ENDPOINT USED IN ORDER TO GET ALL COURSES OF A SPECIFIC CHANNEL WHICH NAME IS GI
 @jwt_required()
 def get_channel_courses(name):
     username = get_jwt_identity()
-    response = requests.get((URL_CHANNEL+"/"+name+"/"+username['user']).strip())
+    response = requests.get((URL_CHANNEL+"/"+name+"/"+username['user']+"/"+username['role']).strip())
     return response.content,response.status_code
 
 
