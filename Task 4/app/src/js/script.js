@@ -148,18 +148,24 @@ function subscribeChannel(channel){
 }
 
 function deletesubscribeChannel(channel){
-  let name = channel.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
+  let name = document.getElementById('channel_name_course').innerText;
   var request = new XMLHttpRequest();
   request.open("DELETE", "http://localhost:5000/channel_subscription", true);
   request.setRequestHeader('Content-Type', 'application/json');
   request.onreadystatechange = function () {
     if (request.status == 200 && request.readyState == 4) {
-      closeModalCh();
+      window.location.replace("home.html");
     }
   };
   request.withCredentials = true;
   request.send(JSON.stringify({"channel":name}));
 }
+
+
+function goHome(){
+  window.location.replace("home.html");
+}
+
 
 function subscribeCourse(el){
   let name = el.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
