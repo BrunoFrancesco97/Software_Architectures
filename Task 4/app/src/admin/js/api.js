@@ -280,19 +280,20 @@ function add_course(){
 }
 
 function addChannel(){
-  var ok = false;
   var requestAC = new XMLHttpRequest();
   requestAC.open("POST", BASE_URL + ENDPOINT_CHANNEL, true);//http://localhost:5000/channel
   requestAC.setRequestHeader("Content-Type", "application/json;charset=UTF-8");//setting up CT header
   requestAC.onreadystatechange = function () {
-    if (requestAC.status == 200 && requestAC.readyState == 4 && !ok) {
+    if (requestAC.status == 200 && requestAC.readyState == 4) {
       //add = JSON.parse(requestAC.responseText);
       ok=true;
       $("#channel_name").val('');
       setTimeout(function() { clean_home(); getChannels(); }, 1000);
-      toastr.info("added channel");//toast ok
+      toastr.info("Channel added!");//toast ok
     } else {
-      toastr.error("something went wrong");//toast ko
+      if(requestAC.status != 200) {
+        toastr.error("something went wrong");//toast ko
+      }
     }
   }
   requestAC.withCredentials = true;
@@ -300,19 +301,19 @@ function addChannel(){
 }
 
 function addCourse(){
-  var ok = false;
   var requestAC = new XMLHttpRequest();
   requestAC.open("POST", BASE_URL + ENDPOINT_COURSE, true);//http://localhost:5000/course
   requestAC.setRequestHeader("Content-Type", "application/json;charset=UTF-8");//setting up CT header
   requestAC.onreadystatechange = function () {
-    if (requestAC.status == 200 && requestAC.readyState == 4 && !ok) {
+    if (requestAC.status == 200 && requestAC.readyState == 4) {
       //add = JSON.parse(requestAC.responseText);
-      ok=true;
       $("#course_name").val('');
       setTimeout(function() { clean_home(); getChannels(); }, 1000);
-      toastr.info("added course");//toast ok
+      toastr.info("Course added!");//toast ok
     } else {
-      toastr.error("something went wrong");//toast ko
+      if(requestAC.status != 200){
+        toastr.error("something went wrong");//toast ko
+      }
     }
   }
   requestAC.withCredentials = true;
@@ -320,21 +321,21 @@ function addCourse(){
 }
 
 function deleteChannel(){
-  var ok = false;
   var requestAC = new XMLHttpRequest();
   requestAC.open("DELETE", BASE_URL + ENDPOINT_CHANNEL, true);//http://localhost:5000/channel
   requestAC.setRequestHeader("Content-Type", "application/json;charset=UTF-8");//setting up CT header
   requestAC.onreadystatechange = function () {
-    if (requestAC.status == 200 && requestAC.readyState == 4 && !ok) {
+    if (requestAC.status == 200 && requestAC.readyState == 4) {
       //add = JSON.parse(requestAC.responseText);
-      ok=true;
       //$("#channel_name").val('');
       setTimeout(function() { clean_home(); getChannels(); }, 1000);
-      toastr.info("deleted channel");//toast ok
+      toastr.info("Channel deleted!");//toast ok
       clean_home();
       display('home');
     } else {
-      toastr.error("something went wrong");//toast ko
+      if(requestAC.status != 200){
+        toastr.error("something went wrong");//toast ko
+      }
     }
   }
   requestAC.withCredentials = true;
@@ -342,21 +343,22 @@ function deleteChannel(){
 }
 
 function deleteCourse(){
-  var ok = false;
   var requestAC = new XMLHttpRequest();
   requestAC.open("DELETE", BASE_URL + ENDPOINT_COURSE, true);//http://localhost:5000/course
   requestAC.setRequestHeader("Content-Type", "application/json;charset=UTF-8");//setting up CT header
   requestAC.onreadystatechange = function () {
-    if (requestAC.status == 200 && requestAC.readyState == 4 && !ok) {
+    if (requestAC.status == 200 && requestAC.readyState == 4) {
       //add = JSON.parse(requestAC.responseText);
       ok=true;
       $("#current_delete_course").val('');
       setTimeout(function() { clean_home(); getChannels(); }, 1000);
-      toastr.info("deleted course");//toast ok
+      toastr.info("Course deleted!");//toast ok
       clean_home();
       display('home');
     } else {
-      toastr.error("something went wrong");//toast ko
+      if(requestAC.status != 200){
+        toastr.error("something went wrong");//toast ko
+      }
     }
   }
   requestAC.withCredentials = true;
