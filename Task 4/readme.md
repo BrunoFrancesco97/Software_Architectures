@@ -79,6 +79,7 @@ As said many times before, each microservice has its own independent database, b
 <p align="center">
   <img src="/Task%204/img/channel.png" width="600">
 </p>
+
 #### Course
 <p align="center">
   <img src="/Task%204/img/course.png" width="600">
@@ -98,26 +99,32 @@ As said many times before, each microservice has its own independent database, b
 <p align="center">
   <img src="/Task%204/img/user.png">
 </p>
+
 #### Message
 <p align="center">
   <img src="/Task%204/img/message.png">
 </p>
+
 #### Result
 <p align="center">
   <img src="/Task%204/img/result.png">
 </p>
+
 #### Solution
 <p align="center">
   <img src="/Task%204/img/solution.png" width="600">
 </p>
+
 #### Subscription
 <p align="center">
   <img src="/Task%204/img/subscription.png" width="600">
 </p>
+
 #### Test
 <p align="center">
   <img src="/Task%204/img/test.png">
 </p>
+
 #### User 
 <p align="center">
   <img src="/Task%204/img/user.png">
