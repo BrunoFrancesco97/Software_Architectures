@@ -11,6 +11,8 @@ function display(page){
       hide_home();
       hide_add_channel();
       hide_add_course();
+      hide_channel();
+      hide_course();
       show_login();
       break;
     case 'home':
