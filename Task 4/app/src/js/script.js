@@ -147,10 +147,39 @@ function subscribeChannel(channel){
   request.send(JSON.stringify({"channel":name}));
 }
 
+function deletesubscribeChannel(channel){
+  let name = channel.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
+  var request = new XMLHttpRequest();
+  request.open("DELETE", "http://localhost:5000/channel_subscription", true);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.onreadystatechange = function () {
+    if (request.status == 200 && request.readyState == 4) {
+      closeModalCh();
+    }
+  };
+  request.withCredentials = true;
+  request.send(JSON.stringify({"channel":name}));
+}
+
 function subscribeCourse(el){
   let name = el.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
   var request = new XMLHttpRequest();
   request.open("POST", "http://localhost:5000/course_subscription", true);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.onreadystatechange = function () {
+    if (request.status == 200 && request.readyState == 4) {
+      closeModalCh2();
+    }
+  };
+  request.withCredentials = true;
+  request.send(JSON.stringify({"course":name}));
+}
+
+function deletesubscribeCourse(el){
+  let name = el.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
+  console.log(name);
+  var request = new XMLHttpRequest();
+  request.open("DELETE", "http://localhost:5000/course_subscription", true);
   request.setRequestHeader('Content-Type', 'application/json');
   request.onreadystatechange = function () {
     if (request.status == 200 && request.readyState == 4) {
