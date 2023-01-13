@@ -144,7 +144,7 @@ $> git clone https://github.com/BrunoFrancesco97/Software_Architectures.git
 ```
 Or you can simply use GitHub Desktop, open a terminal and cd in the root folder of this task.
 
-Enter on Task 4 folder and you should see a _docker-compose.yaml_ file, you can now build the system with this command:
+Enter on Task 4 folder and you should see a _docker-compose.yaml_ file, you can now build the system with this command by using terminal:
 
 ```
 $> docker-compose build
