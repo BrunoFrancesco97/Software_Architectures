@@ -46,10 +46,15 @@ def add_subscription(course: str, user: str):
         print(e)
 
 def remove_subscription(name: str, course: str):
-    session = database.Session()
-    session.query(Course_Sub).filter_by(user=name, course=course).delete(synchronize_session="evaluate")
-    session.close()
-    session.commit()
+    new_course_sub = Course_Sub(course=course, user=name)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channel = connection.channel()
+    channel.queue_declare(queue='channel_info')
+    dictObj : dict = obj_to_dict2(new_course_sub)
+    dictObj["mode"] = "delete"
+    channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    print("Message sent")
+    connection.close()
 
 
 def select_all():
