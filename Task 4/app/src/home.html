@@ -169,19 +169,18 @@
             </div>
           </div>
           <div class="row d-flex align-items-center py-3 gx-5" id="materials_container">
-            <div class="col-2">
-              <i
+            <div class="col-1">
+              <i style="position: relative;margin-top: 10px;"
               class="fa fa-solid fa-arrow-left pointer"
               title="Go back"
               id="go-back-button2"
               onclick="goBack()"
             ></i>
-            </div>       
-            <div class="col-7 text-center fw-bold fs-2" id="course_name"></div>
-            <div class="col-3">
-                  <small class="text-primary pointer name_channel" title="Unsubscribe from the course" onclick="deletesubscribeCourse(this)">(Unsubscribe)<i class="fas fa-user-times"></i></small> 
-            </div>
-          
+            </div> 
+            <div class="col-11 text-center align-items-center">
+              <span class="fw-bold text-center fs-2" id="course_name"></span>
+              <small style="position: relative;margin-top: 10px;" class="text-primary pointer name_channel" title="Unsubscribe from the course" onclick="deletesubscribeCourse(this)">(Unsubscribe)<i class="fas fa-user-times"></i></small> 
+            </div>                
             <div class="border bg-light px-5 py-5 rounded shadow">
               <div class="row" id="files_container">
                 <h3 class="col-12">Course Material</h3>
