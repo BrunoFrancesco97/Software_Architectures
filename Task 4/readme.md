@@ -5,18 +5,11 @@ For this task is asked to build up an Hackerrank-like application over a distrib
 
 ## Overview of the architecture used
 
-Since requirements ask for a distributed architecture, the original application is now splitted into different services that can be placed inside different communicating machines (in order to simplify life professor, we build a simulation of a distributed architecture so a unique docker compose is used as final artifact), in detail our application is based on *microservices*.
+Since requirements ask for a distributed architecture, the original Task 3 application is now splitted into different services that can be placed inside different communicating machines (in order to simplify life professor, we build a simulation of a distributed architecture so a unique docker compose is used as final artifact), in detail our application is based on *microservices*.
 
 <p align="center">
   <img src="img/global_arch.png">
 </p>
-
-<p align="center">
-  <img src="/Task%204/img/distributed.png">
-</p>
-Questa sopra potremmo spostarla nel paragrafo del backend se concordate
-
-Application is still layered so there is a ~~monolithic frontend~~ where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
 
 ## Frontend
 The frontend (or presentation level) is composed by two elements:
@@ -48,6 +41,10 @@ We choose (after a Flutter attempt) to make two simple web apps, based on simple
 The advantage of this presentation level "isolation" is that none server is processing some data to produce final user's ui. The web app process data directly in the browser, using user's computational resources. This can help to provide a good service (see below some network usare hint) but also make cheaper the serverside costs.
 
 ## Backend
+<p align="center">
+  <img src="/Task%204/img/distributed.png">
+</p>
+
 #### API Layer 
 API layer is the first component met by a user inside backend and is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see _Task 3/backend/server/_ for a better explaination of this technology).
 
@@ -181,7 +178,7 @@ Or you can simply use GitHub Desktop, open a terminal and cd in the root folder 
 Enter on Task 4 folder and you should see a _docker-compose.yaml_ file, you can now build the system with this command by using terminal:
 
 ```
-$> docker-compose build
+$> docker compose build
 ```
 
 It will create these docker images:
@@ -221,13 +218,13 @@ hackerrank/app-web                   latest
 
 Now you can start the system with:
 ```
-$> docker-compose up
+$> docker compose up
 ```
 Wait until all containers are properly started and enjoy the project by searching _localhost:8080_ on your browser
 ## Test it
 Not all functionalities of the application are implemented or they are implemented partially (example, backend is implemented but not the frontend one), therefore the final artefact presented is just a demo of what a hackerrank like application should be.
 
-In order to ose the application, after having started every container following the guide above, search for _localhost:8080_ on your browser, at this point you should see the login page (below one).
+In order to use the application, after having started every container following the guide above, search for _localhost:8080_ on your browser, at this point you should see the login page (below one).
 
 <p align="center">
   <img src="/Task%204/img/loginpage2.png" width="400">
@@ -271,7 +268,7 @@ From the left bar you can manage channels and courses. Currently you can only ad
   <img src="img/staff_addCourse.png" width="600">
 </p>
 
-You can see below an example of api calls from the staff web app. As you can see (assuming the web app is cached in browser), the network traffic is very low in order to operate. Withous using "traditional" dinamic web page (serverside generated pages using php, flask + jinja, ecc) you don't have to scale web server according to users increase, because the web server only have to serve the web app once. Once the browser get the web app, it will communicate directly to the API server(s).
+You can see below an example of api calls from the staff web app. As you can see (assuming the web app is cached in browser), the network traffic is very low in order to operate. Withous using "traditional" dinamic web page (serverside generated pages using flask + jinja, ecc) you don't have to scale web server according to users increase, because the web server only have to serve the web app once. Once the browser get the web app, it will communicate directly to the API server(s).
 Please, note that the traffic for a single api call is below 1kB, and for example if you have to transfer the full homepage (assuming JS and css already cached) from a server to a browser the network traffic will be above 21kB.
 <p align="center">
   <img src="img/staff_httpCalls.png" width="800">
