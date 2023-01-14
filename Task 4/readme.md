@@ -11,13 +11,6 @@ Since requirements ask for a distributed architecture, the original application 
   <img src="img/global_arch.png">
 </p>
 
-<p align="center">
-  <img src="/Task%204/img/distributed.png">
-</p>
-Questa sopra potremmo spostarla nel paragrafo del backend se concordate
-
-Application is still layered so there is a ~~monolithic frontend~~ where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
-
 ## Frontend
 The frontend (or presentation level) is composed by two elements:
 - Web Server (serve the web app)
@@ -48,6 +41,9 @@ We choose (after a Flutter attempt) to make two simple web apps, based on simple
 The advantage of this presentation level "isolation" is that none server is processing some data to produce final user's ui. The web app process data directly in the browser, using user's computational resources. This can help to provide a good service (see below some network usare hint) but also make cheaper the serverside costs.
 
 ## Backend
+<p align="center">
+  <img src="/Task%204/img/distributed.png">
+</p>
 #### API Layer 
 API layer is the first component met by a user inside backend and is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see _Task 3/backend/server/_ for a better explaination of this technology).
 
