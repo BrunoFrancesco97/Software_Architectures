@@ -268,7 +268,7 @@ From the left bar you can manage channels and courses. Currently you can only ad
   <img src="img/staff_addCourse.png" width="600">
 </p>
 
-You can see below an example of api calls from the staff web app. As you can see (assuming the web app is cached in browser), the network traffic is very low in order to operate. Withous using "traditional" dinamic web page (serverside generated pages using php, flask + jinja, ecc) you don't have to scale web server according to users increase, because the web server only have to serve the web app once. Once the browser get the web app, it will communicate directly to the API server(s).
+You can see below an example of api calls from the staff web app. As you can see (assuming the web app is cached in browser), the network traffic is very low in order to operate. Withous using "traditional" dinamic web page (serverside generated pages using flask + jinja, ecc) you don't have to scale web server according to users increase, because the web server only have to serve the web app once. Once the browser get the web app, it will communicate directly to the API server(s).
 Please, note that the traffic for a single api call is below 1kB, and for example if you have to transfer the full homepage (assuming JS and css already cached) from a server to a browser the network traffic will be above 21kB.
 <p align="center">
   <img src="img/staff_httpCalls.png" width="800">
