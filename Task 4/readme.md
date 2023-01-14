@@ -18,11 +18,6 @@ Questa sopra potremmo spostarla nel paragrafo del backend se concordate
 
 Application is still layered so there is a ~~monolithic frontend~~ where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
 
-## Global Architecture
-<p align="center">
-  <img src="img/global_arch.png">
-</p>
-
 ## Frontend
 The frontend (or presentation level) is composed by two elements:
 - Web Server (serve the web app)
