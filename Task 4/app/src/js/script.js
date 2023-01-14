@@ -183,7 +183,6 @@ function subscribeCourse(el){
 
 function deletesubscribeCourse(el){
   let name = document.getElementById('course_name').innerText;
-  console.log(name);
   var request = new XMLHttpRequest();
   request.open("DELETE", "http://localhost:5000/course_subscription", true);
   request.setRequestHeader('Content-Type', 'application/json');
