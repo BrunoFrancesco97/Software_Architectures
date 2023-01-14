@@ -196,7 +196,7 @@ Not all functionalities of the application are implemented or they are implement
 In order to ose the application, after having started every container following the guide above, search for _localhost:8080_ on your browser, at this point you should see the login page (below one).
 
 <p align="center">
-  <img src="/Task%204/img/loginpage.png" width="400">
+  <img src="/Task%204/img/loginpage2.png" width="400">
 </p>
 
 Before logging into the application, create a new account (user role if you want to check code compilation functionalities), then log in using the new information chosen. First thing you can see is a list of possible channels (here there is only a default one), by clicking on it you can subsribe to the channel (image below).
