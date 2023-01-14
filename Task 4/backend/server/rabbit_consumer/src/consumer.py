@@ -180,6 +180,18 @@ def write_db(ch, method, properties, body):
                         session.rollback()
                     else:
                         session.commit()
+            if x.get('mode') == 'delete':
+                for link in URL_SOLUTIONS:
+                    database.set(link)
+                    session = database.Session()
+                    try:
+                        session.query(class_definitions.Solution).filter(class_definitions.Solution.exercise == x.get('exercise'), class_definitions.Solution.review == False,
+                                   class_definitions.Solution.user == x.get('user')).update({class_definitions.Solution.correct: x.get('correct'), class_definitions.Solution.review: True},
+                                                                 synchronize_session="evaluate")
+                    except:
+                        session.rollback()
+                    else:
+                        session.commit()
         elif x.get('event') == 'channel_sub':
             if x.get('mode') == 'add':
                 for link in URL_CHANNEL_SUBS:
