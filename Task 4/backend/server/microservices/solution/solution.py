@@ -127,8 +127,11 @@ def get_unreviewed_solution(exercise):
 
 
 def check_solution(exercise, user, correct):
-    session = database.Session()
-    session.query(Solution).filter(Solution.exercise == exercise, Solution.review == False,
-                                   Solution.user == user).update({Solution.correct: correct, Solution.review: True},
-                                                                 synchronize_session="evaluate")
-    session.commit()
+    new_solution = Solution(exercise=exercise, user=user, correct=correct)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channel = connection.channel()
+    channel.queue_declare(queue='channel_info')
+    dictObj : dict = obj_to_dict2(new_solution)
+    dictObj["mode"] = "update"
+    channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    connection.close()
