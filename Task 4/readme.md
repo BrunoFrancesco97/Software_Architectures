@@ -181,7 +181,7 @@ Or you can simply use GitHub Desktop, open a terminal and cd in the root folder 
 Enter on Task 4 folder and you should see a _docker-compose.yaml_ file, you can now build the system with this command by using terminal:
 
 ```
-$> docker-compose build
+$> docker compose build
 ```
 
 It will create these docker images:
@@ -221,7 +221,7 @@ hackerrank/app-web                   latest
 
 Now you can start the system with:
 ```
-$> docker-compose up
+$> docker compose up
 ```
 Wait until all containers are properly started and enjoy the project by searching _localhost:8080_ on your browser
 ## Test it
