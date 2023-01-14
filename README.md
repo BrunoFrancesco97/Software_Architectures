@@ -1,6 +1,9 @@
 # Software_Architectures
 Repository used to store various tasks about Software Architecture course.
 
+Note that this course isn't focused on graphical interface but rather deals with all aspects related to the architecture of a software, so a monolithical or a distributed one, how to organize and build them, etc, thus responsiveness of Task 3 and Task 4 applications wasn't considered during the development.
+
+
 # Task 1
 Submit a katas* about a possible hackerrank-style information system.
 
