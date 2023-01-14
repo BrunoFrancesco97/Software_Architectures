@@ -224,7 +224,7 @@ Wait until all containers are properly started and enjoy the project by searchin
 ## Test it
 Not all functionalities of the application are implemented or they are implemented partially (example, backend is implemented but not the frontend one), therefore the final artefact presented is just a demo of what a hackerrank like application should be.
 
-In order to ose the application, after having started every container following the guide above, search for _localhost:8080_ on your browser, at this point you should see the login page (below one).
+In order to use the application, after having started every container following the guide above, search for _localhost:8080_ on your browser, at this point you should see the login page (below one).
 
 <p align="center">
   <img src="/Task%204/img/loginpage2.png" width="400">
