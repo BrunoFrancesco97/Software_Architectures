@@ -72,9 +72,15 @@ def add_test_complete(name: str, comment: str, exercise: int, given_value : str,
 
 
 def remove_test(id_el):
-    session = database.Session()
-    session.query(Test).filter_by(id=id_el).delete(synchronize_session="evaluate")
-    session.commit()
+    new_test = Test(id=id_el)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channel = connection.channel()
+    channel.queue_declare(queue='channel_info')
+    dictObj : dict = obj_to_dict2(new_test)
+    dictObj["mode"] = "delete"
+    channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    print("Message sent")
+    connection.close()
 
 
 def selectAll():

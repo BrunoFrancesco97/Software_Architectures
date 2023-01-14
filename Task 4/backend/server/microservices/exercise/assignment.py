@@ -57,9 +57,15 @@ def obj_to_dict2(obj: Assignment):  # for build json format
     }
 
 def remove_assignment(id_el):
-    session = database.Session()
-    session.query(Assignment).filter_by(id=id_el).delete(synchronize_session="evaluate")
-    session.commit()
+    new_assignments = Assignment(id=id_el)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channell = connection.channel()
+    channell.queue_declare(queue='channel_info')
+    dictObj : dict = obj_to_dict2(new_assignments)
+    dictObj["mode"] = "delete"
+    channell.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    print("Message sent")
+    connection.close()
 
 
 def selectAll():

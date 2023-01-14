@@ -86,9 +86,16 @@ def add_result_without_vote(assignment_el: int, user_el: str, comment_el: str):
 
 
 def remove_result(id_el):
-    session = database.Session()
-    session.query(Result).filter_by(id=id_el).delete(synchronize_session="evaluate")
-    session.commit()
+    new_result = Result(id=id_el)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+    channel = connection.channel()
+    channel.queue_declare(queue='channel_info')
+    dictObj : dict = obj_to_dict2(new_result)
+    dictObj["mode"] = "delete"
+    channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj))
+    print("Message sent")
+    connection.close()
+
 
 
 def selectAll():

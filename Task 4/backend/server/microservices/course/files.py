@@ -49,20 +49,25 @@ def obj_to_dict2(obj: File):  # for build json format
     }
 
 def remove_file(name: str, course: str, channel_name: str):
-    session = database.Session()
     try:
         response = requests.put(URL_FILE+'/'+channel_name+"/"+course+"/"+name)
         js = json.loads(response.content)
         if js['removed'] == True:
-            session = database.Session()
-            session.query(File).filter_by(name=name, course=course).delete(synchronize_session="evaluate")
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['URL_RABBIT'], socket_timeout=5, connection_attempts=10))
+            channel = connection.channel()
+            channel.queue_declare(queue='channel_info')
+            new_file = File(name=name, course=course)
+            dictObj : dict = obj_to_dict2(new_file)
+            dictObj["mode"] = "delete"
+            channel.basic_publish(exchange='', routing_key='channel_info', body=str(dictObj)
+            )
+            print("Message sent")
+            connection.close()
         else:
-                session.rollback()
                 return False
     except:
-        session.rollback()
+        return False
     else:
-        session.commit()
         return True
 
 
