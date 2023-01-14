@@ -26,3 +26,7 @@ function performLogin(hash){
     request.setRequestHeader("Authorization", "Basic "+hash);
     request.send();
 }
+
+function staff(){
+    window.location.replace("http://localhost:8080/staff/");
+}
