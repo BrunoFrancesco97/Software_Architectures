@@ -161,6 +161,81 @@ As said many times before, each microservice has its own independent database, b
   <img src="/Task%204/img/user.png">
 </p>
 
+## How do we deploy the system
+We choose to use `docker compose` to deploy the system.
+Because of every microservice is "fully independent" from each other we can deploy them as single Docker images. For every microservices we have a Dockerfile where is defined how the image will be build by Docker build.
+Above you can find the two-lines Dockerfile used ti build the Web App image.
+
+An other interesting Dockerfile could be the one used to build the API Wrapper (or API Gateway) image:
+```
+FROM python:3.9-slim-bullseye
+
+WORKDIR "/home/"
+
+ENV DB_URL=localhost
+ENV DB_PORT=3306
+ENV DB_NAME=sa
+ENV DB_USER=root
+ENV DB_PASSWORD=root
+
+COPY ./requirements.txt /home/requirements.txt
+RUN pip3 install --no-cache-dir --upgrade -r ./requirements.txt
+
+RUN mkdir api
+ADD src /home/api
+
+ENTRYPOINT ["python3","api/app.py"]
+#ENTRYPOINT ["uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "5000"]
+#CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+
+EXPOSE 5000
+```
+Here, starting from an official Debian based Python image it add our source code, it install Python packages dependencies and it set up the entrypoint command (a command launched in the container after it starts).
+
+You can also notice some `ENV` statement. They are environment variables, that live in the container's os environment. These environment variables values are defaults one, you can overwrite them when you create a container based on this image simply specifying them in `docker run -e MY_ENV_VAR='value' <..>` or in your `docker-compose.yaml` .
+
+In order to build and deploy theese microservices we have to build every Dockerfile and we have to define a way to create a container for every builded image.. So we use Docker Compose to achieve this with a couple of command!
+
+Our docker-compose.yaml file describe where Dockerfile is and how we want to create every container.
+
+We also defined some simple startup/shutdown dependencies from all the containers:
+- microservices databases do not have any dependencies
+- microservices depend on them database and RabbitMQ consumer
+- api wrapper (or api gateway) depends on every microservice
+- web servier depends on api wrapper (because could be usefull have the frontend online only if the backend is already ready)
+
+Docker Compose automatically manages for us startp and shutdown containers's dependencies.
+
+An example of the login microservice contaienr definition in docker-compose.yaml file:
+```
+  api_login:
+    image: hackerrank/api_login:latest
+    build: backend/server/microservices/loginreg
+    container_name: api_login
+    restart: always
+    environment:
+      - DB_URL=db_login
+      - DB_PORT=3306
+      - DB_NAME=sa
+      - DB_USER=test
+      - DB_PASSWORD=test
+      - URL_RABBIT=rabbitmq
+    depends_on:
+      - db_login
+      - rabbit_consumer
+```
+The first line define the service name "api_login".
+
+The third line define the path of the folder with Dockerfile in it. So using `docker compose build` it know where to search for build declarations.
+
+We setted up a restart policy because we want this container try to restart if Docker detect it crashed.
+
+We also declare some environment variable, and we all know this is not safe to store in a code repo but could be safer user a secret manager.. But this is an other story.
+
+And finally we declare on what other service name this container depends on.
+
+In conclusion, we can affirm that our system probably can be deployed in some orchestrator like Kubernetes without too much problems, maybe in the future! For this task we use Docker Compose because we are more skilled on it.
+
 ## How to run the project
 
 In order to build this system there are 2 requirements:
@@ -221,6 +296,17 @@ Now you can start the system with:
 $> docker compose up
 ```
 Wait until all containers are properly started and enjoy the project by searching _localhost:8080_ on your browser
+
+You can also use:
+```
+$> docker compose up -d
+```
+and
+```
+$> docker compose down
+```
+To start and stop the containers in detached mode.
+
 ## Test it
 Not all functionalities of the application are implemented or they are implemented partially (example, backend is implemented but not the frontend one), therefore the final artefact presented is just a demo of what a hackerrank like application should be.
 
