@@ -17,7 +17,7 @@ Application is still layered so there is a monolithic frontend where all HTTP re
 #### API Layer 
 API layer is the first component met by a user inside backend and is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see _Task 3/backend/server/_ for a better explaination of this technology).
 
-A user can send requests to the API layer thanks to a list of fixed endpoints that are the same as task 3 ones so for space reasons they are omitted from being displayed here (see Task _Task 3/backend/server/_ README).
+A user can send requests to the API layer thanks to a list of fixed endpoints that are the same as task 3 ones so for space reasons they are omitted from being displayed here (see _Task 3/backend/server/_ README).
 
 When the gateway has choosen the right microservice to send the request, it starts a synchronous communication and wait for a response, when this one is received then is sent back to the user.
 
