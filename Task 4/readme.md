@@ -44,6 +44,7 @@ The advantage of this presentation level "isolation" is that none server is proc
 <p align="center">
   <img src="/Task%204/img/distributed.png">
 </p>
+
 #### API Layer 
 API layer is the first component met by a user inside backend and is very important since is a proxy to the right microservice but also it handles the login/logout services through JWT cookie (see _Task 3/backend/server/_ for a better explaination of this technology).
 
