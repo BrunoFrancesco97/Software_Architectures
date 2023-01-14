@@ -8,10 +8,49 @@ For this task is asked to build up an Hackerrank-like application over a distrib
 Since requirements ask for a distributed architecture, the original application is now splitted into different services that can be placed inside different communicating machines (in order to simplify life professor, we build a simulation of a distributed architecture so a unique docker compose is used as final artifact), in detail our application is based on *microservices*.
 
 <p align="center">
-  <img src="/Task%204/img/distributed.png">
+  <img src="img/global_arch.png">
 </p>
 
-Application is still layered so there is a monolithic frontend where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
+<p align="center">
+  <img src="/Task%204/img/distributed.png">
+</p>
+Questa sopra potremmo spostarla nel paragrafo del backend se concordate
+
+Application is still layered so there is a ~~monolithic frontend~~ where all HTTP requests are made and a backend, no more a monolithic one. These requests made from the frontend are sent to the API gateway/layer, the first part of the backend a user encounter.
+
+## Global Architecture
+<p align="center">
+  <img src="img/global_arch.png">
+</p>
+
+## Frontend
+The frontend (or presentation level) is composed by two elements:
+- Web Server (serve the web app)
+- Web App (runs on a browser)
+
+#### Web Server
+The web server we use is a minimal Nginx Alpine based dockerized.
+Starting from the `nginx:alpine` image we simply insert our web app code in Nginx's html folder.
+```
+FROM nginx:alpine
+COPY <our src directory> /usr/share/nginx/html
+```
+It is fast and very light-weighted.
+The only think this web server have to do is to serve the web app files to a browser.
+It's a fully scalable and distributable component.
+
+#### Web App
+We developed two different demo app.
+- User's app
+- Staff's app
+
+We choose (after a Flutter attempt) to make two simple web apps, based on simple frameworks:
+- Javascript & jQuery (dom manipulation)
+- Bootstrap (css graphics)
+- Toastr (fancy ui toasts)
+- some other external css stylesheets
+
+The advantage of this presentation level "isolation" is that none server is processing some data to produce final user's ui. The web app process data directly in the browser, using user's computational resources. This can help to provide a good service (see below some network usare hint) but also make cheaper the serverside costs.
 
 ## Backend
 #### API Layer 
@@ -220,6 +259,29 @@ As you can see there is a default assignment proposed, by clicking on it you ent
 
 Now you can complete the exercise, some files are already written and they are in _tests_ folder in the main root of this task. When a file is given and solution is calculated, a result page will be showed. By returning in the previous page you can now see the assignment done under the list called "Assignments Done", if you click on it you can see the results obtained of that assignment.
 
+If you wander to have a basic administration experience, you can test our Staff one-page web app. This web app is a simple html/js/css page, served to a browser by a static web server. It completely runs over the browser! Frontend app to backend communications are through http requests to the API gateway/wrapper, so the web server is not involved.
+
+In order to login you must to register an account with "staff" role.
+<p align="center">
+  <img src="img/staff_login.png" width="400">
+</p>
+
+Once logged in, you can see an homepage that in the future could be a synthetic realtime system status report.
+<p align="center">
+  <img src="img/staff_homepage.png" width="600">
+</p>
+
+From the left bar you can manage channels and courses. Currently you can only add or remove theese two type of resources. More work (and a frontend team!) is required in order to develope all the features.
+<p align="center">
+  <img src="img/staff_addCourse.png" width="600">
+</p>
+
+You can see below an example of api calls from the staff web app. As you can see (assuming the web app is cached in browser), the network traffic is very low in order to operate. Withous using "traditional" dinamic web page (serverside generated pages using php, flask + jinja, ecc) you don't have to scale web server according to users increase, because the web server only have to serve the web app once. Once the browser get the web app, it will communicate directly to the API server(s).
+Please, note that the traffic for a single api call is below 1kB, and for example if you have to transfer the full homepage (assuming JS and css already cached) from a server to a browser the network traffic will be above 21kB.
+<p align="center">
+  <img src="img/staff_httpCalls.png" width="800">
+</p>
+
 ## Future improvements
 In order to improve the demo proposed, some improvements are shown below:
 - Integration of missing features proposed in the previous tasks
@@ -227,3 +289,4 @@ In order to improve the demo proposed, some improvements are shown below:
 - Better responsive interface
 - Better user experience when an exercise is solved 
 - Better user experience when a result of an assignment is sent back to the user from the server
+- Deploy over an orchestrator

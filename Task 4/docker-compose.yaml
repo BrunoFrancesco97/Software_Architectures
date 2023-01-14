@@ -372,7 +372,6 @@ services:
       - URL_MESSAGE=api_message
       - URL_RESULT=api_result
       - URL_SOLUTION=api_solution
-      #- api_subscription
       - URL_TEST=api_test
       - URL_USER=api_user
     depends_on:
@@ -392,16 +391,11 @@ services:
 
   app:
     image: hackerrank/app-web:latest
-    container_name: hackerrank_app
+    container_name: app
     build: app
     restart: always
     ports:
       - 8080:80
-      #TODO add a proxy container for deployment, or use an existent one
 
     depends_on:
-      #- db
       - api_wrapper
-
-#volumes:
-  #db:
