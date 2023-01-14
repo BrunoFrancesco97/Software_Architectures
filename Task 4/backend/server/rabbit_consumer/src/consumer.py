@@ -180,7 +180,7 @@ def write_db(ch, method, properties, body):
                         session.rollback()
                     else:
                         session.commit()
-            if x.get('mode') == 'delete':
+            if x.get('mode') == 'update':
                 for link in URL_SOLUTIONS:
                     database.set(link)
                     session = database.Session()
