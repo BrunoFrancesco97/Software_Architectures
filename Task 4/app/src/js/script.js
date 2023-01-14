@@ -303,7 +303,7 @@ function get_channels() {
         document.querySelector("#channel_container").appendChild(clone);
       }
     } else {
-      if (request.status == 0) {
+      if (request.status == 401) {
         window.location.replace("index.html");
       }
     }
