@@ -88,7 +88,17 @@ def write_db(ch, method, properties, body):
                         except:
                             session.rollback()
                         else:
-                            session.commit() 
+                            session.commit()
+            if x.get('mode') == 'delete':
+                    for link in URL_FILES:
+                        database.set(link)
+                        session = database.Session()
+                        try:
+                            session.query(class_definitions.File).filter_by(name=x.get('name'), course=x.get('course')).delete(synchronize_session="evaluate")
+                        except:
+                            session.rollback()
+                        else:
+                            session.commit()  
         elif x.get('event') == 'message':
             if x.get('mode') == 'add':
                 for link in URL_MESSAGES:
@@ -118,6 +128,16 @@ def write_db(ch, method, properties, body):
                         session.rollback()
                     else:
                         session.commit()
+            if x.get('mode') == 'delete':
+                for link in URL_RESULTS:
+                    database.set(link)
+                    session = database.Session()
+                    try:
+                        session.query(class_definitions.Result).filter_by(id=x.get('id')).delete(synchronize_session="evaluate")
+                    except:
+                        session.rollback()
+                    else:
+                        session.commit()
         elif x.get('event') == 'test':
             if x.get('mode') == 'add':
                 for link in URL_TESTS:
@@ -130,6 +150,16 @@ def write_db(ch, method, properties, body):
                             session.add(class_definitions.Test(name=x.get('name'), exercise=x.get('exercise'), comment=x.get('comment'), given_value=x.get('parameter'), expected=x.get('expected')))  
                         else:
                             session.rollback()
+                    except:
+                        session.rollback()
+                    else:
+                        session.commit()
+            if x.get('mode') == 'delete':
+                for link in URL_TESTS:
+                    database.set(link)
+                    session = database.Session()
+                    try:
+                        session.query(class_definitions.Test).filter_by(id=x.get('id')).delete(synchronize_session="evaluate")
                     except:
                         session.rollback()
                     else:
@@ -203,6 +233,16 @@ def write_db(ch, method, properties, body):
                         session.rollback()
                     else:
                         session.commit()
+            if x.get('mode') == 'delete':
+                for link in URL_ASSIGNMENTS:
+                    database.set(link)
+                    session = database.Session()
+                    try:
+                        session.query(class_definitions.Assignment).filter_by(id=x.get('id')).delete(synchronize_session="evaluate")
+                    except:
+                        session.rollback()
+                    else:
+                        session.commit()    
         elif x.get('event') == 'exercise':
             if x.get('mode') == 'add':
                 for link in URL_EXERCISES:
@@ -220,6 +260,16 @@ def write_db(ch, method, properties, body):
                         session.rollback()
                     else:
                         session.commit()
+            if x.get('mode') == 'delete':
+                for link in URL_EXERCISES:
+                    database.set(link)
+                    session = database.Session()
+                    try:
+                        session.query(class_definitions.Exercise).filter_by(id=x.get('id')).delete(synchronize_session="evaluate")
+                    except:
+                        session.rollback()
+                    else:
+                        session.commit()  
         else:
             print("Error")
     except Exception as e:
