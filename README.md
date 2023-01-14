@@ -3,7 +3,7 @@ Repository used to store various tasks about Software Architecture course.
 
 Note that this course isn't focused on graphical interface but rather deals with all aspects related to the architecture of a software, so a monolithical or a distributed one, how to organize and build them, etc, thus responsiveness of Task 3 and Task 4 applications wasn't considered during the development.
 
-IMPORTANT: Due to a bug in Safari, we have noticed that despite set-cookie header is returned correctly from the server, the browser won't set it because of the flags used for JWT token cookie (SameSite=None, Secure=True), other browsers tested (Google Chrome, Brave, Firefox) don't cause any sort of problem.
+**IMPORTANT**: Due to a bug in Safari, we have noticed that despite set-cookie header is returned correctly from the server, the browser won't set it because of the flags used for JWT token cookie (SameSite=None, Secure=True), other browsers tested (Google Chrome, Brave, Firefox) don't cause any sort of problem.
 
 # Task 1
 Submit a katas* about a possible hackerrank-style information system.
